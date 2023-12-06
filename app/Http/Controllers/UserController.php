@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Google\Service\CloudSourceRepositories\Repo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Str;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class UserController extends Controller
 {
@@ -55,11 +58,114 @@ class UserController extends Controller
         }
     }
 
+    public function login(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
 
-    public function verify()
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 422);
+        } else {
+            return response()->json(['message' => 'Successfully logged in', 'user' => $user]);
+        }
+    }
+
+
+    public function loginUser(Request $request)
+    {
+        $auth = Firebase::auth();
+        try {
+            $uid = $request->token;
+            $verifiedIdToken = $auth->verifyIdToken($uid);
+
+            $uid = $verifiedIdToken->claims()->get('sub');
+
+            $user = $auth->getUser($uid);
+
+            $data = User::where('email', '=', $user->email)->first();
+
+            if ($data) {
+
+                if ($data->status != "Active") {
+                    return response()->json(["message" => "Your Account is InActive By Admin"], 422);
+                } else {
+
+                    $token = Str::random(60);
+
+                    $data->api_token = $token;
+                    $data->save();
+
+                    return response()->json(["message" => "Successfully Loged in", "detail" => $data, "token" => $token]);
+                }
+            } else {
+                return response()->json(["message" => "you have to register first"], 422);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(["message" => $th->getMessage()], 422);
+        }
+    }
+
+
+    public function registerUser(Request $request)
+    {
+        $auth = Firebase::auth();
+        try {
+            $uid = $request->token;
+            $verifiedIdToken = $auth->verifyIdToken($uid);
+
+            $uid = $verifiedIdToken->claims()->get('sub');
+
+            $user = $auth->getUser($uid);
+
+            // $payment_link = "https://virtualrealitycreators.com/docdash-website/payment-process";
+            // $code = "";
+            $client = User::whereEmail($user->email)->first();
+            if ($client)
+                return response()->json(["message" => "Already Exist!"], 422);
+            else
+                $token = Str::random(60);
+            // $type = "Parent";
+            $status = "Active";
+            // if ($request->password == $request->confirm_password) {
+            $users = new User([
+                "name" => $request->name,
+                "email" => $request->email,
+                "password" => Hash::make($request->password),
+                "api_token" => $token,
+                // "type" => $request->type,
+                "status" => $status,
+            ]);
+
+            // Mail::to($request->email)->send(new PaymentProcessLink($payment_link, $code));
+            $users->save();
+
+            // $factory = (new Factory)->withServiceAccount('../docdesh-cdb03-firebase-adminsdk-d1b0v-1582c88d5a.json')->withDatabaseUri('https://docdesh-cdb03-default-rtdb.firebaseio.com/');
+            // $factory = (new Factory)->withServiceAccount(config('app.FIREBASE_CREDENTIALS'))->withDatabaseUri(config('app.FIREBASE_DATABASE_URL'));
+            // // $database = $factory->createDatabase();
+            // $auth = $factory->createAuth();
+
+            // $userProperties = [
+            //     'email' => $request->email,
+            //     'emailVerified' => false,
+            //     // 'phoneNumber' => '+15555550111',
+            //     // 'password' => $doctor->password,
+            //     'displayName' => $request->first_name,
+            // ];
+
+            // $createdUser = $auth->createUser($userProperties);
+
+            return response()->json(["message" => " Your registration successfully done & mail sent", "token" => $token]);
+            // } else {
+            //     return response()->json(["message" => " password & confirm password doesn't match"], 422);
+            // }
+        } catch (\Throwable $th) {
+            return response()->json(["message" => $th->getMessage()], 422);
+        }
+    }
+
+    public function verify(Request $request)
     {
         try {
-            $user = User::find(auth()->user()->id);
+            $user = auth()->user();
             return response()->json(["user" => $user]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
@@ -85,6 +191,7 @@ class UserController extends Controller
         ]);
         try {
             $user = User::find(auth()->user()->id);
+            $validate['image'] = $request->file('image')->store('public/users');
             $user->update($validate);
             return response()->json(["message" => "User successfully updated"]);
         } catch (\Throwable $th) {
@@ -92,13 +199,12 @@ class UserController extends Controller
         }
     }
 
-
     /////////////// For Admin
 
     public function users()
     {
         try {
-            $users = User::all();
+            $users = User::where('email', '!=', auth()->user()->email)->get();
             return response()->json(["users" => $users]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
@@ -112,6 +218,8 @@ class UserController extends Controller
         ]);
         try {
             $user = User::find($request->user_id);
+            if (!$user)
+                return response()->json(["message" => "Invalid user"]);
             $user->delete();
             return response()->json(["message" => "User blocked"]);
         } catch (\Throwable $th) {
@@ -126,6 +234,8 @@ class UserController extends Controller
         ]);
         try {
             $user = User::find($request->user_id);
+            if (!$user)
+                return response()->json(["message" => "Invalid user"]);
             if ($user->status == "Active") {
                 $user->status = "DeActive";
             } else {
