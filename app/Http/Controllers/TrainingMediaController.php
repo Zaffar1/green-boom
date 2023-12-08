@@ -13,12 +13,20 @@ class TrainingMediaController extends Controller
     {
         $validate = $request->validate([
             'training_id' => 'required',
+            'title' => 'required',
             'file' => 'required|mimes:pdf,mp4,mov,avi',
         ]);
         try {
-            $validate['status'] = 'Active';
+            $training = Training::find($request->training_id);
+            if (!$training)
+                return response()->json(['message' => 'Invalid Training']);
+            else
+                $validate['status'] = 'Active';
             $file = $request->file('file');
-            $validate['file'] = $request->file('file')->store('public/trainingMedia');
+            // $validate['file'] = $request->file('file')->store('public/trainingMedia');
+            $new_name = time() . '.' . $request->file->extension();
+            $request->file->move(public_path('storage/trainingMedia'), $new_name);
+            $validate['file'] = "storage/trainingMedia/$new_name";
             $file_type = $file->getClientOriginalExtension();
             $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
             if (in_array(strtolower($file_type), $video_extension)) {
@@ -35,17 +43,17 @@ class TrainingMediaController extends Controller
         }
     }
 
-    public function trainingMedia(Request $request)
+    public function trainingMedia(Request $request, $id)
     {
-        $request->validate([
-            'training_id' => 'required',
-        ]);
+        // $request->validate([
+        //     'training_id' => 'required',
+        // ]);
         try {
-            $training = Training::find($request->training_id);
+            $training = Training::find($id);
             if (!$training)
                 return response()->json(["message" => "Invalid training"]);
             else
-                $trainingMedia = TrainingMedia::whereTrainingId($request->training_id)->orderBy('id','DESC')->get();
+                $trainingMedia = TrainingMedia::whereTrainingId($id)->orderBy('id', 'DESC')->get();
             return response()->json(["training_media" => $trainingMedia]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);

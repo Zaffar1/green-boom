@@ -53,7 +53,10 @@ class ProductController extends Controller
         ]);
         try {
             $validate['status'] = 'Active';
-            $validate['file'] = $request->file('file')->store('public/products');
+            // $validate['file'] = $request->file('file')->store('public/products');
+            $new_name = time() . '.' . $request->file->extension();
+            $request->file->move(public_path('storage/products'), $new_name);
+            $validate['file'] = "storage/products/$new_name";
             Product::create($validate);
             return response()->json(['message' => 'Product successfully added']);
         } catch (\Throwable $th) {

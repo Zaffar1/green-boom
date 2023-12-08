@@ -10,6 +10,7 @@ class TrainingMedia extends Model
     use HasFactory;
     protected $fillable = [
         'training_id',
+        'title',
         'file',
         'file_type',
         'status'

@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         /////// Training Media
         Route::post('add-training-media', [TrainingMediaController::class, 'addTrainingMedia']);
-        Route::get('training-media', [TrainingMediaController::class, 'trainingMedia']);
+        Route::get('training-media/{id}', [TrainingMediaController::class, 'trainingMedia']);
         Route::post('update-training-media', [TrainingMediaController::class, 'updateMedia']);
         Route::delete('delete-training-media/{id}', [TrainingMediaController::class, 'deleteTrainingMedia']);
 
