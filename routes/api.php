@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         Route::get('users', [UserController::class, 'users']);
         Route::post('block-user', [UserController::class, 'deActive']);
-        Route::post('user-status', [UserController::class, 'status']);
+        Route::post('user-status/{id}', [UserController::class, 'status']);
 
         //////// Welcome Video
         Route::get('all-welcome-videos', [WelcomeVideoController::class, 'allWelcomeVideos']);

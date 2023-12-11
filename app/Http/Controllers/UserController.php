@@ -227,22 +227,22 @@ class UserController extends Controller
         }
     }
 
-    public function status(Request $request)
+    public function status($id)
     {
-        $request->validate([
-            "user_id" => "required",
-        ]);
+        // $request->validate([
+        //     "user_id" => "required",
+        // ]);
         try {
-            $user = User::find($request->user_id);
+            $user = User::find($id);
             if (!$user)
                 return response()->json(["message" => "Invalid user"]);
             if ($user->status == "Active") {
-                $user->status = "DeActive";
+                $user->status = "InActive";
             } else {
                 $user->status = "Active";
             }
             $user->save();
-            return response()->json(["message" => "User status changed"]);
+            return response()->json(["message" => "User status changed", "status" => $user->status], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
