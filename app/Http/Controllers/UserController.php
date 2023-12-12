@@ -205,19 +205,17 @@ class UserController extends Controller
     {
         try {
             $users = User::where('email', '!=', auth()->user()->email)->get();
+            // $users = User::all();
             return response()->json(["users" => $users]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
-    public function deActive(Request $request)
+    public function deActive($id)
     {
-        $request->validate([
-            "user_id" => "required",
-        ]);
         try {
-            $user = User::find($request->user_id);
+            $user = User::find($id);
             if (!$user)
                 return response()->json(["message" => "Invalid user"]);
             $user->delete();
