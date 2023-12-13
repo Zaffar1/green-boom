@@ -46,7 +46,7 @@ class TrainingController extends Controller
         try {
             $validate['status'] = 'Active';
             Training::create($validate);
-            return response()->json(["message" => "Training successfully added"]);
+            return response()->json(["message" => "Training successfully added"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
@@ -120,13 +120,13 @@ class TrainingController extends Controller
      * will return a JSON response with the message "Training status changed". If there is an error, it
      * will return a JSON response with the error message.
      */
-    public function TrainingStatus(Request $request)
+    public function TrainingStatus($id)
     {
-        $request->validate([
-            "id" => "required",
-        ]);
+        // $request->validate([
+        //     "id" => "required",
+        // ]);
         try {
-            $training = Training::find($request->id);
+            $training = Training::find($id);
             if (!$training)
                 return response()->json(["message" => "Invalid training"]);
             if ($training->status == "Active") {

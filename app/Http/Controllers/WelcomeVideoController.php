@@ -57,7 +57,7 @@ class WelcomeVideoController extends Controller
             'video_id' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'file' => 'required|mimes:mp4,mov,avi|max:204800', // Adjust the max size as needed
+            // 'file' => 'required|mimes:mp4,mov,avi|max:204800', // Adjust the max size as needed
         ]);
 
         try {
@@ -79,7 +79,11 @@ class WelcomeVideoController extends Controller
                 Storage::delete($video->file);
 
                 // Store the new file
-                $video->file = $request->file('file')->store('public/videos');
+                // $video->file = $request->file('file')->store('public/videos');
+                $new_name = time() . '.' . $request->file->extension();
+                $request->file->move(public_path('storage/videos'), $new_name);
+                $path = "storage/videos/$new_name";
+                $video->file = $path;
             }
 
             // Save the changes
@@ -102,6 +106,24 @@ class WelcomeVideoController extends Controller
             $video->delete();
             Storage::delete($filePath);
             return response()->json(["message" => "Welcome video successfully deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function videoStatus($id)
+    {
+        try {
+            $video = WelcomeVideo::find($id);
+            if (!$video)
+                return response()->json(["message" => "Invalid video"]);
+            if ($video->status == "Active") {
+                $video->status = "InActive";
+            } else {
+                $video->status = "Active";
+            }
+            $video->save();
+            return response()->json(["message" => "Welcome video status changed", "status" => $video->status], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

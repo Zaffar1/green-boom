@@ -76,13 +76,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('add-welcome-video', [WelcomeVideoController::class, 'uploadWelcomeVideo']);
         Route::post('update-welcome-video', [WelcomeVideoController::class, 'updateWelcomeVideo']);
         Route::delete('delete-welcome-video/{id}', [WelcomeVideoController::class, 'deleteWelcomeVideo']);
+        Route::post('change-status/{id}', [WelcomeVideoController::class, 'videoStatus']);
 
         /////////// Training 
         Route::get('all-training', [TrainingController::class, 'allTraining']);
         Route::post('add-training', [TrainingController::class, 'addTraining']);
         Route::post('update-training', [TrainingController::class, 'updateTraining']);
         Route::delete('delete-training/{id}', [TrainingController::class, 'deleteTraining']);
-        Route::post('training-status', [TrainingController::class, 'TrainingStatus']);
+        Route::post('training-status/{id}', [TrainingController::class, 'TrainingStatus']);
 
         /////// Training Media
         Route::post('add-training-media', [TrainingMediaController::class, 'addTrainingMedia']);
