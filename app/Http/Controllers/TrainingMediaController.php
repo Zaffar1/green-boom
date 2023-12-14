@@ -37,7 +37,7 @@ class TrainingMediaController extends Controller
                 $validate['file_type'] = 'pdf';
             }
             TrainingMedia::create($validate);
-            return response()->json(["message" => "Training file successfully added"]);
+            return response()->json(["message" => "Training file successfully added"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
@@ -78,9 +78,9 @@ class TrainingMediaController extends Controller
     public function updateMedia(Request $request)
     {
         $request->validate([
-            'id' => 'required',
-            'training_id' => 'required',
-            'file' => 'required|mimes:pdf,mp4,mov,avi',
+            // 'id' => 'required',
+            // 'training_id' => 'required',
+            // 'file' => 'required|mimes:pdf,mp4,mov,avi',
         ]);
         try {
             $media = TrainingMedia::find($request->id);
@@ -88,14 +88,48 @@ class TrainingMediaController extends Controller
                 return response()->json(["error" => "Training data not found"], 404);
             }
             $media->training_id = $request->training_id;
+            $media->title = $request->title;
             if ($request->hasFile('file')) {
                 // Delete the old file from storage
                 Storage::delete($media->file);
+
+                $file = $request->file('file');
+                // $validate['file'] = $request->file('file')->store('public/trainingMedia');
+                $new_name = time() . '.' . $request->file->extension();
+                $request->file->move(public_path('storage/trainingMedia'), $new_name);
+                $media->file = "storage/trainingMedia/$new_name";
+                $file_type = $file->getClientOriginalExtension();
+                $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
+                if (in_array(strtolower($file_type), $video_extension)) {
+                    $media->file_type = 'video';
+                }
+                $pdf_extension = ['pdf'];
+                if (in_array(strtolower($file_type), $pdf_extension)) {
+                    $media->file_type = 'pdf';
+                }
                 // Store the new file
-                $media->file = $request->file('file')->store('public/trainingMedia');
+                // $media->file = $request->file('file')->store('public/trainingMedia');
             }
             $media->save();
-            return response()->json(["message" => "Training media successfully updated"]);
+            return response()->json(["message" => "Training media successfully updated"], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function TrainingMediaStatus($id)
+    {
+        try {
+            $training_media = TrainingMedia::find($id);
+            if (!$training_media)
+                return response()->json(["message" => "Invalid training media"]);
+            if ($training_media->status == "Active") {
+                $training_media->status = "InActive";
+            } else {
+                $training_media->status = "Active";
+            }
+            $training_media->save();
+            return response()->json(["message" => "Training status changed"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

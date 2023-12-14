@@ -90,6 +90,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('training-media/{id}', [TrainingMediaController::class, 'trainingMedia']);
         Route::post('update-training-media', [TrainingMediaController::class, 'updateMedia']);
         Route::delete('delete-training-media/{id}', [TrainingMediaController::class, 'deleteTrainingMedia']);
+        Route::post('training-media-status/{id}', [TrainingMediaController::class, 'TrainingMediaStatus']);
 
         /////////// Videos
         Route::get('all-videos', [VideoController::class, 'allVideos']);
