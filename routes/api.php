@@ -105,6 +105,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('update-sheet', [MsdSheetController::class, 'updateMsdSheet']);
         Route::delete('delete-sheet/{id}', [MsdSheetController::class, 'deleteMsdSheet']);
         Route::get('msdsSheet-detail', [MsdSheetController::class, 'msdSheetDetail']);
+        Route::post('msd-sheet-status/{id}', [MsdSheetController::class, 'msdStatus']);
 
         /////////// Products
         Route::get('all-products', [ProductController::class, 'allProducts']);

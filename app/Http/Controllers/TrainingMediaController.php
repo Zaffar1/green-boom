@@ -68,7 +68,11 @@ class TrainingMediaController extends Controller
                 return response()->json(["message" => "Invalid Media"]);
             else
                 $media->delete();
-            Storage::delete($media->file);
+            // Use unlink for direct file deletion
+            if (file_exists($media->file)) {
+                unlink($media->file);
+            }
+            // Storage::delete($media->file);
             return response()->json(["message" => "Training media successfully deleted"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
@@ -91,7 +95,12 @@ class TrainingMediaController extends Controller
             $media->title = $request->title;
             if ($request->hasFile('file')) {
                 // Delete the old file from storage
-                Storage::delete($media->file);
+                // Storage::delete($media->file);
+
+                // Use unlink for direct file deletion
+                if (file_exists($media->file)) {
+                    unlink($media->file);
+                }
 
                 $file = $request->file('file');
                 // $validate['file'] = $request->file('file')->store('public/trainingMedia');

@@ -63,23 +63,30 @@ class MsdSheetController extends Controller
 
     public function updateMsdSheet(Request $request)
     {
-        $request->validate([
-            'id' => 'required',
-            'title' => 'required',
-            'file' => 'required|mimes:pdf'
-        ]);
         try {
             $msd = MsdSheet::find($request->id);
+
             if (!$msd) {
                 return response()->json(["error" => "Msd Sheet not found"], 404);
             }
+
             $msd->title = $request->title;
+            $msd->description = $request->description;
+
             if ($request->hasFile('file')) {
-                Storage::delete($msd->file);
-                $msd->file = $request->file('file')->store('public/msdSheets');
+                $new_name = time() . '.' . $request->file->extension();
+                $request->file->move(public_path('storage/msdSheets'), $new_name);
+
+                // Use unlink for direct file deletion
+                if (file_exists($msd->file)) {
+                    unlink($msd->file);
+                }
+
+                $msd->file = "storage/msdSheets/$new_name";
             }
+
             $msd->save();
-            return response()->json(['message' => 'Msd sheet successfully updated']);
+            return response()->json(['message' => 'Msd sheet successfully updated'], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
@@ -93,9 +100,31 @@ class MsdSheetController extends Controller
                 return response()->json(["error" => "MsdSheet not found"], 404);
             }
             $filePath = $msd->file;
+            // Use unlink for direct file deletion
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
             $msd->delete();
-            Storage::delete($filePath);
             return response()->json(["message" => "MsdSheet successfully deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
+    public function msdStatus($id)
+    {
+        try {
+            $msd_sheet = MsdSheet::find($id);
+            if (!$msd_sheet)
+                return response()->json(["message" => "Invalid msdSheet media"]);
+            if ($msd_sheet->status == "Active") {
+                $msd_sheet->status = "InActive";
+            } else {
+                $msd_sheet->status = "Active";
+            }
+            $msd_sheet->save();
+            return response()->json(["message" => "MsdSheet status changed"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

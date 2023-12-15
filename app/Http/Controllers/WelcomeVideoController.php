@@ -76,8 +76,12 @@ class WelcomeVideoController extends Controller
             // If a new file is provided, update the file
             if ($request->hasFile('file')) {
                 // Delete the old file from storage
-                Storage::delete($video->file);
+                // Storage::delete($video->file);
 
+                // Use unlink for direct file deletion
+                if (file_exists($video->file)) {
+                    unlink($video->file);
+                }
                 // Store the new file
                 // $video->file = $request->file('file')->store('public/videos');
                 $new_name = time() . '.' . $request->file->extension();
@@ -104,8 +108,12 @@ class WelcomeVideoController extends Controller
             }
             $filePath = $video->file;
             $video->delete();
-            Storage::delete($filePath);
-            return response()->json(["message" => "Welcome video successfully deleted"]);
+            // Use unlink for direct file deletion
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+            // Storage::delete($filePath);
+            return response()->json(["message" => "Welcome video successfully deleted"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
