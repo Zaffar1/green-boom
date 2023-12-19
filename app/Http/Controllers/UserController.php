@@ -245,4 +245,19 @@ class UserController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    public function reset(Request $request)
+    {
+        // Validate the email address
+        $request->validate(['email' => 'required|email']);
+
+        $auth = Firebase::auth();
+
+        try {
+            $auth->sendPasswordResetLink($request->input('email'));
+            return response()->json(['message' => 'Password reset email sent!']);
+        } catch (\Kreait\Firebase\Exception\Auth\EmailNotFound $e) {
+            return back()->withErrors(['email' => 'Email not found']);
+        }
+    }
 }

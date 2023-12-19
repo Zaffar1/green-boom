@@ -53,7 +53,11 @@ class VideoController extends Controller
         ]);
         try {
             $validate['status'] = 'Active';
-            $validate['file'] = $request->file('file')->store('public/videos');
+            // $validate['file'] = $request->file('file')->store('public/videos');
+            $new_name = time() . '.' . $request->file->extension();
+            $request->file->move(public_path('storage/videos'), $new_name);
+            $path = "storage/videos/$new_name";
+            $validate['file'] = $path;
             Video::create($validate);
             return response()->json(["message" => "Video successfully added"]);
         } catch (\Throwable $th) {
@@ -63,12 +67,12 @@ class VideoController extends Controller
 
     public function updateVideo(Request $request)
     {
-        $validate = $request->validate([
-            "id" => "required",
-            "title" => "required",
-            "description" => "required",
-            "file" => "required|mimes:mp4,mov,avi|max:204800"
-        ]);
+        // $validate = $request->validate([
+        //     "id" => "required",
+        //     "title" => "required",
+        //     "description" => "required",
+        //     "file" => "required|mimes:mp4,mov,avi|max:204800"
+        // ]);
 
         try {
             $video = Video::find($request->id);
@@ -77,8 +81,16 @@ class VideoController extends Controller
             $video->title = $request->title;
             $video->description = $request->description;
             if ($request->hasFile('file')) {
-                Storage::delete($video->file);
-                $video->file = $request->file('file')->store('public/videos');
+                // Storage::delete($video->file);
+                // Use unlink for direct file deletion
+                if (file_exists($video->file)) {
+                    unlink($video->file);
+                }
+                // $video->file = $request->file('file')->store('public/videos');
+                $new_name = time() . '.' . $request->file->extension();
+                $request->file->move(public_path('storage/videos'), $new_name);
+                $path = "storage/videos/$new_name";
+                $video->file = $path;
             }
             $video->save();
             return response()->json(["message" => "Video successfully updated"]);
@@ -96,7 +108,11 @@ class VideoController extends Controller
             }
             $filePath = $video->file;
             $video->delete();
-            Storage::delete($filePath);
+            // Storage::delete($filePath);
+            // Use unlink for direct file deletion
+            if (file_exists($filePath)) {
+                unlink($video->file);
+            }
             return response()->json(["message" => "Video successfully deleted"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
@@ -141,8 +157,26 @@ class VideoController extends Controller
         // Return the videos with video URLs as a JSON response
         return response()->json(['all_videos' => $videosArray]);
     }
-}
 
+
+    public function videoStatus($id)
+    {
+        try {
+            $video = Video::find($id);
+            if (!$video)
+                return response()->json(["message" => "Invalid video"]);
+            if ($video->status == "Active") {
+                $video->status = "InActive";
+            } else {
+                $video->status = "Active";
+            }
+            $video->save();
+            return response()->json(["message" => "Video status changed"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+}
 
 
 // $client = new Google_Client();

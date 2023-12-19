@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainingMediaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VideoCategoryController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\WelcomeVideoController;
 use Illuminate\Http\Request;
@@ -30,6 +31,8 @@ Route::post('register', [UserController::class, 'registerUser']);
 Route::post('register-old', [UserController::class, 'createUser']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('login-user', [UserController::class, 'loginUser']);
+
+Route::post('forgot-password', [UserController::class, 'reset']);
 
 Route::group(['middleware' => ['auth:api']], function () {
 
@@ -92,12 +95,20 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-training-media/{id}', [TrainingMediaController::class, 'deleteTrainingMedia']);
         Route::post('training-media-status/{id}', [TrainingMediaController::class, 'TrainingMediaStatus']);
 
+        /////////// Video Categories
+
+        Route::get('video-categories', [VideoCategoryController::class, 'allVideoCategories']);
+        Route::post('add-category', [VideoCategoryController::class, 'addVideoCat']);
+        Route::post('update-category', [VideoCategoryController::class, 'updateVideoCat']);
+        Route::delete('delete-category/{id}', [VideoCategoryController::class, 'deleteVideoCategory']);
+
         /////////// Videos
         Route::get('all-videos', [VideoController::class, 'allVideos']);
         Route::post('add-video', [VideoController::class, 'addVideo']);
         Route::post('update-video', [VideoController::class, 'updateVideo']);
         Route::delete('delete-video/{id}', [VideoController::class, 'deleteVideo']);
         Route::get('video-detail', [VideoController::class, 'videoDetail']);
+        Route::post('video-status/{id}', [VideoController::class, 'videoStatus']);
 
         /////////// MSDS SHEETS
         Route::get('all-sheets', [MsdSheetController::class, 'allMsdsSheets']);
