@@ -38,21 +38,24 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::group(['prefix' => 'customer'], function () {
 
+        //////// Home api
+        Route::post('send-type', [TrainingController::class, 'hitRoute']);
+
         ///////////// User basic api's
         Route::get('verify', [UserController::class, 'verify']);
         Route::post('update-user', [UserController::class, 'updateUser']);
 
         ////////// Training
-        Route::get('training-list', [TrainingController::class, 'trainingList']);
+        Route::get('training-list', [TrainingController::class, 'customerTrainingList']);
         Route::get('training-media', [TrainingMediaController::class, 'trainingMedia']);
         Route::get('training-detail', [TrainingController::class, 'trainingDetail']);
 
         //////////// Videos
-        Route::get('all-videos', [VideoController::class, 'allVideos']);
+        Route::get('all-videos', [VideoController::class, 'customerAllVideos']);
         Route::get('video-detail', [VideoController::class, 'videoDetail']);
 
         ///////////// MSDS Sheets
-        Route::get('msdsSheet-list', [MsdSheetController::class, 'allMsdsSheets']);
+        Route::get('msdsSheet-list', [MsdSheetController::class, 'customerAllMsdsSheets']);
         Route::get('msdsSheet-detail', [MsdSheetController::class, 'msdSheetDetail']);
 
         //////////// Product
@@ -101,6 +104,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('add-category', [VideoCategoryController::class, 'addVideoCat']);
         Route::post('update-category', [VideoCategoryController::class, 'updateVideoCat']);
         Route::delete('delete-category/{id}', [VideoCategoryController::class, 'deleteVideoCategory']);
+        Route::post('video-cat-status/{id}', [VideoCategoryController::class, 'videoCatStatus']);
+        Route::get('video-cat-videos/{id}', [VideoCategoryController::class, 'videoCatVideos']);
 
         /////////// Videos
         Route::get('all-videos', [VideoController::class, 'allVideos']);

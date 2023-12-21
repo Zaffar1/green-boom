@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Video;
 use App\Models\VideoCategory;
 use Illuminate\Http\Request;
 
@@ -84,6 +85,41 @@ class VideoCategoryController extends Controller
             }
             // Storage::delete($video_cat->image);
             return response()->json(["message" => "Video category successfully deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function videoCatStatus($id)
+    {
+        try {
+            $video = VideoCategory::find($id);
+            if (!$video)
+                return response()->json(["message" => "Invalid video category"]);
+            if ($video->status == "Active") {
+                $video->status = "InActive";
+            } else {
+                $video->status = "Active";
+            }
+            $video->save();
+            return response()->json(["message" => "Video category status changed"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function videoCatVideos(Request $request, $id)
+    {
+        // $request->validate([
+        //     'video_cat_id' => 'required',
+        // ]);
+        try {
+            $video = VideoCategory::find($id);
+            if (!$video)
+                return response()->json(["message" => "Invalid video category"]);
+            else
+                $videos = Video::whereVideoCatId($id)->orderBy('id', 'DESC')->get();
+            return response()->json(["videos" => $videos]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

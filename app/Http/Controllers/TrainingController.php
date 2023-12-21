@@ -2,11 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MsdSheet;
 use App\Models\Training;
+use App\Models\Video;
 use Illuminate\Http\Request;
 
 class TrainingController extends Controller
 {
+
+    public function hitRoute(Request $request)
+    {
+        $request->validate([
+            'type' => 'required'
+        ]);
+
+        try {
+            $data = [];
+            $lowercaseType = strtolower($request->type);
+
+            switch ($lowercaseType) {
+                case 'training':
+                    $data = Training::whereStatus('Active')->orderBy('id', 'DESC')->get();
+                    break;
+                case 'msdssheet':
+                    $data = MsdSheet::whereStatus('Active')->orderBy('id', 'DESC')->get();
+                    break;
+                case 'videos':
+                    $data = Video::whereStatus('Active')->orderBy('id', 'DESC')->get();
+                    break;
+                default:
+                    return response()->json(["message" => "Invalid 'type' provided"], 400);
+            }
+
+            return response()->json(["data" => $data]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
     /**
      * The function retrieves all training records from the database and returns them as a JSON
      * response.

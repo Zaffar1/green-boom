@@ -15,4 +15,10 @@ class Video extends Model
         'status',
         'video_cat_id'
     ];
+
+
+    public function videos()
+    {
+        return $this->belongsTo(VideoCategory::class);
+    }
 }
