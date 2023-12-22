@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\MsdSheet;
+use App\Models\Product;
 use App\Models\Training;
+use App\Models\TrainingMedia;
 use App\Models\Video;
 use Illuminate\Http\Request;
 
@@ -22,19 +24,29 @@ class TrainingController extends Controller
 
             switch ($lowercaseType) {
                 case 'training':
-                    $data = Training::whereStatus('Active')->orderBy('id', 'DESC')->get();
-                    break;
-                case 'msdssheet':
+                    // Special handling for 'training' case
+                    $categories = Training::whereStatus('Active')->orderBy('id', 'DESC')->get();
+                    $category = Training::whereStatus('Active')->latest()->first();
+                    $sub_cat = TrainingMedia::whereTrainingId($category->id)->whereStatus('Active')->get();
+                    return response()->json(["cat" => $categories, "subCat" => $sub_cat]);
+
+                case 'msdssheets':
                     $data = MsdSheet::whereStatus('Active')->orderBy('id', 'DESC')->get();
                     break;
+
                 case 'videos':
                     $data = Video::whereStatus('Active')->orderBy('id', 'DESC')->get();
                     break;
+
+                case 'products':
+                    $data = Product::whereStatus('Active')->orderBy('id', 'DESC')->get();
+                    break;
+
                 default:
                     return response()->json(["message" => "Invalid 'type' provided"], 400);
             }
 
-            return response()->json(["data" => $data]);
+            return response()->json(["subCat" => $data]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

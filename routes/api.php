@@ -4,6 +4,7 @@ use App\Http\Controllers\BenDuffyQuestionController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SalesTipController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainingMediaController;
 use App\Http\Controllers\UserController;
@@ -63,7 +64,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('product-detail', [ProductController::class, 'productDetail']);
 
         /////// Faqs
-        Route::get('faqs-list', [FaqController::class, 'allFaqs']);
+        Route::get('faqs-list', [FaqController::class, 'customerAllFaqs']);
+
+        ////// BenDuffy Questions
+        Route::get('all-benDuffy', [BenDuffyQuestionController::class, 'customerAllBenDuffy']);
     });
 
     Route::group(['prefix' => 'admin'], function () {
@@ -122,6 +126,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-sheet/{id}', [MsdSheetController::class, 'deleteMsdSheet']);
         Route::get('msdsSheet-detail', [MsdSheetController::class, 'msdSheetDetail']);
         Route::post('msd-sheet-status/{id}', [MsdSheetController::class, 'msdStatus']);
+
+        ////////// SalesTips
+        Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);
+        Route::post('add-sales-tip', [SalesTipController::class, 'addSalesTip']);
+        Route::post('update-sales-tip', [SalesTipController::class, 'updateSalesTip']);
+        Route::delete('delete-sales-tip/{id}', [SalesTipController::class, 'deleteSalesTip']);
+        Route::post('sales-tip-status/{id}', [SalesTipController::class, 'salesTipStatus']);
+
 
         /////////// Products
         Route::get('all-products', [ProductController::class, 'allProducts']);

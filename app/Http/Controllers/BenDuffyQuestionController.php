@@ -17,6 +17,15 @@ class BenDuffyQuestionController extends Controller
         }
     }
 
+    public function customerAllBenDuffy()
+    {
+        try {
+            $all_ben = BenDuffyQuestion::whereStatus('Active')->orderBy('id', 'DESC')->get();
+            return response()->json(['all_ben_duffy' => $all_ben]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 
     public function addBenDuffy(Request $request)
     {
