@@ -46,7 +46,7 @@ class MsdSheetController extends Controller
         $validate = $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'file' => 'required|mimes:pdf',
+            'file' => 'required|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx',
         ]);
         try {
             $validate['status'] = 'Active';
