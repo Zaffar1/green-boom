@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class TrainingMediaController extends Controller
 {
+
     public function addTrainingMedia(Request $request)
     {
         $validate = $request->validate([
@@ -16,32 +17,84 @@ class TrainingMediaController extends Controller
             'title' => 'required',
             'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
         ]);
+
         try {
             $training = Training::find($request->training_id);
-            if (!$training)
+
+            if (!$training) {
                 return response()->json(['message' => 'Invalid Training']);
-            else
+            } else {
                 $validate['status'] = 'Active';
+            }
+
             $file = $request->file('file');
-            // $validate['file'] = $request->file('file')->store('public/trainingMedia');
-            $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/trainingMedia'), $new_name);
+            $new_name = time() . '.' . $file->extension();
+            $file->move(public_path('storage/trainingMedia'), $new_name);
             $validate['file'] = "storage/trainingMedia/$new_name";
+
             $file_type = $file->getClientOriginalExtension();
+
             $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
+            $pdf_extension = ['pdf'];
+            $word_extension = ['doc', 'docx'];
+            $ppt_extension = ['ppt', 'pptx'];
+            $excel_extension = ['xls', 'xlsx'];
+
             if (in_array(strtolower($file_type), $video_extension)) {
                 $validate['file_type'] = 'video';
-            }
-            $pdf_extension = ['pdf'];
-            if (in_array(strtolower($file_type), $pdf_extension)) {
+            } elseif (in_array(strtolower($file_type), $pdf_extension)) {
                 $validate['file_type'] = 'pdf';
+            } elseif (in_array(strtolower($file_type), $word_extension)) {
+                $validate['file_type'] = 'word';
+            } elseif (in_array(strtolower($file_type), $ppt_extension)) {
+                $validate['file_type'] = 'ppt';
+            } elseif (in_array(strtolower($file_type), $excel_extension)) {
+                $validate['file_type'] = 'excel';
+            } else {
+                $validate['file_type'] = 'other';
             }
+
             TrainingMedia::create($validate);
             return response()->json(["message" => "Training file successfully added"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+
+    // public function addTrainingMedia(Request $request)
+    // {
+    //     $validate = $request->validate([
+    //         'training_id' => 'required',
+    //         'title' => 'required',
+    //         'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
+    //     ]);
+    //     try {
+    //         $training = Training::find($request->training_id);
+    //         if (!$training)
+    //             return response()->json(['message' => 'Invalid Training']);
+    //         else
+    //             $validate['status'] = 'Active';
+    //         $file = $request->file('file');
+    //         // $validate['file'] = $request->file('file')->store('public/trainingMedia');
+    //         $new_name = time() . '.' . $request->file->extension();
+    //         $request->file->move(public_path('storage/trainingMedia'), $new_name);
+    //         $validate['file'] = "storage/trainingMedia/$new_name";
+    //         $file_type = $file->getClientOriginalExtension();
+    //         $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
+    //         if (in_array(strtolower($file_type), $video_extension)) {
+    //             $validate['file_type'] = 'video';
+    //         }
+    //         $pdf_extension = ['pdf'];
+    //         if (in_array(strtolower($file_type), $pdf_extension)) {
+    //             $validate['file_type'] = 'pdf';
+    //         }
+    //         TrainingMedia::create($validate);
+    //         return response()->json(["message" => "Training file successfully added"], 200);
+    //     } catch (\Throwable $th) {
+    //         return response()->json(["error" => $th->getMessage()], 400);
+    //     }
+    // }
 
     public function trainingMedia(Request $request, $id)
     {
