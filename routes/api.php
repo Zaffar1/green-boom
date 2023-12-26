@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BenDuffyQuestionController;
+use App\Http\Controllers\CatalogBroucherController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
 use App\Http\Controllers\ProductController;
@@ -48,7 +49,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         ////////// Training
         Route::get('training-list', [TrainingController::class, 'customerTrainingList']);
-        Route::get('training-media', [TrainingMediaController::class, 'trainingMedia']);
+        Route::get('training-media/{id}', [TrainingMediaController::class, 'trainingMedia']);
         Route::get('training-detail', [TrainingController::class, 'trainingDetail']);
 
         //////////// Videos
@@ -58,6 +59,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         ///////////// MSDS Sheets
         Route::get('msdsSheet-list', [MsdSheetController::class, 'customerAllMsdsSheets']);
         Route::get('msdsSheet-detail', [MsdSheetController::class, 'msdSheetDetail']);
+
+        /////////// Catalog and Brouchers
+        Route::get('catalogBrouchers-list', [CatalogBroucherController::class, 'customerAllCatalogs']);
 
         //////////// Product
         Route::get('product-list', [ProductController::class, 'allProducts']);
@@ -134,6 +138,14 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-sales-tip/{id}', [SalesTipController::class, 'deleteSalesTip']);
         Route::post('sales-tip-status/{id}', [SalesTipController::class, 'salesTipStatus']);
 
+
+        /////////// Catalog & Brouchers
+        Route::get('all-brouchers', [CatalogBroucherController::class, 'allCatalogs']);
+        Route::post('add-catalog', [CatalogBroucherController::class, 'addCatalogBroucher']);
+        Route::post('update-catalog', [CatalogBroucherController::class, 'updateCatalogBroucher']);
+        Route::delete('delete-catalog/{id}', [CatalogBroucherController::class, 'deletecatalogBroucher']);
+        Route::get('catalog-detail', [CatalogBroucherController::class, 'CatalogDetail']);
+        Route::post('catalog-status/{id}', [CatalogBroucherController::class, 'catalogStatus']);
 
         /////////// Products
         Route::get('all-products', [ProductController::class, 'allProducts']);

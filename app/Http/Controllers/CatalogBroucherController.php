@@ -2,46 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MsdSheet;
+use App\Models\CatalogBroucher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
-class MsdSheetController extends Controller
+class CatalogBroucherController extends Controller
 {
-    public function allMsdsSheets()
+
+    public function allCatalogs()
     {
         try {
-            $all_msd = MsdSheet::orderBy('id', 'DESC')->get();
-            return response()->json(['all_msds' => $all_msd]);
+            $all_catalogs = CatalogBroucher::orderBy('id', 'DESC')->get();
+            return response()->json(['all_catalogs' => $all_catalogs]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
-    public function customerAllMsdsSheets()
+    public function customerAllCatalogs()
     {
         try {
-            $all_msd = MsdSheet::whereStatus('Active')->orderBy('id', 'DESC')->get();
-            return response()->json(['all_msds' => $all_msd]);
+            $all_catalogs = CatalogBroucher::whereStatus('Active')->orderBy('id', 'DESC')->get();
+            return response()->json(['all_catalogs' => $all_catalogs]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
-    public function msdSheetDetail(Request $request)
+    public function CatalogDetail(Request $request)
     {
         $request->validate([
             'id' => 'required',
         ]);
         try {
-            $msdSheet = MsdSheet::find($request->id);
-            return response()->json(['sheet_detail' => $msdSheet]);
+            $catalog = CatalogBroucher::find($request->id);
+            return response()->json(['catalog_detail' => $catalog]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
-    public function addMsdSheet(Request $request)
+    public function addCatalogBroucher(Request $request)
     {
         $validate = $request->validate([
             'title' => 'required',
@@ -52,8 +52,8 @@ class MsdSheetController extends Controller
         try {
             $validate['status'] = 'Active';
             $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/msdSheets'), $new_name);
-            $validate['file'] = "storage/msdSheets/$new_name";
+            $request->file->move(public_path('storage/catalogBrouchers'), $new_name);
+            $validate['file'] = "storage/catalogBrouchers/$new_name";
 
             $file_type = strtolower($request->file->getClientOriginalExtension());
             $pdf_extension = ['pdf'];
@@ -73,36 +73,36 @@ class MsdSheetController extends Controller
                 $validate['file_type'] = 'other';
             }
 
-            MsdSheet::create($validate);
-            return response()->json(["message" => "MsdSheet successfully added"]);
+            CatalogBroucher::create($validate);
+            return response()->json(["message" => "CatalogBroucher successfully added"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
 
-    public function updateMsdSheet(Request $request)
+    public function updateCatalogBroucher(Request $request)
     {
         try {
-            $msd = MsdSheet::find($request->id);
+            $catalog = CatalogBroucher::find($request->id);
 
-            if (!$msd) {
-                return response()->json(["error" => "Msd Sheet not found"], 404);
+            if (!$catalog) {
+                return response()->json(["error" => "catalogBrouchers not found"], 404);
             }
 
-            $msd->title = $request->title;
-            $msd->description = $request->description;
+            $catalog->title = $request->title;
+            $catalog->description = $request->description;
 
             if ($request->hasFile('file')) {
                 $new_name = time() . '.' . $request->file->extension();
-                $request->file->move(public_path('storage/msdSheets'), $new_name);
+                $request->file->move(public_path('storage/catalogBrouchers'), $new_name);
 
                 // Use unlink for direct file deletion
-                if (file_exists($msd->file)) {
-                    unlink($msd->file);
+                if (file_exists($catalog->file)) {
+                    unlink($catalog->file);
                 }
 
-                $msd->file = "storage/msdSheets/$new_name";
+                $catalog->file = "storage/catalogBrouchers/$new_name";
 
                 $file_type = strtolower($request->file->getClientOriginalExtension());
                 $pdf_extension = ['pdf'];
@@ -111,58 +111,58 @@ class MsdSheetController extends Controller
                 $excel_extension = ['xls', 'xlsx'];
 
                 if (in_array($file_type, $pdf_extension)) {
-                    $msd->file_type = 'pdf';
+                    $catalog->file_type = 'pdf';
                 } elseif (in_array($file_type, $word_extension)) {
-                    $msd->file_type = 'word';
+                    $catalog->file_type = 'word';
                 } elseif (in_array($file_type, $ppt_extension)) {
-                    $msd->file_type = 'ppt';
+                    $catalog->file_type = 'ppt';
                 } elseif (in_array($file_type, $excel_extension)) {
-                    $msd->file_type = 'excel';
+                    $catalog->file_type = 'excel';
                 } else {
-                    $msd->file_type = 'other';
+                    $catalog->file_type = 'other';
                 }
             }
 
-            $msd->save();
-            return response()->json(['message' => 'Msd sheet successfully updated'], 200);
+            $catalog->save();
+            return response()->json(['message' => 'catalogBroucher successfully updated'], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
-    public function deleteMsdSheet($id)
+    public function deletecatalogBroucher($id)
     {
         try {
-            $msd = MsdSheet::find($id);
-            if (!$msd) {
-                return response()->json(["error" => "MsdSheet not found"], 404);
+            $catalog = CatalogBroucher::find($id);
+            if (!$catalog) {
+                return response()->json(["error" => "CatalogBroucher not found"], 404);
             }
-            $filePath = $msd->file;
+            $filePath = $catalog->file;
             // Use unlink for direct file deletion
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
-            $msd->delete();
-            return response()->json(["message" => "MsdSheet successfully deleted"]);
+            $catalog->delete();
+            return response()->json(["message" => "CatalogBroucher successfully deleted"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
 
-    public function msdStatus($id)
+    public function catalogStatus($id)
     {
         try {
-            $msd_sheet = MsdSheet::find($id);
-            if (!$msd_sheet)
-                return response()->json(["message" => "Invalid msdSheet"]);
-            if ($msd_sheet->status == "Active") {
-                $msd_sheet->status = "InActive";
+            $catalog = CatalogBroucher::find($id);
+            if (!$catalog)
+                return response()->json(["message" => "Invalid catalogBroucher"]);
+            if ($catalog->status == "Active") {
+                $catalog->status = "InActive";
             } else {
-                $msd_sheet->status = "Active";
+                $catalog->status = "Active";
             }
-            $msd_sheet->save();
-            return response()->json(["message" => "MsdSheet status changed"], 200);
+            $catalog->save();
+            return response()->json(["message" => "catalogBroucher status changed"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
