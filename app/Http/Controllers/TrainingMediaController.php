@@ -107,7 +107,7 @@ class TrainingMediaController extends Controller
                 return response()->json(["message" => "Invalid training"]);
             else
                 $trainingMedia = TrainingMedia::whereTrainingId($id)->orderBy('id', 'DESC')->whereStatus('Active')->get();
-            return response()->json(["training_media" => $trainingMedia]);
+            return response()->json(["data" => $trainingMedia]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
