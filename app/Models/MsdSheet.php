@@ -12,6 +12,7 @@ class MsdSheet extends Model
         'title',
         'description',
         'file',
+        'file_type',
         'status'
     ];
 }

@@ -48,18 +48,38 @@ class MsdSheetController extends Controller
             'description' => 'required',
             'file' => 'required|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx',
         ]);
+
         try {
             $validate['status'] = 'Active';
-            // $validate['file'] = $request->file('file')->store('public/msdSheets');
             $new_name = time() . '.' . $request->file->extension();
             $request->file->move(public_path('storage/msdSheets'), $new_name);
             $validate['file'] = "storage/msdSheets/$new_name";
+
+            $file_type = strtolower($request->file->getClientOriginalExtension());
+            $pdf_extension = ['pdf'];
+            $word_extension = ['doc', 'docx'];
+            $ppt_extension = ['ppt', 'pptx'];
+            $excel_extension = ['xls', 'xlsx'];
+
+            if (in_array($file_type, $pdf_extension)) {
+                $validate['file_type'] = 'pdf';
+            } elseif (in_array($file_type, $word_extension)) {
+                $validate['file_type'] = 'word';
+            } elseif (in_array($file_type, $ppt_extension)) {
+                $validate['file_type'] = 'ppt';
+            } elseif (in_array($file_type, $excel_extension)) {
+                $validate['file_type'] = 'excel';
+            } else {
+                $validate['file_type'] = 'other';
+            }
+
             MsdSheet::create($validate);
             return response()->json(["message" => "MsdSheet successfully added"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
 
     public function updateMsdSheet(Request $request)
     {
@@ -83,6 +103,24 @@ class MsdSheetController extends Controller
                 }
 
                 $msd->file = "storage/msdSheets/$new_name";
+
+                $file_type = strtolower($request->file->getClientOriginalExtension());
+                $pdf_extension = ['pdf'];
+                $word_extension = ['doc', 'docx'];
+                $ppt_extension = ['ppt', 'pptx'];
+                $excel_extension = ['xls', 'xlsx'];
+
+                if (in_array($file_type, $pdf_extension)) {
+                    $msd->file_type = 'pdf';
+                } elseif (in_array($file_type, $word_extension)) {
+                    $msd->file_type = 'word';
+                } elseif (in_array($file_type, $ppt_extension)) {
+                    $msd->file_type = 'ppt';
+                } elseif (in_array($file_type, $excel_extension)) {
+                    $msd->file_type = 'excel';
+                } else {
+                    $msd->file_type = 'other';
+                }
             }
 
             $msd->save();
