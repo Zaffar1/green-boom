@@ -25,6 +25,7 @@ class User extends Authenticatable
         'last_name',
         'profile_image',
         'type',
+        'company_name',
         'api_token',
         'status',
     ];
