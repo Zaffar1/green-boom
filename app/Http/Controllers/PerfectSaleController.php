@@ -84,4 +84,22 @@ class PerfectSaleController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+
+    public function perfectSaleMedia(Request $request, $id)
+    {
+        // $request->validate([
+        //     'perfect_sale_id' => 'required',
+        // ]);
+        try {
+            $perfect_sale = PerfectSale::find($id);
+            if (!$perfect_sale)
+                return response()->json(["message" => "Invalid perfect sale"]);
+            else
+                $perfectSaleMedia = PerfectSale::wherePerfectSaleId($id)->orderBy('id', 'DESC')->whereStatus('Active')->with('perfectSales')->get();
+            return response()->json(["data" => $perfectSaleMedia]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }
