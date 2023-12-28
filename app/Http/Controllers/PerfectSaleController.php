@@ -30,4 +30,58 @@ class PerfectSaleController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+
+    public function updatePerfectSale(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => 'required',
+            'title' => 'required',
+        ]);
+        try {
+            $perfect_sale = PerfectSale::find($request->id);
+            if (!$perfect_sale)
+                return response()->json(["message" => "Invalid perfect sale"]);
+            $perfect_sale->update($validate);
+            return response()->json(["message" => "Perfect Sale successfully updated"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
+    public function deletePerfectSale($id)
+    {
+        try {
+            $perfect_sale = PerfectSale::find($id);
+            if (!$perfect_sale)
+                return response()->json(["message" => "Invalid perfect sale"]);
+            $perfect_sale->delete();
+            return response()->json(["message" => "Perfect Sale deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
+    public function PerfectSaleStatus($id)
+    {
+        // $request->validate([
+        //     "id" => "required",
+        // ]);
+        try {
+            $perfect_sale = PerfectSale::find($id);
+            if (!$perfect_sale)
+                return response()->json(["message" => "Invalid perfect sale"]);
+            if ($perfect_sale->status == "Active") {
+                $perfect_sale->status = "InActive";
+            } else {
+                $perfect_sale->status = "Active";
+            }
+            $perfect_sale->save();
+            return response()->json(["message" => "Perfect Sale status changed"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }

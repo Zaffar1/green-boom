@@ -135,6 +135,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         ////////// Perfect Sales Pitch
         Route::get('all-perfect-sale', [PerfectSaleController::class, 'allPerfectSales']);
         Route::post('add-perfect-sale', [PerfectSaleController::class, 'addPerfectSale']);
+        Route::post('update-perfect-sale', [PerfectSaleController::class, 'updatePerfectSale']);
+        Route::delete('delete-perfectSale/{id}', [PerfectSaleController::class, 'deletePerfectSale']);
+        Route::post('perfectSale-status/{id}', [PerfectSaleController::class, 'PerfectSaleStatus']);
 
         ////////// SalesTips
         Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);
