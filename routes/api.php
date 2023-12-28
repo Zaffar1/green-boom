@@ -4,6 +4,7 @@ use App\Http\Controllers\BenDuffyQuestionController;
 use App\Http\Controllers\CatalogBroucherController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
+use App\Http\Controllers\PerfectSaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SalesTipController;
 use App\Http\Controllers\TrainingController;
@@ -130,6 +131,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-sheet/{id}', [MsdSheetController::class, 'deleteMsdSheet']);
         Route::get('msdsSheet-detail', [MsdSheetController::class, 'msdSheetDetail']);
         Route::post('msd-sheet-status/{id}', [MsdSheetController::class, 'msdStatus']);
+
+        ////////// Perfect Sales Pitch
+        Route::get('all-perfect-sale', [PerfectSaleController::class, 'allPerfectSales']);
+        Route::post('add-perfect-sale', [PerfectSaleController::class, 'addPerfectSale']);
 
         ////////// SalesTips
         Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);
