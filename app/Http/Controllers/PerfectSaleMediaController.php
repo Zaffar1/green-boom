@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PerfectSale;
 use App\Models\PerfectSaleMedia;
+use App\Models\ScriptData;
 use Illuminate\Http\Request;
 
 class PerfectSaleMediaController extends Controller
@@ -148,6 +149,25 @@ class PerfectSaleMediaController extends Controller
             }
             $perfect_sale->save();
             return response()->json(["message" => "Perfect sale media status changed"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
+    /////////////Script Work
+    public function scriptMedia(Request $request, $id)
+    {
+        // $request->validate([
+        //     'perfect_sale_media_id' => 'required',
+        // ]);
+        try {
+            $perfect_sale = PerfectSaleMedia::find($id);
+            if (!$perfect_sale)
+                return response()->json(["message" => "Invalid perfect sale media"]);
+            else
+                $scriptData = ScriptData::orderBy('id', 'DESC')->get();
+            return response()->json(["data" => $scriptData]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
