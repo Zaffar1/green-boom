@@ -100,19 +100,18 @@ class PerfectSaleController extends Controller
     public function perfectSaleMedia(Request $request, $id)
     {
         try {
-            $perfectSale = PerfectSale::find($id);
+            $perfectSale = PerfectSale::with('perfectSaleMedia')->find($id);
 
             if (!$perfectSale) {
                 return response()->json(["message" => "Invalid perfect sale"], 404);
             }
 
-            $perfectSaleMedia = $perfectSale->perfectSaleMedia()->orderBy('id', 'DESC')->get();
-
-            return response()->json(["data" => $perfectSaleMedia]);
+            return response()->json(["data" => $perfectSale]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
 
     public function customerPerfectSaleMedia(Request $request, $id)
     {
