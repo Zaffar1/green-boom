@@ -15,6 +15,6 @@ class PerfectSale extends Model
 
     public function perfectSaleMedia()
     {
-        return $this->belongsTo(PerfectSaleMedia::class);
+        return $this->hasMany(PerfectSaleMedia::class);
     }
 }
