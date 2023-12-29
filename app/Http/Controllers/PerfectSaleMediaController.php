@@ -53,7 +53,65 @@ class PerfectSaleMediaController extends Controller
             }
 
             PerfectSaleMedia::create($validate);
-            return response()->json(["message" => "Perfect sale media successfully added"], 200);
+            return response()->json(["message" => "Perfect sale data successfully added"], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
+    public function updatePerfectSaleMedia(Request $request)
+    {
+        $request->validate([
+            // Add your validation rules as needed
+        ]);
+
+        try {
+            $media = PerfectSaleMedia::find($request->id);
+
+            if (!$media) {
+                return response()->json(["error" => "Perfect sale data not found"], 404);
+            }
+
+            $media->perfect_sale_id = $request->perfect_sale_id;
+            $media->title = $request->title;
+
+            if ($request->hasFile('file')) {
+                // Delete the old file from storage
+                if (file_exists($media->file)) {
+                    unlink($media->file);
+                }
+
+                $file = $request->file('file');
+                $new_name = time() . '.' . $file->extension();
+                $file->move(public_path('storage/perfectSaleMedia'), $new_name);
+                $media->file = "storage/perfectSaleMedia/$new_name";
+
+                $file_type = $file->getClientOriginalExtension();
+
+                $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
+                $pdf_extension = ['pdf'];
+                $word_extension = ['doc', 'docx'];
+                $ppt_extension = ['ppt', 'pptx'];
+                $excel_extension = ['xls', 'xlsx'];
+
+                if (in_array(strtolower($file_type), $video_extension)) {
+                    $media->file_type = 'video';
+                } elseif (in_array(strtolower($file_type), $pdf_extension)) {
+                    $media->file_type = 'pdf';
+                } elseif (in_array(strtolower($file_type), $word_extension)) {
+                    $media->file_type = 'word';
+                } elseif (in_array(strtolower($file_type), $ppt_extension)) {
+                    $media->file_type = 'ppt';
+                } elseif (in_array(strtolower($file_type), $excel_extension)) {
+                    $media->file_type = 'excel';
+                } else {
+                    $media->file_type = 'other';
+                }
+            }
+
+            $media->save();
+            return response()->json(["message" => "Perfect sale data successfully updated"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
