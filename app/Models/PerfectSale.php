@@ -12,4 +12,9 @@ class PerfectSale extends Model
         'title',
         'status'
     ];
+
+    public function perfectSaleMedia()
+    {
+        return $this->belongsTo(PerfectSaleMedia::class);
+    }
 }
