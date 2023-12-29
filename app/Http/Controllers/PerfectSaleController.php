@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PerfectSale;
+use App\Models\PerfectSaleMedia;
 use Illuminate\Http\Request;
 
 class PerfectSaleController extends Controller
@@ -96,7 +97,7 @@ class PerfectSaleController extends Controller
             if (!$perfect_sale)
                 return response()->json(["message" => "Invalid perfect sale"]);
             else
-                $perfectSaleMedia = PerfectSale::wherePerfectSaleId($id)->orderBy('id', 'DESC')->whereStatus('Active')->with('perfectSales')->get();
+                $perfectSaleMedia = PerfectSaleMedia::wherePerfectSaleId($id)->orderBy('id', 'DESC')->whereStatus('Active')->with('perfectSales')->get();
             return response()->json(["data" => $perfectSaleMedia]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);

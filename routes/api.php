@@ -5,6 +5,7 @@ use App\Http\Controllers\CatalogBroucherController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
 use App\Http\Controllers\PerfectSaleController;
+use App\Http\Controllers\PerfectSaleMediaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SalesTipController;
 use App\Http\Controllers\TrainingController;
@@ -139,6 +140,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-perfectSale/{id}', [PerfectSaleController::class, 'deletePerfectSale']);
         Route::post('perfectSale-status/{id}', [PerfectSaleController::class, 'PerfectSaleStatus']);
         Route::get('perfect-sale-media/{id}', [PerfectSaleController::class, 'perfectSaleMedia']);
+
+        ////////// Perfect Sale Media
+        Route::post('add-perfect-sale-media', [PerfectSaleMediaController::class, 'addPerfectSaleMedia']);
 
         ////////// SalesTips
         Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);
