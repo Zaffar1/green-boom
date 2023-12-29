@@ -116,4 +116,18 @@ class PerfectSaleMediaController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+
+    public function deletePerfectSaleMedia($id)
+    {
+        try {
+            $perfect_sale = PerfectSaleMedia::find($id);
+            if (!$perfect_sale)
+                return response()->json(["message" => "Invalid perfect sale media"]);
+            $perfect_sale->delete();
+            return response()->json(["message" => "Perfect sale media deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }

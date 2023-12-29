@@ -147,6 +147,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         ////////// Perfect Sale Media
         Route::post('add-perfect-sale-media', [PerfectSaleMediaController::class, 'addPerfectSaleMedia']);
         Route::post('update-perfect-sale-media', [PerfectSaleMediaController::class, 'updatePerfectSaleMedia']);
+        Route::delete('delete-perfectSaleMedia/{id}', [PerfectSaleMediaController::class, 'deletePerfectSaleMedia']);
 
         ////////// SalesTips
         Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);
