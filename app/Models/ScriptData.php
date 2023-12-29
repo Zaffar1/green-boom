@@ -5,24 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PerfectSaleMedia extends Model
+class ScriptData extends Model
 {
     use HasFactory;
     protected $fillable = [
         'title',
         'file',
         'file_type',
-        'perfect_sale_id',
+        'perfect_sale_media_id',
         'status'
     ];
 
-    public function perfectSale()
+    public function scriptData()
     {
-        return $this->belongsTo(PerfectSale::class);
-    }
-
-    public function scriptMedia()
-    {
-        return $this->hasMany(ScriptData::class);
+        return $this->belongsTo(PerfectSaleMedia::class);
     }
 }
