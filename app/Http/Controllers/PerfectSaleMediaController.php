@@ -130,4 +130,26 @@ class PerfectSaleMediaController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+
+    public function PerfectSaleMediaStatus($id)
+    {
+        // $request->validate([
+        //     "id" => "required",
+        // ]);
+        try {
+            $perfect_sale = PerfectSaleMedia::find($id);
+            if (!$perfect_sale)
+                return response()->json(["message" => "Invalid perfect sale media"]);
+            if ($perfect_sale->status == "Active") {
+                $perfect_sale->status = "InActive";
+            } else {
+                $perfect_sale->status = "Active";
+            }
+            $perfect_sale->save();
+            return response()->json(["message" => "Perfect sale media status changed"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }
