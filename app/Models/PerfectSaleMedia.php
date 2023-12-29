@@ -16,7 +16,7 @@ class PerfectSaleMedia extends Model
         'status'
     ];
 
-    public function perfectSales()
+    public function perfectSale()
     {
         return $this->belongsTo(PerfectSale::class);
     }
