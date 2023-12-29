@@ -107,7 +107,8 @@ class PerfectSaleController extends Controller
             if (!$perfect_sale)
                 return response()->json(["message" => "Invalid perfect sale"]);
             else
-                $perfectSaleMedia = PerfectSaleMedia::wherePerfectSaleId($id)->orderBy('id', 'DESC')->with('perfectSaleMedia')->get();
+                // $perfectSaleMedia = PerfectSaleMedia::wherePerfectSaleId($id)->orderBy('id', 'DESC')->with('perfectSaleMedia')->get();
+                $perfectSaleMedia = PerfectSaleMedia::wherePerfectSaleId($id)->orderBy('id', 'DESC')->get();
             return response()->json(["data" => $perfectSaleMedia]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
