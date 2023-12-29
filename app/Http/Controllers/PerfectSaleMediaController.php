@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PerfectSale;
 use App\Models\PerfectSaleMedia;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class PerfectSaleMediaController extends Controller
         ]);
 
         try {
-            $perfect_sale = PerfectSaleMedia::find($request->perfect_sale_id);
+            $perfect_sale = PerfectSale::find($request->perfect_sale_id);
 
             if (!$perfect_sale) {
                 return response()->json(['message' => 'Invalid Data']);
