@@ -192,15 +192,15 @@ class UserController extends Controller
         try {
             $user = User::find(auth()->user()->id);
             // $validate['image'] = $request->file('image')->store('public/users');
-            $validate['name'] = $request->name;
-            $validate['company_name'] = $request->company_name;
+            $user->name = $request->name;
+            $user->company_name = $request->company_name;
             if ($request->file('profile_image')) {
                 $new_name = time() . '.' . $request->profile_image->extension();
                 $request->profile_image->move(public_path('storage/users'), $new_name);
-                $validate['profile_image'] = "storage/users/$new_name";
+                $user->profile_image = "storage/users/$new_name";
             }
-            $user->update($validate);
-            return response()->json(["message" => "User successfully updated"]);
+            $user->save();
+            return response()->json(["message" => "User successfully updated", "user" => $user]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
