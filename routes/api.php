@@ -74,6 +74,9 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         ////// BenDuffy Questions
         Route::get('all-benDuffy', [BenDuffyQuestionController::class, 'customerAllBenDuffy']);
+
+        ////////// Perfect Sales Pitch
+        Route::get('all-perfectSale', [PerfectSaleController::class, 'customerAllPerfectSales']);
     });
 
     Route::group(['prefix' => 'admin'], function () {
@@ -143,6 +146,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         ////////// Perfect Sale Media
         Route::post('add-perfect-sale-media', [PerfectSaleMediaController::class, 'addPerfectSaleMedia']);
+        Route::post('update-perfect-sale-media', [PerfectSaleMediaController::class, 'updatePerfectSaleMedia']);
 
         ////////// SalesTips
         Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);

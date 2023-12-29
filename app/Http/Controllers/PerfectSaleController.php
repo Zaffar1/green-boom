@@ -18,6 +18,16 @@ class PerfectSaleController extends Controller
         }
     }
 
+    public function customerAllPerfectSales()
+    {
+        try {
+            $all_perfect_sales = PerfectSale::orderBy('id', 'DESC')->whereStatus('Active')->get();
+            return response()->json(['all_data' => $all_perfect_sales]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
     public function addPerfectSale(Request $request)
     {
         $validate = $request->validate([
