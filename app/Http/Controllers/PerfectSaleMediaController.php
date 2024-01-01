@@ -11,18 +11,11 @@ class PerfectSaleMediaController extends Controller
 {
     public function addPerfectSaleMedia(Request $request)
     {
-        if ($request->type == 'scripts') {
-            $validate = $request->validate([
-                'perfect_sale_id' => 'required',
-                'title' => 'required',
-            ]);
-        } else {
-            $validate = $request->validate([
-                'perfect_sale_id' => 'required',
-                'title' => 'required',
-                'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
-            ]);
-        }
+        $validate = $request->validate([
+            'perfect_sale_id' => 'required',
+            'title' => 'required',
+            'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
+        ]);
 
         try {
             $perfect_sale = PerfectSale::find($request->perfect_sale_id);
@@ -173,7 +166,7 @@ class PerfectSaleMediaController extends Controller
             if (!$perfect_sale)
                 return response()->json(["message" => "Invalid perfect sale media"]);
             else
-                $scriptData = ScriptData::orderBy('id', 'DESC')->get();
+                $scriptData = ScriptData::wherePerfectSaleMediaId($perfect_sale->id)->orderBy('id', 'DESC')->get();
             return response()->json(["data" => $scriptData]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
