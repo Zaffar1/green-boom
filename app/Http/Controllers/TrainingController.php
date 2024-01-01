@@ -31,6 +31,7 @@ class TrainingController extends Controller
                     $category = Training::whereStatus('Active')->latest()->first();
                     $sub_cat = TrainingMedia::whereTrainingId($category->id)->whereStatus('Active')->get();
                     return response()->json(["cat" => $categories, "subCat" => $sub_cat]);
+                    break;
 
                 case 'msdssheets':
                     $data = MsdSheet::whereStatus('Active')->orderBy('id', 'DESC')->get();
