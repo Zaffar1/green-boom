@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MsdSheet;
+use App\Models\PerfectSale;
+use App\Models\PerfectSaleMedia;
 use App\Models\Product;
 use App\Models\Training;
 use App\Models\TrainingMedia;
@@ -36,6 +38,13 @@ class TrainingController extends Controller
 
                 case 'videos':
                     $data = Video::whereStatus('Active')->orderBy('id', 'DESC')->get();
+                    break;
+
+                case 'salesPitch':
+                    $categories = PerfectSale::orderBy('id', 'DESC')->whereStatus('Active')->get();
+                    $category = PerfectSale::whereStatus('Active')->latest()->first();
+                    $sub_cat = PerfectSaleMedia::wherePerfectSaleId($category->id)->orderBy('id', 'DESC')->with('scriptMedia')->get();
+                    return response()->json(["cat" => $categories, "subCat" => $sub_cat]);
                     break;
 
                 case 'products':
