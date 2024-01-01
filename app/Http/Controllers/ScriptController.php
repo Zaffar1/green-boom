@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PerfectSaleMedia;
 use App\Models\ScriptData;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class ScriptController extends Controller
         ]);
 
         try {
-            $script_data = ScriptData::find($request->script_id);
+            $script_data = PerfectSaleMedia::find($request->script_id);
 
             if (!$script_data) {
                 return response()->json(['message' => 'Invalid Data']);
