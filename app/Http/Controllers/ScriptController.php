@@ -22,6 +22,7 @@ class ScriptController extends Controller
             if (!$script_data) {
                 return response()->json(['message' => 'Invalid Data']);
             } else {
+                $validate['perfect_sale_media_id'] = $request->script_id;
                 $validate['status'] = 'Active';
             }
 
