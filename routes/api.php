@@ -8,6 +8,7 @@ use App\Http\Controllers\PerfectSaleController;
 use App\Http\Controllers\PerfectSaleMediaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SalesTipController;
+use App\Http\Controllers\ScriptController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TrainingMediaController;
 use App\Http\Controllers\UserController;
@@ -152,6 +153,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         Route::get('script-media/{id}', [PerfectSaleMediaController::class, 'scriptMedia']);
 
+        Route::post('add-script-data', [ScriptController::class, 'addScriptData']);
 
         ////////// SalesTips
         Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);
