@@ -98,7 +98,7 @@ class TrainingMediaController extends Controller
     //     }
     // }
 
-    public function trainingMedia(Request $request, $id)
+    public function trainingMedia(Request $request)
     {
         // $request->validate([
         //     'training_id' => 'required',
