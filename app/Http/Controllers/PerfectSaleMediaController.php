@@ -26,12 +26,14 @@ class PerfectSaleMediaController extends Controller
                 $validate['status'] = 'Active';
             }
 
-            $file = $request->file('file');
-            $new_name = time() . '.' . $file->extension();
-            $file->move(public_path('storage/perfectSaleMedia'), $new_name);
-            $validate['file'] = "storage/perfectSaleMedia/$new_name";
+            if ($request->file('file')) {
+                $file = $request->file('file');
+                $new_name = time() . '.' . $file->extension();
+                $file->move(public_path('storage/perfectSaleMedia'), $new_name);
+                $validate['file'] = "storage/perfectSaleMedia/$new_name";
 
-            $file_type = $file->getClientOriginalExtension();
+                $file_type = $file->getClientOriginalExtension();
+            }
 
             $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
             $pdf_extension = ['pdf'];
