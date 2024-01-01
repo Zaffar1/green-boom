@@ -109,7 +109,7 @@ class TrainingMediaController extends Controller
                 if (!$training)
                     return response()->json(["message" => "Invalid perfect sale"]);
                 else
-                    $trainingMedia = PerfectSaleMedia::wherePerfectSaleId($request->id)->orderBy('id', 'DESC')->with('scriptMedia')->get();
+                    $trainingMedia = PerfectSaleMedia::wherePerfectSaleId($training->id)->orderBy('id', 'DESC')->with('scriptMedia')->get();
             } else
                 $training = Training::find($request->id);
             if (!$training)
