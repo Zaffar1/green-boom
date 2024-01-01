@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PerfectSale;
+use App\Models\PerfectSaleMedia;
 use App\Models\Training;
 use App\Models\TrainingMedia;
 use Illuminate\Http\Request;
@@ -102,11 +104,18 @@ class TrainingMediaController extends Controller
         //     'training_id' => 'required',
         // ]);
         try {
-            $training = Training::find($id);
+            if ($request->type == 'salespitch') {
+                $training = PerfectSale::find($request->id);
+                if (!$training)
+                    return response()->json(["message" => "Invalid perfect sale"]);
+                else
+                    $trainingMedia = PerfectSaleMedia::wherePerfectSaleId($request->id)->orderBy('id', 'DESC')->with('scriptMedia')->get();
+            } else
+                $training = Training::find($request->id);
             if (!$training)
                 return response()->json(["message" => "Invalid training"]);
             else
-                $trainingMedia = TrainingMedia::whereTrainingId($id)->orderBy('id', 'DESC')->whereStatus('Active')->get();
+                $trainingMedia = TrainingMedia::whereTrainingId($request->id)->orderBy('id', 'DESC')->whereStatus('Active')->get();
             return response()->json(["data" => $trainingMedia]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);

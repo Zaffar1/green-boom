@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         ////////// Training
         Route::get('training-list', [TrainingController::class, 'customerTrainingList']);
-        Route::get('training-media/{id}', [TrainingMediaController::class, 'trainingMedia']);
+        Route::post('training-media', [TrainingMediaController::class, 'trainingMedia']);
         Route::get('training-detail', [TrainingController::class, 'trainingDetail']);
 
         //////////// Videos
