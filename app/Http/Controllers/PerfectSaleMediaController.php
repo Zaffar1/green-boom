@@ -11,11 +11,18 @@ class PerfectSaleMediaController extends Controller
 {
     public function addPerfectSaleMedia(Request $request)
     {
-        $validate = $request->validate([
-            'perfect_sale_id' => 'required',
-            'title' => 'required',
-            'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
-        ]);
+        if ($request->type == 'scripts') {
+            $validate = $request->validate([
+                'perfect_sale_id' => 'required',
+                'title' => 'required',
+            ]);
+        } else {
+            $validate = $request->validate([
+                'perfect_sale_id' => 'required',
+                'title' => 'required',
+                'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
+            ]);
+        }
 
         try {
             $perfect_sale = PerfectSale::find($request->perfect_sale_id);
