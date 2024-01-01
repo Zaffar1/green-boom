@@ -40,7 +40,7 @@ class TrainingController extends Controller
                     $data = Video::whereStatus('Active')->orderBy('id', 'DESC')->get();
                     break;
 
-                case 'salesPitch':
+                case 'salesptich':
                     $categories = PerfectSale::orderBy('id', 'DESC')->whereStatus('Active')->get();
                     $category = PerfectSale::whereStatus('Active')->latest()->first();
                     $sub_cat = PerfectSaleMedia::wherePerfectSaleId($category->id)->orderBy('id', 'DESC')->with('scriptMedia')->get();
