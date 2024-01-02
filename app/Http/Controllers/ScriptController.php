@@ -14,6 +14,7 @@ class ScriptController extends Controller
             'script_id' => 'required',
             'title' => 'required',
             'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
+            'icon_type' => 'required',
         ]);
 
         try {

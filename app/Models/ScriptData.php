@@ -13,6 +13,7 @@ class ScriptData extends Model
         'file',
         'file_type',
         'perfect_sale_media_id',
+        'icon_type',
         'status'
     ];
 
