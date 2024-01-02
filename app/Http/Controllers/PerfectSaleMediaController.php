@@ -60,6 +60,28 @@ class PerfectSaleMediaController extends Controller
         }
     }
 
+    public function addPerfectSaleMediaScript(Request $request)
+    {
+        $validate = $request->validate([
+            'perfect_sale_id' => 'required',
+            'title' => 'required',
+        ]);
+
+        try {
+            $perfect_sale = PerfectSale::find($request->perfect_sale_id);
+
+            if (!$perfect_sale) {
+                return response()->json(['message' => 'Invalid Data']);
+            } else {
+                $validate['status'] = 'Active';
+            }
+
+            PerfectSaleMedia::create($validate);
+            return response()->json(["message" => "Perfect sale data successfully added"], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 
     public function updatePerfectSaleMedia(Request $request)
     {

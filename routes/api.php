@@ -150,6 +150,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('update-perfect-sale-media', [PerfectSaleMediaController::class, 'updatePerfectSaleMedia']);
         Route::delete('delete-perfectSaleMedia/{id}', [PerfectSaleMediaController::class, 'deletePerfectSaleMedia']);
         Route::post('perfectSaleMedia-status/{id}', [PerfectSaleMediaController::class, 'PerfectSaleMediaStatus']);
+        Route::post('add-script', [PerfectSaleMediaController::class, 'addPerfectSaleMediaScript']);
 
         ////////////// Script Data
         Route::get('script-media/{id}', [PerfectSaleMediaController::class, 'scriptMedia']);
