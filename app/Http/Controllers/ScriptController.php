@@ -109,4 +109,39 @@ class ScriptController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+
+    public function deleteScriptData($id)
+    {
+        try {
+            $script_data = ScriptData::find($id);
+            if (!$script_data)
+                return response()->json(["message" => "Invalid script data"]);
+            $script_data->delete();
+            return response()->json(["message" => "Script data deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function ScriptDataStatus($id)
+    {
+        // $request->validate([
+        //     "id" => "required",
+        // ]);
+        try {
+            $script_data = ScriptData::find($id);
+            if (!$script_data)
+                return response()->json(["message" => "Invalid script data"]);
+            if ($script_data->status == "Active") {
+                $script_data->status = "InActive";
+            } else {
+                $script_data->status = "Active";
+            }
+            $script_data->save();
+            return response()->json(["message" => "Script data status changed"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }
