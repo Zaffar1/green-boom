@@ -151,9 +151,12 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-perfectSaleMedia/{id}', [PerfectSaleMediaController::class, 'deletePerfectSaleMedia']);
         Route::post('perfectSaleMedia-status/{id}', [PerfectSaleMediaController::class, 'PerfectSaleMediaStatus']);
 
+        ////////////// Script Data
         Route::get('script-media/{id}', [PerfectSaleMediaController::class, 'scriptMedia']);
-
         Route::post('add-script-data', [ScriptController::class, 'addScriptData']);
+        Route::post('update-script-data', [ScriptController::class, 'updateScriptData']);
+        Route::delete('delete-scriptData/{id}', [ScriptController::class, 'deleteScriptData']);
+        Route::post('scriptData-status/{id}', [ScriptController::class, 'ScriptDataStatus']);
 
         ////////// SalesTips
         Route::get('all-sales-tips', [SalesTipController::class, 'allSalesTips']);

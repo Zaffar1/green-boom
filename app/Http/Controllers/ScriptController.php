@@ -59,4 +59,54 @@ class ScriptController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    public function updateScriptData(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => 'required',
+            'title' => 'required',
+        ]);
+        try {
+            $script_data = ScriptData::find($request->id);
+            if (!$script_data)
+                return response()->json(["message" => "Invalid script data"]);
+            if ($request->hasFile('file')) {
+                // Delete the old file from storage
+                if (file_exists($script_data->file)) {
+                    unlink($script_data->file);
+                }
+
+                $file = $request->file('file');
+                $new_name = time() . '.' . $file->extension();
+                $file->move(public_path('storage/perfectSaleMedia'), $new_name);
+                $script_data->file = "storage/perfectSaleMedia/$new_name";
+
+                $file_type = $file->getClientOriginalExtension();
+
+                $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
+                $pdf_extension = ['pdf'];
+                $word_extension = ['doc', 'docx'];
+                $ppt_extension = ['ppt', 'pptx'];
+                $excel_extension = ['xls', 'xlsx'];
+
+                if (in_array(strtolower($file_type), $video_extension)) {
+                    $script_data->file_type = 'video';
+                } elseif (in_array(strtolower($file_type), $pdf_extension)) {
+                    $script_data->file_type = 'pdf';
+                } elseif (in_array(strtolower($file_type), $word_extension)) {
+                    $script_data->file_type = 'word';
+                } elseif (in_array(strtolower($file_type), $ppt_extension)) {
+                    $script_data->file_type = 'ppt';
+                } elseif (in_array(strtolower($file_type), $excel_extension)) {
+                    $script_data->file_type = 'excel';
+                } else {
+                    $script_data->file_type = 'other';
+                }
+            }
+            $script_data->update($validate);
+            return response()->json(["message" => "Perfect Sale successfully updated"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }
