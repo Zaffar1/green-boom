@@ -45,12 +45,11 @@ class ProductController extends Controller
     public function addProduct(Request $request)
     {
         $validate = $request->validate([
+            'product_name' => 'required',
+            'usage' => 'required',
             'title' => 'required',
             'description' => 'required',
             'file' => 'required|mimes:jpg,jpeg,png',
-            'description' => 'required',
-            'price' => 'required',
-            'sku_num' => 'required',
         ]);
         try {
             $validate['status'] = 'Active';
@@ -69,11 +68,11 @@ class ProductController extends Controller
     {
         $validate = $request->validate([
             'id' => 'required',
+            'product_name' => 'required',
+            'usage' => 'required',
             'title' => 'required',
             'description' => 'required',
             'file' => 'required|mimes:jpg,jpeg,png',
-            'price' => 'required',
-            'sku_num' => 'required',
         ]);
 
         try {
