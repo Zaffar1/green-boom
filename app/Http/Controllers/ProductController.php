@@ -6,7 +6,6 @@ use App\Models\MsdSheet;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -45,47 +44,21 @@ class ProductController extends Controller
 
     public function addProduct(Request $request)
     {
+        $validate = $request->validate([
+            'product_name' => 'required',
+            'usage' => 'required',
+            'title' => 'required',
+            'description' => 'required',
+            'file' => 'required|mimes:jpg,jpeg,png',
+        ]);
         try {
-            $validator = Validator::make($request->all(), [
-                'product_name' => 'required',
-                'usage' => 'required',
-                'title' => 'required',
-                'description' => 'required',
-                'file.*' => 'required|mimes:jpg,jpeg,png',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['error' => $validator->errors()], 400);
-            }
-
-            $validatedData = $validator->validated();
-            $validatedData['status'] = 'Active';
-
-            $product = Product::create($validatedData);
-
-            // Handle multiple images
-            if ($request->hasFile('file')) {
-                foreach ($request->file('file') as $file) {
-                    // Check if the uploaded file is valid
-                    if ($file->isValid()) {
-                        try {
-                            $new_name = time() . '_' . $file->getClientOriginalName();
-                            $file->move(public_path('storage/products'), $new_name);
-
-                            // Create a new image record for the product
-                            $product->images()->create([
-                                'path' => "storage/products/$new_name",
-                            ]);
-                        } catch (\Exception $e) {
-                            return response()->json(['error' => $e->getMessage()], 400);
-                        }
-                    } else {
-                        return response()->json(['error' => 'Invalid file.'], 400);
-                    }
-                }
-            }
-
-            return response()->json(['message' => 'Product successfully added with images']);
+            $validate['status'] = 'Active';
+            // $validate['file'] = $request->file('file')->store('public/products');
+            $new_name = time() . '.' . $request->file->extension();
+            $request->file->move(public_path('storage/products'), $new_name);
+            $validate['file'] = "storage/products/$new_name";
+            Product::create($validate);
+            return response()->json(['message' => 'Product successfully added']);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
