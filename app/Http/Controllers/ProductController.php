@@ -53,7 +53,8 @@ class ProductController extends Controller
         try {
             $validate['status'] = 'Active';
             // $validate['file'] = $request->file('file')->store('public/products');
-            $new_name = time() . '.' . $request->file->extension();
+            $file = $request->file('file');
+            $new_name = time() . '.' . $file->extension();
             $request->file->move(public_path('storage/products'), $new_name);
             $validate['file'] = "storage/products/$new_name";
             Product::create($validate);
