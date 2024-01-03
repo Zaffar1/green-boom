@@ -43,7 +43,6 @@ class ProductController extends Controller
         }
     }
 
-
     public function addProduct(Request $request)
     {
         try {
@@ -52,7 +51,7 @@ class ProductController extends Controller
                 'usage' => 'required',
                 'title' => 'required',
                 'description' => 'required',
-                'file.*' => 'required|mimes:jpg,jpeg,png', // Use files.* to validate each file in the array
+                'file.*' => 'required|mimes:jpg,jpeg,png',
             ]);
 
             if ($validator->fails()) {
@@ -62,7 +61,6 @@ class ProductController extends Controller
             $validatedData = $validator->validated();
             $validatedData['status'] = 'Active';
 
-            // Create the product
             $product = Product::create($validatedData);
 
             // Handle multiple images
@@ -73,7 +71,6 @@ class ProductController extends Controller
                         $new_name = time() . '_' . $file->getClientOriginalName();
                         $file->move(public_path('storage/products'), $new_name);
 
-                        // Create a new image record for the product
                         $product->images()->create([
                             'path' => "storage/products/$new_name",
                         ]);
