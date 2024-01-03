@@ -49,7 +49,6 @@ class ProductController extends Controller
             'usage' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'file' => 'required|mimes:jpg,jpeg,png',
         ]);
         try {
             $validate['status'] = 'Active';
