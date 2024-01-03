@@ -6,6 +6,7 @@ use App\Models\MsdSheet;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -45,30 +46,38 @@ class ProductController extends Controller
 
     public function addProduct(Request $request)
     {
-        $validate = $request->validate([
-            'product_name' => 'required',
-            'usage' => 'required',
-            'title' => 'required',
-            'description' => 'required',
-            'file.*' => 'required|mimes:jpg,jpeg,png', // Use files.* to validate each file in the array
-        ]);
-
         try {
-            $validate['status'] = 'Active';
+            $validator = Validator::make($request->all(), [
+                'product_name' => 'required',
+                'usage' => 'required',
+                'title' => 'required',
+                'description' => 'required',
+                'file.*' => 'required|mimes:jpg,jpeg,png', // Use files.* to validate each file in the array
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 400);
+            }
+
+            $validatedData = $validator->validated();
+            $validatedData['status'] = 'Active';
 
             // Create the product
-            $product = Product::create($validate);
+            $product = Product::create($validatedData);
 
             // Handle multiple images
             if ($request->hasFile('file')) {
                 foreach ($request->file('file') as $file) {
-                    $new_name = time() . '_' . $file->getClientOriginalName();
-                    $file->move(public_path('storage/products'), $new_name);
+                    // Check if the uploaded file is valid
+                    if ($file->isValid()) {
+                        $new_name = time() . '_' . $file->getClientOriginalName();
+                        $file->move(public_path('storage/products'), $new_name);
 
-                    // Create a new image record for the product
-                    $product->images()->create([
-                        'path' => "storage/products/$new_name",
-                    ]);
+                        // Create a new image record for the product
+                        $product->images()->create([
+                            'path' => "storage/products/$new_name",
+                        ]);
+                    }
                 }
             }
 
