@@ -49,15 +49,26 @@ class ProductController extends Controller
             'usage' => 'required',
             'title' => 'required',
             'description' => 'required',
+            'file' => 'required|mimes:jpg,jpeg,png',
         ]);
+
         try {
             $validate['status'] = 'Active';
-            // $validate['file'] = $request->file('file')->store('public/products');
+
             $file = $request->file('file');
+
+            // Generate a unique filename to avoid conflicts
             $new_name = time() . '.' . $file->extension();
-            $request->file->move(public_path('storage/products'), $new_name);
+
+            // Move the file to the specified directory
+            $file->move(public_path('storage/products'), $new_name);
+
+            // Update the 'file' field in the $validate array with the new path
             $validate['file'] = "storage/products/$new_name";
+
+            // Create a new product with the validated data
             Product::create($validate);
+
             return response()->json(['message' => 'Product successfully added']);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
