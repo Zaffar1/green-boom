@@ -42,6 +42,7 @@ class ProductController extends Controller
         }
     }
 
+
     public function addProduct(Request $request)
     {
         $validate = $request->validate([
@@ -49,16 +50,29 @@ class ProductController extends Controller
             'usage' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'file' => 'required|mimes:jpg,jpeg,png',
+            'file.*' => 'required|mimes:jpg,jpeg,png', // Use files.* to validate each file in the array
         ]);
+
         try {
             $validate['status'] = 'Active';
-            // $validate['file'] = $request->file('file')->store('public/products');
-            $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/products'), $new_name);
-            $validate['file'] = "storage/products/$new_name";
-            Product::create($validate);
-            return response()->json(['message' => 'Product successfully added']);
+
+            // Create the product
+            $product = Product::create($validate);
+
+            // Handle multiple images
+            if ($request->hasFile('file')) {
+                foreach ($request->file('file') as $file) {
+                    $new_name = time() . '_' . $file->getClientOriginalName();
+                    $file->move(public_path('storage/products'), $new_name);
+
+                    // Create a new image record for the product
+                    $product->images()->create([
+                        'path' => "storage/products/$new_name",
+                    ]);
+                }
+            }
+
+            return response()->json(['message' => 'Product successfully added with images']);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

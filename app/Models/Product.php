@@ -16,4 +16,9 @@ class Product extends Model
         'file',
         'status'
     ];
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }
