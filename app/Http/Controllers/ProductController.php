@@ -71,6 +71,7 @@ class ProductController extends Controller
                         $new_name = time() . '_' . $file->getClientOriginalName();
                         $file->move(public_path('storage/products'), $new_name);
 
+                        // Create a new image record for the product
                         $product->images()->create([
                             'path' => "storage/products/$new_name",
                         ]);
