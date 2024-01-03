@@ -75,6 +75,8 @@ class ProductController extends Controller
                         $product->images()->create([
                             'path' => "storage/products/$new_name",
                         ]);
+                    } else {
+                        return response()->json(['error' => 'Invalid file.'], 400);
                     }
                 }
             }
