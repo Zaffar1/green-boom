@@ -68,13 +68,17 @@ class ProductController extends Controller
                 foreach ($request->file('file') as $file) {
                     // Check if the uploaded file is valid
                     if ($file->isValid()) {
-                        $new_name = time() . '_' . $file->getClientOriginalName();
-                        $file->move(public_path('storage/products'), $new_name);
+                        try {
+                            $new_name = time() . '_' . $file->getClientOriginalName();
+                            $file->move(public_path('storage/products'), $new_name);
 
-                        // Create a new image record for the product
-                        $product->images()->create([
-                            'path' => "storage/products/$new_name",
-                        ]);
+                            // Create a new image record for the product
+                            $product->images()->create([
+                                'path' => "storage/products/$new_name",
+                            ]);
+                        } catch (\Exception $e) {
+                            return response()->json(['error' => $e->getMessage()], 400);
+                        }
                     } else {
                         return response()->json(['error' => 'Invalid file.'], 400);
                     }
