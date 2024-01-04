@@ -7,6 +7,7 @@ use App\Http\Controllers\MsdSheetController;
 use App\Http\Controllers\PerfectSaleController;
 use App\Http\Controllers\PerfectSaleMediaController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductDataController;
 use App\Http\Controllers\SalesTipController;
 use App\Http\Controllers\ScriptController;
 use App\Http\Controllers\TrainingController;
@@ -181,6 +182,11 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('update-product', [ProductController::class, 'updateProduct']);
         Route::delete('delete-product/{id}', [ProductController::class, 'deleteProduct']);
         Route::get('product-detail', [ProductController::class, 'productDetail']);
+
+        /////////////// Product Data
+        Route::get('all-product-data', [ProductDataController::class, 'allProductData']);
+        Route::post('add-product-data', [ProductDataController::class, 'addProductData']);
+        Route::get('productData/{id}', [ProductDataController::class, 'productData']);
 
         /////////// Youtube
         Route::get('videos', [VideoController::class, 'youTubeVideos']);

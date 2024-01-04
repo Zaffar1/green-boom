@@ -54,19 +54,10 @@ class ProductController extends Controller
 
         try {
             $validate['status'] = 'Active';
-
             $file = $request->file('file');
-
-            // Generate a unique filename to avoid conflicts
             $new_name = time() . '.' . $file->extension();
-
-            // Move the file to the specified directory
             $file->move(public_path('storage/products'), $new_name);
-
-            // Update the 'file' field in the $validate array with the new path
             $validate['file'] = "storage/products/$new_name";
-
-            // Create a new product with the validated data
             Product::create($validate);
 
             return response()->json(['message' => 'Product successfully added']);
@@ -89,13 +80,10 @@ class ProductController extends Controller
         try {
             $validate['status'] = 'Active';
 
-            // Find the product by ID
             $existingProduct = Product::find($request->id);
 
             if ($existingProduct) {
-                // Update the existing product
                 if ($request->hasFile('file')) {
-                    // Update the file only if a new file is provided
                     Storage::delete($existingProduct->file);
                     $validate['file'] = $request->file('file')->store('public/products');
                 }
