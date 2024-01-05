@@ -22,8 +22,7 @@ class CreateProductDataTable extends Migration
             $table->string('Absorbency')->nullable();
             $table->string('qty')->nullable();
             $table->string('case')->nullable();
-            $table->string('addRemMat')->nullable();
-            // $table->string('added_remediation_material')->nullable();
+            $table->string('added_remediation_material')->nullable();
             $table->string('product_dimensions_size')->nullable();
             $table->string('product_dimensions_cm')->nullable();
             $table->string('packaging_dimensions_size')->nullable();
