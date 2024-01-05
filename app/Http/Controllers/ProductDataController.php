@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductDataController extends Controller
 {
@@ -65,6 +66,22 @@ class ProductDataController extends Controller
             else
                 $productData = ProductData::whereProductId($product->id)->orderBy('id', 'DESC')->get();
             return response()->json(["data" => $productData]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function deleteProductData($id)
+    {
+        try {
+            $product_data = ProductData::find($id);
+            if (!$product_data) {
+                return response()->json(["error" => "Product not found"], 404);
+            }
+            $filePath = $product_data->file;
+            $product_data->delete();
+            Storage::delete($filePath);
+            return response()->json(["message" => "Product data successfully deleted"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
