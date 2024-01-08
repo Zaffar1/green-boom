@@ -37,7 +37,7 @@ class ProductController extends Controller
             $product = Product::find($id);
             if (!$product)
                 return response()->json(["message" => "Invalid product"]);
-            $product_data = ProductData::whereProductId($id)->whereStatus('Active')->get();
+            $product_data = ProductData::whereProductId($id)->get();
             return response()->json(["product_data" => $product_data]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
