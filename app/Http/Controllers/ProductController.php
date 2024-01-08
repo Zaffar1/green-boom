@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MsdSheet;
 use App\Models\Product;
+use App\Models\ProductData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +25,20 @@ class ProductController extends Controller
         try {
             $all_products = Product::whereStatus('Active')->with('productData')->orderBy('id', 'DESC')->get();
             return response()->json(["all_products" => $all_products]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
+    public function productData($id)
+    {
+        try {
+            $product = Product::find($id);
+            if (!$product)
+                return response()->json(["message" => "Invalid product"]);
+            $product_data = ProductData::whereProductId($id)->whereStatus('Active')->get();
+            return response()->json(["product_data" => $product_data]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

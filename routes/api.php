@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('product-list', [ProductController::class, 'allProducts']);
         Route::get('product-detail', [ProductController::class, 'productDetail']);
         Route::get('all-product-list', [ProductController::class, 'customerAllProducts']);
+        Route::get('product-data/{id}', [ProductController::class, 'productData']);
 
         //////////// Product Data
         // Route::get('product-data-list', [ProductDataController::class, 'customerAllProductData']);
