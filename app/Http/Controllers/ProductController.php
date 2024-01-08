@@ -50,7 +50,8 @@ class ProductController extends Controller
                 $product_data_small = [];
             } else {
                 $size = [
-                    "id" => "small"
+                    "id" => "small",
+                    "title" => "small"
                 ];
                 array_push($sizePickerArray, $size);
             }
@@ -60,7 +61,8 @@ class ProductController extends Controller
                 $product_data_medium = [];
             } else {
                 $size = [
-                    "id" => "medium"
+                    "id" => "medium",
+                    "title" => "medium"
                 ];
                 array_push($sizePickerArray, $size);
             }
@@ -69,7 +71,8 @@ class ProductController extends Controller
                 $product_data_large = [];
             } else {
                 $size = [
-                    "id" => "large"
+                    "id" => "large",
+                    "title" => "large"
                 ];
                 array_push($sizePickerArray, $size);
             }
