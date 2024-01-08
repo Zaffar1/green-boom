@@ -38,7 +38,22 @@ class ProductController extends Controller
             if (!$product)
                 return response()->json(["message" => "Invalid product"]);
             $product_data = ProductData::whereProductId($id)->get();
-            return response()->json(["product_data" => $product_data]);
+            $product_data_small = ProductData::whereProductId($id)->whereSize('small')->get();
+            $product_data_medium = ProductData::whereProductId($id)->whereSize('medium')->get();
+            $product_data_large = ProductData::whereProductId($id)->whereSize('large')->get();
+            if (!$product_data_small) {
+                $product_data_small = [];
+            }
+            if (!$product_data_medium) {
+                $product_data_medium = [];
+            }
+            if (!$product_data_large) {
+                $product_data_large = [];
+            }
+            return response()->json([
+                "product_data" => $product_data, "product_small" => $product_data_small,
+                "product_medium" => $product_data_medium, "product_large" => $product_data_large
+            ]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
