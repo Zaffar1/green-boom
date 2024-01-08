@@ -43,16 +43,40 @@ class ProductController extends Controller
             $product_data_large = ProductData::whereProductId($id)->whereSize('large')->get();
             if (!$product_data_small) {
                 $product_data_small = [];
+            } else
+                $sizePickerArray = [];
+
+            if ($product_data_small->isEmpty()) {
+                $product_data_small = [];
+            } else {
+                $size = [
+                    "id" => "small"
+                ];
+                array_push($sizePickerArray, $size);
             }
-            if (!$product_data_medium) {
+
+            // You can repeat the same logic for medium and large sizes
+            if ($product_data_medium->isEmpty()) {
                 $product_data_medium = [];
+            } else {
+                $size = [
+                    "id" => "medium"
+                ];
+                array_push($sizePickerArray, $size);
             }
-            if (!$product_data_large) {
+
+            if ($product_data_large->isEmpty()) {
                 $product_data_large = [];
+            } else {
+                $size = [
+                    "id" => "large"
+                ];
+                array_push($sizePickerArray, $size);
             }
             return response()->json([
                 "product_data" => $product_data, "product_small" => $product_data_small,
-                "product_medium" => $product_data_medium, "product_large" => $product_data_large
+                "product_medium" => $product_data_medium, "product_large" => $product_data_large,
+                "sizePicker" => $sizePickerArray
             ]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
