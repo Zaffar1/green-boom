@@ -70,6 +70,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         //////////// Product
         Route::get('product-list', [ProductController::class, 'allProducts']);
         Route::get('product-detail', [ProductController::class, 'productDetail']);
+        Route::get('all-product-list', [ProductController::class, 'customerAllProducts']);
+
+        //////////// Product Data
+        // Route::get('product-data-list', [ProductDataController::class, 'customerAllProductData']);
 
         /////// Faqs
         Route::get('faqs-list', [FaqController::class, 'customerAllFaqs']);

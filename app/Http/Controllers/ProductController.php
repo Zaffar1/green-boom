@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function customerAllProducts()
     {
         try {
-            $all_products = Product::whereStatus('Active')->orderBy('id', 'DESC')->get();
+            $all_products = Product::whereStatus('Active')->with('productData')->orderBy('id', 'DESC')->get();
             return response()->json(["all_products" => $all_products]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
