@@ -162,7 +162,7 @@ class CatalogBroucherController extends Controller
                 $catalog->status = "Active";
             }
             $catalog->save();
-            return response()->json(["message" => "catalogBroucher status changed"], 200);
+            return response()->json(["message" => "CatalogBroucher status changed"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }

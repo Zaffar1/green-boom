@@ -56,7 +56,6 @@ class ProductController extends Controller
                 array_push($sizePickerArray, $size);
             }
 
-            // You can repeat the same logic for medium and large sizes
             if ($product_data_medium->isEmpty()) {
                 $product_data_medium = [];
             } else {
@@ -166,6 +165,25 @@ class ProductController extends Controller
             $product->delete();
             Storage::delete($filePath);
             return response()->json(["message" => "Product successfully deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+
+    public function productStatus($id)
+    {
+        try {
+            $product = Product::find($id);
+            if (!$product)
+                return response()->json(["message" => "Invalid Product"]);
+            if ($product->status == "Active") {
+                $product->status = "InActive";
+            } else {
+                $product->status = "Active";
+            }
+            $product->save();
+            return response()->json(["message" => "Product status changed"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
