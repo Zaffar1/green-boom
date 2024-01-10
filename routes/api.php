@@ -6,6 +6,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
 use App\Http\Controllers\PerfectSaleController;
 use App\Http\Controllers\PerfectSaleMediaController;
+use App\Http\Controllers\ProductAllDataController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDataController;
 use App\Http\Controllers\SalesTipController;
@@ -73,7 +74,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('all-product-list', [ProductController::class, 'customerAllProducts']);
         // Route::get('product-data/{id}', [ProductController::class, 'productData']);
 
-        Route::get('product-data/{id}', [ProductController::class, 'allProductData']);
+        Route::get('product-data/{id}', [ProductAllDataController::class, 'allProductData']);
         //////////// Product Data
         // Route::get('product-data-list', [ProductDataController::class, 'customerAllProductData']);
 
