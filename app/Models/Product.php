@@ -12,7 +12,12 @@ class Product extends Model
         'product_name',
         'usage',
         'title',
-        'description',
+        'description1',
+        'description2',
+        'description3',
+        'description4',
+        'description5',
+        'product_type',
         'file',
         'status'
     ];
@@ -22,8 +27,18 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function productData()
+    public function productDataDimension()
     {
-        return $this->hasMany(ProductData::class);
+        return $this->hasMany(ProductDataDimension::class);
+    }
+
+    public function productDataSize()
+    {
+        return $this->hasMany(ProductDataSize::class);
+    }
+
+    public function productDataTitle()
+    {
+        return $this->hasMany(ProductDataTitle::class);
     }
 }

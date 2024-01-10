@@ -76,8 +76,8 @@ class ProductController extends Controller
                 array_push($sizePickerArray, $size);
             }
             return response()->json([
-                "product_data" => $product_data, "product_small" => $product_data_small,
-                "product_medium" => $product_data_medium, "product_large" => $product_data_large,
+                "product_data" => $product_data, "small" => $product_data_small,
+                "medium" => $product_data_medium, "large" => $product_data_large,
                 "sizePicker" => $sizePickerArray
             ]);
         } catch (\Throwable $th) {
