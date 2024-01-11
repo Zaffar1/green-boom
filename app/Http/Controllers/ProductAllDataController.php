@@ -48,7 +48,7 @@ class ProductAllDataController extends Controller
                 $product_data_title_sku = [];
             }
 
-            $product_medium = ProductDataSize::whereProductId($id)->whereSize('medium')->first();
+            $product_medium = ProductDataSize::whereProductId($product_data->id)->whereSize('medium')->first();
             if ($product_medium) {
                 array_push($product_data_medium, $product_medium);
             } else {
@@ -70,7 +70,7 @@ class ProductAllDataController extends Controller
             }
 
 
-            $product_large = ProductDataSize::whereProductId($id)->whereSize('large')->first();
+            $product_large = ProductDataSize::whereProductId($product_data->id)->whereSize('large')->first();
             if ($product_large) {
                 array_push($product_data_large, $product_large);
             } else {
