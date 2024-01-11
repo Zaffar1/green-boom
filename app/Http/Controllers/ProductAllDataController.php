@@ -81,7 +81,7 @@ class ProductAllDataController extends Controller
             if ($product_large_dimension) {
                 array_push($product_data_small, $product_large_dimension);
             } else {
-                $product_large_dimension = [];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
+                $product_large_dimension = [];
             }
 
             $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_large->id)->first();
