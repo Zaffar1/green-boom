@@ -40,7 +40,7 @@ class ProductAllDataController extends Controller
                 // Small size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_small->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_small['title'] = $product_data_title_sku;
+                    $product_data_small['title'][] = (object)$product_data_title_sku;
                 } else {
                     $product_data_small['title'] = [];
                 }
