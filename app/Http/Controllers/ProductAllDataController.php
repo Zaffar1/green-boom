@@ -16,6 +16,8 @@ class ProductAllDataController extends Controller
             $product_data = Product::find($id);
             if (!$product_data)
                 return response()->json(["message" => "Invalid product"]);
+            else
+                return response()->json(["products" => $product_data]);
             $product_data_small = [];
             // $product_data_small_dimension = [];
             $product_data_medium = [];
@@ -33,10 +35,12 @@ class ProductAllDataController extends Controller
             $product_small = ProductDataSize::whereProductId($product_data->id)->whereSize('small')->first();
             if ($product_small) {
                 array_push($product_data_small, $product_small);
+                return response()->json(["product_small" => $product_small]);
             }
             $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
             if ($product_small_dimension) {
                 array_push($product_data_small, $product_small_dimension);
+                return response()->json(["product_small_dimension" => $product_small_dimension]);
             } else {
                 $product_small_dimension = [];
             }
@@ -44,6 +48,7 @@ class ProductAllDataController extends Controller
             $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_small->id)->first();
             if ($product_data_title_sku) {
                 array_push($product_data_small, $product_data_title_sku);
+                return response()->json(["product_data_title_sku" => $product_data_title_sku]);
             } else {
                 $product_data_title_sku = [];
             }
@@ -51,6 +56,7 @@ class ProductAllDataController extends Controller
             $product_medium = ProductDataSize::whereProductId($product_data->id)->whereSize('medium')->first();
             if ($product_medium) {
                 array_push($product_data_medium, $product_medium);
+                return response()->json(["product_medium" => $product_medium]);
             } else {
                 $product_medium = [];
             }
