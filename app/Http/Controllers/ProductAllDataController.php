@@ -16,8 +16,8 @@ class ProductAllDataController extends Controller
             $product_data = Product::find($id);
             if (!$product_data)
                 return response()->json(["message" => "Invalid product"]);
-            else
-                return response()->json(["products" => $product_data]);
+            // else
+                // return response()->json(["products" => $product_data]);
             $product_data_small = [];
             // $product_data_small_dimension = [];
             $product_data_medium = [];
