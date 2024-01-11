@@ -110,10 +110,10 @@ class ProductController extends Controller
         ]);
 
         try {
-            $validate['description2'] = 'Active';
-            $validate['description3'] = 'Active';
-            $validate['description4'] = 'Active';
-            $validate['description5'] = 'Active';
+            $validate['description2'] = $request->description2;
+            $validate['description3'] = $request->description3;
+            $validate['description4'] = $request->description4;
+            $validate['description5'] = $request->description5;
             $validate['status'] = 'Active';
             $file = $request->file('file');
             $new_name = time() . '.' . $file->extension();
