@@ -30,7 +30,7 @@ class ProductAllDataController extends Controller
             // if ($product_title) {
             //     array_push($product_data_small, $product_title);
             // }
-            $product_small = ProductDataSize::whereProductId($id)->whereSize('small')->first();
+            $product_small = ProductDataSize::whereProductId($product_data->id)->whereSize('small')->first();
             if ($product_small) {
                 array_push($product_data_small, $product_small);
             }
@@ -81,7 +81,7 @@ class ProductAllDataController extends Controller
             if ($product_large_dimension) {
                 array_push($product_data_small, $product_large_dimension);
             } else {
-                $product_large_dimension = [];
+                $product_large_dimension = [];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
             }
 
             $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_large->id)->first();
