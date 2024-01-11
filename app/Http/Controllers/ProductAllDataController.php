@@ -32,8 +32,7 @@ class ProductAllDataController extends Controller
                 // Small size dimension
                 $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
                 if ($product_small_dimension) {
-                    // $product_data_small['dimension'][] = (object)$product_small_dimension;
-                    array_push($product_data_small, $product_small_dimension);
+                    $product_data_small['dimension'][] = (object)$product_small_dimension;
                 } else {
                     $product_data_small['dimension'] = [];
                 }
