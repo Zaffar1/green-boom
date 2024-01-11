@@ -25,9 +25,9 @@ class ProductAllDataController extends Controller
             $sizePickerArray = [];
 
             // Small size
-            $product_small = ProductDataSize::whereProductId($id)->whereSize('small')->first();
+            $product_small = ProductDataSize::whereProductId($id)->whereSize('small')->get();
             if ($product_small) {
-                $product_data_small['product_small'] = $product_small;
+                $product_data_small['size'] = $product_small;
 
                 // Small size dimension
                 $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
@@ -52,7 +52,7 @@ class ProductAllDataController extends Controller
             }
 
             // Medium size
-            $product_medium = ProductDataSize::whereProductId($id)->whereSize('medium')->first();
+            $product_medium = ProductDataSize::whereProductId($id)->whereSize('medium')->get();
             if ($product_medium) {
                 // $product_data_medium['product_medium'] = $product_medium;
                 $product_data_medium = $product_medium;
@@ -81,7 +81,7 @@ class ProductAllDataController extends Controller
             }
 
             // Large size
-            $product_large = ProductDataSize::whereProductId($id)->whereSize('large')->first();
+            $product_large = ProductDataSize::whereProductId($id)->whereSize('large')->get();
             if ($product_large) {
                 $product_data_large['large'] = $product_large;
 
