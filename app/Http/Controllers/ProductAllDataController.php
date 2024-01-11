@@ -19,9 +19,9 @@ class ProductAllDataController extends Controller
                 return response()->json(["message" => "Invalid product"]);
             }
 
-            $product_data_small = [];
-            $product_data_medium = [];
-            $product_data_large = [];
+            $product_data_small[] = [];
+            $product_data_medium[] = [];
+            $product_data_large[] = [];
             $sizePickerArray = [];
 
             // Small size
