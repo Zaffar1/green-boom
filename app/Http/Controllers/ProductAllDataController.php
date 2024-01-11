@@ -40,7 +40,7 @@ class ProductAllDataController extends Controller
                 // Small size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_small->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_small['title'][] = (object)$product_data_title_sku;
+                    $product_data_small['title'] = $product_data_title_sku;
                 } else {
                     $product_data_small['title'] = [];
                 }
@@ -67,7 +67,7 @@ class ProductAllDataController extends Controller
                 // Medium size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_medium->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_medium['title'][] = (object)$product_data_title_sku;
+                    $product_data_medium['title'] = $product_data_title_sku;
                 } else {
                     $product_data_medium['title'] = [];
                 }
@@ -94,7 +94,7 @@ class ProductAllDataController extends Controller
                 // Large size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_large->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_large['title'][] = (object)$product_data_title_sku;
+                    $product_data_large['title'] = $product_data_title_sku;
                 } else {
                     $product_data_large['title'] = [];
                 }
