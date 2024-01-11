@@ -37,40 +37,58 @@ class ProductAllDataController extends Controller
             $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
             if ($product_small_dimension) {
                 array_push($product_data_small, $product_small_dimension);
+            } else {
+                $product_small_dimension = [];
             }
 
             $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_small->id)->first();
             if ($product_data_title_sku) {
                 array_push($product_data_small, $product_data_title_sku);
+            } else {
+                $product_data_title_sku = [];
             }
 
             $product_medium = ProductDataSize::whereProductId($id)->whereSize('medium')->first();
             if ($product_medium) {
                 array_push($product_data_medium, $product_medium);
+            } else {
+                $product_medium = [];
             }
 
             $product_medium_dimension = ProductDataDimension::whereProductDataSizeId($product_medium->id)->first();
             if ($product_medium_dimension) {
                 array_push($product_data_medium, $product_medium_dimension);
+            } else {
+                $product_medium_dimension = [];
             }
 
             $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_medium->id)->first();
             if ($product_data_title_sku) {
                 array_push($product_data_large, $product_data_title_sku);
+            } else {
+                $product_data_title_sku = [];
             }
 
 
             $product_large = ProductDataSize::whereProductId($id)->whereSize('large')->first();
             if ($product_large) {
                 array_push($product_data_large, $product_large);
+            } else {
+                $product_large = [];
             }
+
             $product_large_dimension = ProductDataDimension::whereProductDataSizeId($product_large->id)->first();
             if ($product_large_dimension) {
                 array_push($product_data_small, $product_large_dimension);
+            } else {
+                $product_large_dimension = [];
             }
+
             $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_large->id)->first();
             if ($product_data_title_sku) {
                 array_push($product_data_large, $product_data_title_sku);
+            } else {
+                $product_data_title_sku = [];
             }
 
             if (!$product_small) {
