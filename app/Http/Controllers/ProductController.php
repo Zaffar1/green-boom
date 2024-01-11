@@ -104,11 +104,16 @@ class ProductController extends Controller
             'product_name' => 'required',
             'usage' => 'required',
             'title' => 'required',
-            'description' => 'required',
+            'description1' => 'required',
+            'product_type' => 'required',
             'file' => 'required|mimes:jpg,jpeg,png',
         ]);
 
         try {
+            $validate['description2'] = 'Active';
+            $validate['description3'] = 'Active';
+            $validate['description4'] = 'Active';
+            $validate['description5'] = 'Active';
             $validate['status'] = 'Active';
             $file = $request->file('file');
             $new_name = time() . '.' . $file->extension();
