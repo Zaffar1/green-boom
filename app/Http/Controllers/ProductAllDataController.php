@@ -94,7 +94,7 @@ class ProductAllDataController extends Controller
                 // Large size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_large->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_large['title'] = $product_data_title_sku;
+                    $product_data_large['title'][] = (object)$product_data_title_sku;
                 } else {
                     $product_data_large['title'] = [];
                 }
