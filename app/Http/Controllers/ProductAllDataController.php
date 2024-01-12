@@ -112,13 +112,13 @@ class ProductAllDataController extends Controller
             'added_remediation_material' => 'required',
         ]);
 
-        if ($request->case_data == "absorbency_bag") {
-            $validate['absorbency_bag'] = $request->case_data;
-        }
+        // if ($request->case_data == "absorbency_bag") {
+        $validate['absorbency_bag'] = $request->absorbency_bag;
+        // }
 
-        if ($request->case_data == "absorbency_drum") {
-            $validate['absorbency_drum'] = $request->case_data;
-        }
+        // if ($request->case_data == "absorbency_drum") {
+        $validate['absorbency_drum'] = $request->absorbency_drum;
+        // }
 
         try {
             $product = Product::find($request->product_id);
@@ -161,8 +161,8 @@ class ProductAllDataController extends Controller
 
             $validate3 = [
                 "product_id" => $request->product_id,
-                "title_remediation" => $product->title,
-                "sku_rem" => $request->sku_num,
+                "title_remediation" => $request->title_remdiation,
+                "sku_rem" => $request->sku_rem,
                 "product_data_size_id" => $productDataSize->id,
             ];
 
