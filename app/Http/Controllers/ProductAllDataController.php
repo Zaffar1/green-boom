@@ -20,27 +20,29 @@ class ProductAllDataController extends Controller
                 return response()->json(["message" => "Invalid product"]);
             }
 
-            $product_data_small = null;
+            // $product_data_small = null;
             $product_data_medium = [];
             $product_data_large = [];
             $sizePickerArray = [];
 
             // Small size
+            $product_data_small = null; // Initialize as null
+
+            // Small size
             $product_small = ProductDataSize::whereProductId($id)->whereSize('small')->first();
             if ($product_small) {
-                $product_data_small[] = (object)$product_small;
-                // $product_data_small = (object)["size" => $product_small];
+                $product_data_small = (object)["size" => $product_small];
 
                 // Small size dimension
                 $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
                 if ($product_small_dimension) {
-                    $product_data_small[] = ["dimension" => (object)$product_small_dimension];
+                    $product_data_small->dimension = (object)$product_small_dimension;
                 }
 
                 // Small size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_small->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_small[] = ["title" => $product_data_title_sku];
+                    $product_data_small->title = $product_data_title_sku;
                 }
 
                 // Add small size to sizePickerArray
