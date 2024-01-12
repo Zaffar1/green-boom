@@ -43,7 +43,7 @@ class ProductAllDataController extends Controller
                 }
 
                 // Add small size to sizePickerArray
-                $sizePickerArray = (object)["id" => "small", "title" => "small"];
+                $sizePickerArray = ["id" => "small", "title" => "small"];
             }
 
             // Medium size
