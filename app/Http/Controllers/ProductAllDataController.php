@@ -30,7 +30,7 @@ class ProductAllDataController extends Controller
             $product_data_medium = null;
             $product_data_large = null;
             // Small size
-            $product_data_small = []; // Initialize as an empty array
+            $product_data_small = null; // Initialize as an empty array
 
             // Small size
             $product_small = ProductDataSize::whereProductId($id)->whereSize('small')->first();
@@ -63,13 +63,13 @@ class ProductAllDataController extends Controller
                 // Medium size dimension
                 $product_medium_dimension = ProductDataDimension::whereProductDataSizeId($product_medium->id)->first();
                 if ($product_medium_dimension) {
-                    $product_data_medium->dimension[] = (object)$product_medium_dimension;
+                    $product_data_medium->dimension = (object)$product_medium_dimension;
                 }
 
                 // Medium size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_medium->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_medium->title[] = $product_data_title_sku;
+                    $product_data_medium->title = $product_data_title_sku;
                 }
 
                 // Add medium size to sizePickerArray
@@ -84,13 +84,13 @@ class ProductAllDataController extends Controller
                 // Large size dimension
                 $product_large_dimension = ProductDataDimension::whereProductDataSizeId($product_large->id)->first();
                 if ($product_large_dimension) {
-                    $product_data_large->dimension[] = (object)$product_large_dimension;
+                    $product_data_large->dimension = (object)$product_large_dimension;
                 }
 
                 // Large size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_large->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_large->title[] = $product_data_title_sku;
+                    $product_data_large->title = $product_data_title_sku;
                 }
 
                 // Add large size to sizePickerArray
