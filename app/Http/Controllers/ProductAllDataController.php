@@ -48,7 +48,7 @@ class ProductAllDataController extends Controller
                 if ($product_data_title_sku) {
                     $product_data_small['title'] = $product_data_title_sku;
                 }
-
+                return response()->json($product_data_small);
                 // Add small size to sizePickerArray
                 $sizePickerArray[] = (object)["id" => "small", "title" => "small"];
             }
