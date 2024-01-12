@@ -110,6 +110,7 @@ class ProductAllDataController extends Controller
             'qty_case' => 'required',
             'added_remediation_material' => 'required',
         ]);
+
         $validate2 = $request->validate([
             'product_id' => 'required',
             'product_dimensions(LHW)1' => 'required',
@@ -119,12 +120,15 @@ class ProductAllDataController extends Controller
             'weight_product' => 'required',
             'total_weight_product' => 'required',
         ]);
+
         if ($request->case_data == "absorbency_bag") {
             $validate['absorbency_bag'] = $request->case_data;
         }
+
         if ($request->case_data == "absorbency_drum") {
             $validate['absorbency_drum'] = $request->case_data;
         }
+
         try {
             $product = Product::find($request->product_id);
 
@@ -134,8 +138,18 @@ class ProductAllDataController extends Controller
                 $validate['status'] = 'Active';
             }
 
-            ProductDataSize::create($validate);
+            $productDataSize = ProductDataSize::create($validate);
             ProductDataDimension::create($validate2);
+
+            $validate3 = $request->validate([
+                "product_id" => $request->product_id,
+                "title_remediation" => $request->title,
+                "sku_rem" => $request->sku_num,
+                "product_data_size_id" => $productDataSize->id, // Assigning the ID here
+            ]);
+
+            ProductDataTitle::create($validate3);
+
             return response()->json(["message" => "Product Data successfully added"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
