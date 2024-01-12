@@ -97,9 +97,9 @@ class ProductAllDataController extends Controller
 
             return response()->json([
                 "product_data" => $product_data,
-                "small" => [$product_data_small],
-                "medium" => [$product_data_medium],
-                "large" => [$product_data_large],
+                "small", [$product_data_small],
+                "medium", [$product_data_medium],
+                "large", [$product_data_large],
                 "sizePicker" => $sizePickerArray
             ]);
         } catch (\Throwable $th) {
