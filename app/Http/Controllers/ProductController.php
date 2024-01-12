@@ -102,7 +102,7 @@ class ProductController extends Controller
     {
         $validate = $request->validate([
             'product_name' => 'required',
-            'usage' => 'required',
+            // 'usage' => 'required',
             'title' => 'required',
             'description1' => 'required',
             'product_type' => 'required',
@@ -110,6 +110,7 @@ class ProductController extends Controller
         ]);
 
         try {
+            $validate['usage'] = $request->usage;
             $validate['description2'] = $request->description2;
             $validate['description3'] = $request->description3;
             $validate['description4'] = $request->description4;
