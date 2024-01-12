@@ -145,12 +145,13 @@ class ProductAllDataController extends Controller
             ProductDataDimension::create($validate2);
 
             $validate3 = $request->validate([
-                "product_id" => $request->product_id,
-                "title_remediation" => $request->title,
-                "sku_rem" => $request->sku_num,
-                "product_data_size_id" => $productDataSize->id,
+                "product_id" => 'required',
+                "title_remediation" => 'required',
+                "sku_rem" => 'required',
+                "product_data_size_id" => 'required',
             ]);
 
+            $validate3['product_data_size_id'] = $productDataSize->id;
             ProductDataTitle::create($validate3);
 
             return response()->json(["message" => "Product Data successfully added"], 200);
