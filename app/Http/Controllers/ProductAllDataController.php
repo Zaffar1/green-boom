@@ -139,13 +139,16 @@ class ProductAllDataController extends Controller
             }
 
             $productDataSize = ProductDataSize::create($validate);
+
+            // Assigning the ID to validate2
+            $validate2['product_data_size_id'] = $productDataSize->id;
             ProductDataDimension::create($validate2);
 
             $validate3 = $request->validate([
                 "product_id" => $request->product_id,
                 "title_remediation" => $request->title,
                 "sku_rem" => $request->sku_num,
-                "product_data_size_id" => $productDataSize->id, // Assigning the ID here
+                "product_data_size_id" => $productDataSize->id,
             ]);
 
             ProductDataTitle::create($validate3);
