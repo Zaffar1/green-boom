@@ -169,6 +169,7 @@ class ProductAllDataController extends Controller
             $validation3 = Validator::make($validate3, [
                 "product_id" => 'required',
                 "sku_rem" => 'required',
+                "title_remediation" => 'required',
                 "product_data_size_id" => 'required',
             ]);
 
