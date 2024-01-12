@@ -20,7 +20,7 @@ class ProductAllDataController extends Controller
                 return response()->json(["message" => "Invalid product"]);
             }
 
-            $product_data_small = [];
+            // $product_data_small = [];
             $product_data_medium = [];
             $product_data_large = [];
             $sizePickerArray = [];
@@ -32,42 +32,39 @@ class ProductAllDataController extends Controller
             // // Small size
             // $product_data_small = null; // Initialize as an empty array
 
+            $product_data_small = null;
+
             // Small size
             $product_small = ProductDataSize::whereProductId($id)->whereSize('small')->first();
             if ($product_small) {
-                $product_data_small = (object)["size" => $product_small];
+                $product_data_small = [
+                    "size" => (object)[
+                        "id" => $product_small->id,
+                        "product_id" => $product_small->product_id,
+                        "sku_num" => $product_small->sku_num,
+                        "size" => $product_small->size,
+                        "dimensions" => $product_small->dimensions,
+                        "absorbency_bag" => $product_small->absorbency_bag,
+                        "absorbency_drum" => $product_small->absorbency_drum,
+                        "qty_case" => $product_small->qty_case,
+                        "added_remediation_material" => $product_small->added_remediation_material,
+                        "created_at" => $product_small->created_at,
+                        "updated_at" => $product_small->updated_at,
+                    ],
+                    "dimension" => null,
+                    "title" => null,
+                ];
 
                 // Small size dimension
                 $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
                 if ($product_small_dimension) {
-                    $product_data_small->dimension = (object)$product_small_dimension;
+                    $product_data_small["dimension"] = (object)$product_small_dimension;
                 }
 
                 // Small size title_sku
                 $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_small->id)->first();
                 if ($product_data_title_sku) {
-                    $product_data_small->title = $product_data_title_sku;
-                }
-
-                // Add small size to sizePickerArray
-                $sizePickerArray[] = (object)["id" => "small", "title" => "small"];
-            }
-
-            // Medium size
-            $product_medium = ProductDataSize::whereProductId($id)->whereSize('medium')->first();
-            if ($product_medium) {
-                $product_data_medium = (object)["size" => $product_medium];
-
-                // Medium size dimension
-                $product_medium_dimension = ProductDataDimension::whereProductDataSizeId($product_medium->id)->first();
-                if ($product_medium_dimension) {
-                    $product_data_medium->dimension = (object)$product_medium_dimension;
-                }
-
-                // Medium size title_sku
-                $product_data_title_sku = ProductDataTitle::whereProductDataSizeId($product_medium->id)->first();
-                if ($product_data_title_sku) {
-                    $product_data_medium->title = $product_data_title_sku;
+                    $product_data_small["title"] = $product_data_title_sku;
                 }
 
                 // Add medium size to sizePickerArray
