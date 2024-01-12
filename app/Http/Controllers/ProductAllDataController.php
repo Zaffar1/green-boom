@@ -33,7 +33,7 @@ class ProductAllDataController extends Controller
                 // Small size dimension
                 $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
                 if ($product_small_dimension) {
-                    $product_data_small = ["dimension" => (object)$product_small_dimension];
+                    $product_data_small = ["dimension" => $product_small_dimension];
                 }
 
                 // Small size title_sku
@@ -54,7 +54,7 @@ class ProductAllDataController extends Controller
                 // Medium size dimension
                 $product_medium_dimension = ProductDataDimension::whereProductDataSizeId($product_medium->id)->first();
                 if ($product_medium_dimension) {
-                    $product_data_medium = ["dimension" => (object)$product_medium_dimension];
+                    $product_data_medium = ["dimension" => $product_medium_dimension];
                 }
 
                 // Medium size title_sku
@@ -75,7 +75,7 @@ class ProductAllDataController extends Controller
                 // Large size dimension
                 $product_large_dimension = ProductDataDimension::whereProductDataSizeId($product_large->id)->first();
                 if ($product_large_dimension) {
-                    $product_data_large = ["dimension" => (object)$product_large_dimension];
+                    $product_data_large = ["dimension" => $product_large_dimension];
                 }
 
                 // Large size title_sku
