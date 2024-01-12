@@ -49,7 +49,7 @@ class ProductAllDataController extends Controller
                     $small_data->title = $product_data_title_sku;
                 }
 
-                $product_data_small[] = $small_data;
+                // $product_data_small[] = $small_data;
 
                 // Add small size to sizePickerArray
                 $sizePickerArray[] = (object)["id" => "small", "title" => "small"];
@@ -99,7 +99,7 @@ class ProductAllDataController extends Controller
 
             return response()->json([
                 "product_data" => $product_data,
-                "small" => $product_data_small,
+                "small" => [$product_data_small],
                 "medium" => $product_data_medium,
                 "large" => $product_data_large,
                 "sizePicker" => $sizePickerArray
