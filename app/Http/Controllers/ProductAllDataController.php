@@ -98,4 +98,47 @@ class ProductAllDataController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+
+    public function addProductData(Request $request)
+    {
+        $validate = $request->validate([
+            'product_id' => 'required',
+            'sku_num' => 'required',
+            'size' => 'required',
+            'dimensions' => 'required',
+            'qty_case' => 'required',
+            'added_remediation_material' => 'required',
+        ]);
+        $validate2 = $request->validate([
+            'product_id' => 'required',
+            'product_dimensions(LHW)1' => 'required',
+            'product_dimensions(LHW)2' => 'required',
+            'packaging_dimensions(LHW)1' => 'required',
+            'packaging_dimensions(LHW)2' => 'required',
+            'weight_product' => 'required',
+            'total_weight_product' => 'required',
+        ]);
+        if ($request->case_data == "absorbency_bag") {
+            $validate['absorbency_bag'] = $request->case_data;
+        }
+        if ($request->case_data == "absorbency_drum") {
+            $validate['absorbency_drum'] = $request->case_data;
+        }
+        try {
+            $product = Product::find($request->product_id);
+
+            if (!$product) {
+                return response()->json(['message' => 'Invalid product']);
+            } else {
+                $validate['status'] = 'Active';
+            }
+
+            ProductDataSize::create($validate);
+            ProductDataDimension::create($validate2);
+            return response()->json(["message" => "Product Data successfully added"], 200);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }
