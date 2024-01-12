@@ -10,7 +10,7 @@ class ProductDataTitle extends Model
     use HasFactory;
     protected $fillable = [
         'product_id',
-        'title_rem',
+        'title_remediation',
         'sku_rem',
         'product_data_size_id',
     ];
