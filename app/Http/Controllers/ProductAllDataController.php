@@ -30,12 +30,12 @@ class ProductAllDataController extends Controller
             $product_data_medium = null;
             $product_data_large = null;
             // Small size
-            $product_data_small = ["size" => null, "dimension" => null, "title" => null]; // Initialize as an empty array
+            $product_data_small = null; // Initialize as an empty array
 
             // Small size
             $product_small = ProductDataSize::whereProductId($id)->whereSize('small')->first();
             if ($product_small) {
-                $product_data_small = $product_small;
+                $product_data_small = (object)["size" => $product_small];
 
                 // Small size dimension
                 $product_small_dimension = ProductDataDimension::whereProductDataSizeId($product_small->id)->first();
