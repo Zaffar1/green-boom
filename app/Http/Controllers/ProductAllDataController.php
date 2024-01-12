@@ -119,6 +119,7 @@ class ProductAllDataController extends Controller
             'packaging_dimensions(LHW)2' => 'required',
             'weight_product' => 'required',
             'total_weight_product' => 'required',
+            'product_data_size' => 'required', // Add this line
         ]);
 
         if ($request->case_data == "absorbency_bag") {
@@ -140,18 +141,21 @@ class ProductAllDataController extends Controller
 
             $productDataSize = ProductDataSize::create($validate);
 
-            // Assigning the ID to validate2
+            // Remove the unnecessary field
+            unset($validate2['product_data_size']);
+
+            // Add the product_data_size_id
             $validate2['product_data_size_id'] = $productDataSize->id;
+
             ProductDataDimension::create($validate2);
 
             $validate3 = $request->validate([
-                "product_id" => 'required',
-                "title_remediation" => 'required',
-                "sku_rem" => 'required',
-                "product_data_size_id" => 'required',
+                "product_id" => $request->product_id,
+                "title_remediation" => $request->title,
+                "sku_rem" => $request->sku_num,
+                "product_data_size_id" => $productDataSize->id,
             ]);
 
-            $validate3['product_data_size_id'] = $productDataSize->id;
             ProductDataTitle::create($validate3);
 
             return response()->json(["message" => "Product Data successfully added"], 200);
