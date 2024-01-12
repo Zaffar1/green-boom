@@ -7,7 +7,6 @@ use App\Models\ProductDataDimension;
 use App\Models\ProductDataSize;
 use App\Models\ProductDataTitle;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ProductAllDataController extends Controller
 {
@@ -112,6 +111,7 @@ class ProductAllDataController extends Controller
             'added_remediation_material' => 'required',
         ]);
 
+
         if ($request->case_data == "absorbency_bag") {
             $validate['absorbency_bag'] = $request->case_data;
         }
@@ -131,18 +131,7 @@ class ProductAllDataController extends Controller
 
             $productDataSize = ProductDataSize::create($validate);
 
-            $validate2 = [
-                'product_id' => $request->product_id,
-                'product_dimensions(LHW)1' => $request->input('product_dimensions(LHW)1'),
-                'product_dimensions(LHW)2' => $request->input('product_dimensions(LHW)2'),
-                'packaging_dimensions(LHW)1' => $request->input('packaging_dimensions(LHW)1'),
-                'packaging_dimensions(LHW)2' => $request->input('packaging_dimensions(LHW)2'),
-                'weight_product' => $request->input('weight_product'),
-                'total_weight_product' => $request->input('total_weight_product'),
-                "product_data_size_id" => $productDataSize->id,
-            ];
-
-            $validation2 = Validator::make($validate2, [
+            $validate2 = $request->validate([
                 'product_id' => 'required',
                 'product_dimensions(LHW)1' => 'required',
                 'product_dimensions(LHW)2' => 'required',
@@ -150,32 +139,17 @@ class ProductAllDataController extends Controller
                 'packaging_dimensions(LHW)2' => 'required',
                 'weight_product' => 'required',
                 'total_weight_product' => 'required',
-                'product_data_size_id' => 'required',
+                "product_data_size_id" => $productDataSize->id,
             ]);
-
-            if ($validation2->fails()) {
-                return response()->json(["error" => $validation2->errors()], 400);
-            }
 
             ProductDataDimension::create($validate2);
 
-            $validate3 = [
+            $validate3 = $request->validate([
                 "product_id" => $request->product_id,
                 "title_remediation" => $request->title,
                 "sku_rem" => $request->sku_num,
                 "product_data_size_id" => $productDataSize->id,
-            ];
-
-            $validation3 = Validator::make($validate3, [
-                "product_id" => 'required',
-                "title_remediation" => $request->title,
-                "sku_rem" => $request->sku_num,
-                "product_data_size_id" => 'required',
             ]);
-
-            if ($validation3->fails()) {
-                return response()->json(["error" => $validation3->errors()], 400);
-            }
 
             ProductDataTitle::create($validate3);
 
