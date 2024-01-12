@@ -85,7 +85,7 @@ class ProductAllDataController extends Controller
                 }
 
                 // Add large size to sizePickerArray
-                $sizePickerArray[] = (object)["id" => "large", "title" => "large"];
+                $sizePickerArray[] = ["id" => "large", "title" => "large"];
             }
 
             return response()->json([
