@@ -12,12 +12,7 @@ class Product extends Model
         'product_name',
         'usage',
         'title',
-        'description1',
-        'description2',
-        'description3',
-        'description4',
-        'description5',
-        'product_type',
+        'description',
         'file',
         'status'
     ];

@@ -33,4 +33,9 @@ class ProductDataSize extends Model
     {
         return $this->hasMany(ProductDataTitle::class);
     }
+
+    public function productDescription()
+    {
+        return $this->hasMany(ProductDescription::class);
+    }
 }

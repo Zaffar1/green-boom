@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ProductDataDimension;
 use App\Models\ProductDataSize;
 use App\Models\ProductDataTitle;
+use App\Models\ProductDescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -139,6 +140,13 @@ class ProductAllDataController extends Controller
 
             $productDataSize = ProductDataSize::create($validate);
 
+            $subDescriptionArray = $request->sub_description;
+            $subDescriptionJson = json_encode($subDescriptionArray);
+            ProductDescription::create([
+                'sub_description' => $subDescriptionJson,
+                'product_data_size_id' => $productDataSize->id,
+            ]);
+
             $validate2 = [
                 'product_id' => $request->product_id,
                 'product_dimensions(LHW)1' => $request->input('product_dimensions(LHW)1'),
@@ -195,7 +203,6 @@ class ProductAllDataController extends Controller
 
     public function productAllData($id)
     {
-
         try {
             $product = Product::find($id);
             if (!$product)
