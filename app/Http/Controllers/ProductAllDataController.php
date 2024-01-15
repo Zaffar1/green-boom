@@ -177,7 +177,7 @@ class ProductAllDataController extends Controller
 
             $validate3 = [
                 "product_id" => $request->product_id,
-                "title_remediation" => $request->title_remdiation,
+                "title_remediation" => $request->title_remediation,
                 "sku_rem" => $request->sku_rem,
                 "product_data_size_id" => $productDataSize->id,
             ];
