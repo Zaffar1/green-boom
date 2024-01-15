@@ -195,8 +195,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('all-product-data', [ProductDataController::class, 'allProductData']);
         // Route::post('add-product-data', [ProductDataController::class, 'addProductData']);
         // Route::get('productData/{id}', [ProductDataController::class, 'productData']);
-        Route::delete('delete-product-data/{id}', [ProductDataController::class, 'deleteProductData']);
+        // Route::delete('delete-product-data/{id}', [ProductDataController::class, 'deleteProductData']);
         Route::post('add-product-data', [ProductAllDataController::class, 'addProductData']);
+        Route::delete('delete-product-data/{id}', [ProductAllDataController::class, 'deleteProductAllData']);
+
 
         Route::get('productData/{id}', [ProductAllDataController::class, 'productAllData']);
         /////////// Youtube

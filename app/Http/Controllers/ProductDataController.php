@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductData;
+use App\Models\ProductDataDimension;
+use App\Models\ProductDataSize;
+use App\Models\ProductDataTitle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -66,18 +69,21 @@ class ProductDataController extends Controller
             else
                 // $productData = ProductData::whereProductId($product->id)->orderBy('id', 'DESC')->get();
                 $productData = ProductData::whereProductId($product->id)->orderBy('id', 'DESC')->get();
-                return response()->json(["data" => $productData]);
+            return response()->json(["data" => $productData]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
-    public function deleteProductData($id)
+    public function deleteProductAllData($id)
     {
         try {
-            $product_data = ProductData::find($id);
+            $product_data = ProductDataSize::find($id);
             if (!$product_data) {
                 return response()->json(["error" => "Product not found"], 404);
+            } else {
+                ProductDataDimension::whereProductDataSizeId($id)->delete();
+                ProductDataTitle::whereProductDataSizeId($id)->delete();
             }
             $filePath = $product_data->file;
             $product_data->delete();
