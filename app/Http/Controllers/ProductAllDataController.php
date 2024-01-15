@@ -7,6 +7,7 @@ use App\Models\ProductDataDimension;
 use App\Models\ProductDataSize;
 use App\Models\ProductDataTitle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProductAllDataController extends Controller
@@ -203,6 +204,25 @@ class ProductAllDataController extends Controller
                 // $productData = ProductData::whereProductId($product->id)->orderBy('id', 'DESC')->get();
                 $productData = ProductDataSize::whereProductId($product->id)->with('productDataDimension')->orderBy('id', 'DESC')->get();
             return response()->json(["data" => $productData]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function deleteProductAllData($id)
+    {
+        try {
+            $product_data = ProductDataSize::find($id);
+            if (!$product_data) {
+                return response()->json(["error" => "Product not found"], 404);
+            } else {
+                ProductDataDimension::whereProductDataSizeId($id)->delete();
+                ProductDataTitle::whereProductDataSizeId($id)->delete();
+            }
+            $filePath = $product_data->file;
+            $product_data->delete();
+            Storage::delete($filePath);
+            return response()->json(["message" => "Product data successfully deleted"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
