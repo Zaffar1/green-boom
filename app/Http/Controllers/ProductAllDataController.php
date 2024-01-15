@@ -191,4 +191,20 @@ class ProductAllDataController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    public function productAllData($id)
+    {
+
+        try {
+            $product = Product::find($id);
+            if (!$product)
+                return response()->json(["message" => "Invalid product"]);
+            else
+                // $productData = ProductData::whereProductId($product->id)->orderBy('id', 'DESC')->get();
+                $productData = ProductDataSize::whereProductId($product->id)->with('productDataDimension')->orderBy('id', 'DESC')->get();
+            return response()->json(["data" => $productData]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }

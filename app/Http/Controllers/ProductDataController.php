@@ -64,8 +64,9 @@ class ProductDataController extends Controller
             if (!$product)
                 return response()->json(["message" => "Invalid product"]);
             else
+                // $productData = ProductData::whereProductId($product->id)->orderBy('id', 'DESC')->get();
                 $productData = ProductData::whereProductId($product->id)->orderBy('id', 'DESC')->get();
-            return response()->json(["data" => $productData]);
+                return response()->json(["data" => $productData]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
