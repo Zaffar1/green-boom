@@ -51,6 +51,11 @@ class ProductAllDataController extends Controller
                     $product_data_small['title'] = [$product_data_title_sku];
                 }
 
+                $product_description = ProductDescription::whereProductDataSizeId($product_small->id)->first();
+                if ($product_description) {
+                    $product_data_small['desc'] = [$product_description];
+                }
+
                 // Add small size to sizePickerArray
                 $sizePickerArray[] = (object)["id" => "small", "title" => "small"];
             }
@@ -72,6 +77,10 @@ class ProductAllDataController extends Controller
                     $product_data_medium['title'] = [$product_data_title_sku];
                 }
 
+                $product_description = ProductDescription::whereProductDataSizeId($product_medium->id)->first();
+                if ($product_description) {
+                    $product_data_medium['desc'] = [$product_description];
+                }
                 // Add medium size to sizePickerArray
                 $sizePickerArray[] = (object)["id" => "medium", "title" => "medium"];
             }
@@ -93,6 +102,10 @@ class ProductAllDataController extends Controller
                     $product_data_large['title'] = [$product_data_title_sku];
                 }
 
+                $product_description = ProductDescription::whereProductDataSizeId($product_large->id)->first();
+                if ($product_description) {
+                    $product_data_large['desc'] = [$product_description];
+                }
                 // Add large size to sizePickerArray
                 $sizePickerArray[] = (object)["id" => "large", "title" => "large"];
             }
