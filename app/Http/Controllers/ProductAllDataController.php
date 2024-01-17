@@ -137,7 +137,11 @@ class ProductAllDataController extends Controller
         // if ($request->case_data == "absorbency_bag") {
         $validate['absorbency_bag'] = $request->absorbency_bag;
         // }
-
+        $validate['absorbency_pillow'] = $request->absorbency_bag;
+        $validate['absorbency_sock'] = $request->absorbency_bag;
+        $validate['absorbency_boom'] = $request->absorbency_bag;
+        $validate['absorbency_mat'] = $request->absorbency_bag;
+        $validate['absorbency_kit'] = $request->absorbency_bag;
         // if ($request->case_data == "absorbency_drum") {
         $validate['absorbency_drum'] = $request->absorbency_drum;
         // }
@@ -167,10 +171,11 @@ class ProductAllDataController extends Controller
                 'packaging_dimensions(LHW)1' => $request->input('packaging_dimensions(LHW)1'),
                 'packaging_dimensions(LHW)2' => $request->input('packaging_dimensions(LHW)2'),
                 'weight_product' => $request->input('weight_product'),
-                'total_weight_product' => $request->input('total_weight_product'),
                 "product_data_size_id" => $productDataSize->id,
             ];
-
+            $validate2['total_weight_product'] = $request->input('total_weight_product');
+            $validate2['total_weight_case'] = $request->input('total_weight_case');
+            $validate2['total_weight_kit'] = $request->input('total_weight_kit');
             $validation2 = Validator::make($validate2, [
                 'product_id' => 'required',
                 'product_dimensions(LHW)1' => 'required',

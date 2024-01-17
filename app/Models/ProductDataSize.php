@@ -15,6 +15,12 @@ class ProductDataSize extends Model
         'dimensions',
         'absorbency_bag',
         'absorbency_drum',
+        'absorbency_pillow',
+        'absorbency_boom',
+        'absorbency_sock',
+        'absorbency_mat',
+        'absorbency_kit',
+        'capacity',
         'qty_case',
         'added_remediation_material',
     ];

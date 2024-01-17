@@ -17,6 +17,8 @@ class ProductDataDimension extends Model
         'weight_product',
         'total_weight_product',
         'product_data_size_id',
+        'total_weight_case',
+        'total_weight_kit',
     ];
 
     public function product()
