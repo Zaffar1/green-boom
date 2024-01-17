@@ -261,9 +261,11 @@ class ProductAllDataController extends Controller
             if (!$product) {
                 return response()->json(["message" => "Invalid product"]);
             }
-            $product_size = ProductDataSize::whereProductId($product->id)->get();
+            $product_size = ProductDataSize::whereProductId($product->id)->first();
             if (!$product_size) {
                 return response()->json(["message" => "Invalid product size"]);
+            } else {
+                $product_size_data = ProductDataSize::whereProductId($product->id)->get();
             }
             $product_dimension = ProductDataDimension::whereProductDataSizeId($product_size->id)->get();
             if (!$product_dimension) {
@@ -278,7 +280,7 @@ class ProductAllDataController extends Controller
                 return response()->json(["message" => "Invalid product description"]);
             }
             return response()->json([
-                "product" => $product, "product_size" => $product_size,
+                "product" => $product, "product_size" => $product_size_data,
                 "product_dimension" => $product_dimension, "product_title" => $product_title,
                 "product_description" => $product_description,
             ]);
