@@ -258,10 +258,25 @@ class ProductAllDataController extends Controller
     {
         try {
             $product = Product::find($id);
+            if (!$product) {
+                return response()->json(["message" => "Invalid product"]);
+            }
             $product_size = ProductDataSize::whereProductId($product->id)->get();
+            if (!$product_size) {
+                return response()->json(["message" => "Invalid product size"]);
+            }
             $product_dimension = ProductDataDimension::whereProductDataSizeId($product_size->id)->get();
+            if (!$product_dimension) {
+                return response()->json(["message" => "Invalid product dimension"]);
+            }
             $product_title = ProductDataTitle::whereProductDataSizeId($product_size->id)->get();
+            if (!$product_title) {
+                return response()->json(["message" => "Invalid product title"]);
+            }
             $product_description = ProductDescription::whereProductDataSizeId($product_size->id)->get();
+            if (!$product_description) {
+                return response()->json(["message" => "Invalid product description"]);
+            }
             return response()->json([
                 "product" => $product, "product_size" => $product_size,
                 "product_dimension" => $product_dimension, "product_title" => $product_title,
