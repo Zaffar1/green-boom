@@ -243,11 +243,30 @@ class ProductAllDataController extends Controller
             } else {
                 ProductDataDimension::whereProductDataSizeId($id)->delete();
                 ProductDataTitle::whereProductDataSizeId($id)->delete();
+                ProductDescription::whereProductDataSizeId($id)->delete();
                 $filePath = $product_data->file;
                 $product_data->delete();
                 Storage::delete($filePath);
                 return response()->json(["message" => "Product data successfully deleted"]);
             }
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function productDataDetails($id)
+    {
+        try {
+            $product = Product::find($id);
+            $product_size = ProductDataSize::whereProductId($product->id)->get();
+            $product_dimension = ProductDataDimension::whereProductDataSizeId($product_size->id)->get();
+            $product_title = ProductDataTitle::whereProductDataSizeId($product_size->id)->get();
+            $product_description = ProductDescription::whereProductDataSizeId($product_size->id)->get();
+            return response()->json([
+                "product" => $product, "product_size" => $product_size,
+                "product_dimension" => $product_dimension, "product_title" => $product_title,
+                "product_description" => $product_description,
+            ]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
