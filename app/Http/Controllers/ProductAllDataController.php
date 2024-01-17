@@ -243,11 +243,11 @@ class ProductAllDataController extends Controller
             } else {
                 ProductDataDimension::whereProductDataSizeId($id)->delete();
                 ProductDataTitle::whereProductDataSizeId($id)->delete();
+                $filePath = $product_data->file;
+                $product_data->delete();
+                Storage::delete($filePath);
+                return response()->json(["message" => "Product data successfully deleted"]);
             }
-            $filePath = $product_data->file;
-            $product_data->delete();
-            Storage::delete($filePath);
-            return response()->json(["message" => "Product data successfully deleted"]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
