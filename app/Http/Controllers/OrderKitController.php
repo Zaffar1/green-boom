@@ -37,6 +37,10 @@ class OrderKitController extends Controller
         ]);
         $validate['status'] = 'Active';
         try {
+            $file = $request->file('image');
+            $new_name = time() . '.' . $file->extension();
+            $file->move(public_path('storage/orderKit'), $new_name);
+            $validate['image'] = "storage/orderKit/$new_name";
             OrderKit::create($validate);
             return response()->json(["message" => "Order kit successfully added"]);
         } catch (\Throwable $th) {
