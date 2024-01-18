@@ -5,6 +5,7 @@ use App\Http\Controllers\CatalogBroucherController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
 use App\Http\Controllers\OrderKitController;
+use App\Http\Controllers\OrderKitFormController;
 use App\Http\Controllers\PerfectSaleController;
 use App\Http\Controllers\PerfectSaleMediaController;
 use App\Http\Controllers\ProductAllDataController;
@@ -81,6 +82,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         //////////Order kit
         Route::get('order-kit-list', [OrderKitController::class, 'customerAllOrderKits']);
+        Route::post('add-order-kit', [OrderKitFormController::class, 'addOrderForm']);
 
         /////// Faqs
         Route::get('faqs-list', [FaqController::class, 'customerAllFaqs']);
@@ -204,6 +206,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-product-data/{id}', [ProductAllDataController::class, 'deleteProductAllData']);
         Route::get('productData/{id}', [ProductAllDataController::class, 'productAllData']);
         Route::get('productDetails/{id}', [ProductAllDataController::class, 'productDataDetails']);
+
 
 
         ///////////// Order Kit
