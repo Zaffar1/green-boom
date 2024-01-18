@@ -14,11 +14,7 @@ class OrderKit extends Model
         'description',
         'kit_includes',
         'image',
+        'file',
         'status',
     ];
-
-    public function videos()
-    {
-        return $this->hasMany(OrderKitVideo::class);
-    }
 }
