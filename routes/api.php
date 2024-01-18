@@ -4,6 +4,7 @@ use App\Http\Controllers\BenDuffyQuestionController;
 use App\Http\Controllers\CatalogBroucherController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
+use App\Http\Controllers\OrderKitController;
 use App\Http\Controllers\PerfectSaleController;
 use App\Http\Controllers\PerfectSaleMediaController;
 use App\Http\Controllers\ProductAllDataController;
@@ -77,6 +78,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('product-data/{id}', [ProductAllDataController::class, 'allProductData']);
         //////////// Product Data
         // Route::get('product-data-list', [ProductDataController::class, 'customerAllProductData']);
+
+        //////////Order kit
+        Route::get('order-kit-list', [OrderKitController::class, 'customerAllOrderKits']);
 
         /////// Faqs
         Route::get('faqs-list', [FaqController::class, 'customerAllFaqs']);
@@ -200,6 +204,12 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::delete('delete-product-data/{id}', [ProductAllDataController::class, 'deleteProductAllData']);
         Route::get('productData/{id}', [ProductAllDataController::class, 'productAllData']);
         Route::get('productDetails/{id}', [ProductAllDataController::class, 'productDataDetails']);
+
+
+        ///////////// Order Kit
+        Route::get('all-order-kit', [OrderKitController::class, 'allOrderKits']);
+        Route::post('add-order-kit', [OrderKitController::class, 'addOrderKit']);
+
 
 
         /////////// Youtube
