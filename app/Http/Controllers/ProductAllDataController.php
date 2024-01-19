@@ -131,7 +131,7 @@ class ProductAllDataController extends Controller
             'size' => 'required',
             'dimensions' => 'required',
             'qty_case' => 'required',
-            'added_remediation_material' => 'required',
+            // 'added_remediation_material' => 'required',
         ]);
 
         // if ($request->case_data == "absorbency_bag") {
@@ -145,7 +145,7 @@ class ProductAllDataController extends Controller
         // if ($request->case_data == "absorbency_drum") {
         $validate['absorbency_drum'] = $request->absorbency_drum;
         // }
-
+        $validate['added_remediation_material'] = $request->added_remediation_material;
         try {
             $product = Product::find($request->product_id);
 
@@ -176,14 +176,16 @@ class ProductAllDataController extends Controller
             $validate2['total_weight_product'] = $request->input('total_weight_product');
             $validate2['total_weight_case'] = $request->input('total_weight_case');
             $validate2['total_weight_kit'] = $request->input('total_weight_kit');
+            $validate2['weight_product'] = $request->input('weight_product');
+            $validate2['total_weight_product'] = $request->input('total_weight_product');
             $validation2 = Validator::make($validate2, [
                 'product_id' => 'required',
                 'product_dimensions(LHW)1' => 'required',
                 'product_dimensions(LHW)2' => 'required',
                 'packaging_dimensions(LHW)1' => 'required',
                 'packaging_dimensions(LHW)2' => 'required',
-                'weight_product' => 'required',
-                'total_weight_product' => 'required',
+                // 'weight_product' => 'required',
+                // 'total_weight_product' => 'required',
                 'product_data_size_id' => 'required',
             ]);
 
@@ -199,11 +201,12 @@ class ProductAllDataController extends Controller
                 "sku_rem" => $request->sku_rem,
                 "product_data_size_id" => $productDataSize->id,
             ];
-
+            $validate2['sku_rem'] = $request->input('total_weight_product');
+            $validate2['title_remediation'] = $request->input('total_weight_product');
             $validation3 = Validator::make($validate3, [
                 "product_id" => 'required',
-                "sku_rem" => 'required',
-                "title_remediation" => 'required',
+                // "sku_rem" => 'required',
+                // "title_remediation" => 'required',
                 "product_data_size_id" => 'required',
             ]);
 
