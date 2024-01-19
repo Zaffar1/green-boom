@@ -142,6 +142,7 @@ class ProductAllDataController extends Controller
         $validate['absorbency_boom'] = $request->absorbency_bag;
         $validate['absorbency_mat'] = $request->absorbency_bag;
         $validate['absorbency_kit'] = $request->absorbency_bag;
+        $validate['capacity'] = $request->absorbency_bag;
         // if ($request->case_data == "absorbency_drum") {
         $validate['absorbency_drum'] = $request->absorbency_drum;
         // }
