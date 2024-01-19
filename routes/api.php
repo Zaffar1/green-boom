@@ -59,6 +59,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('training-media', [TrainingMediaController::class, 'trainingMedia']);
         Route::get('training-detail', [TrainingController::class, 'trainingDetail']);
 
+        //////// Welcome Video
+        Route::get('welcome-video', [WelcomeVideoController::class, 'welcomeVideo']);
+
         //////////// Videos
         Route::get('all-videos', [VideoController::class, 'customerAllVideos']);
         Route::get('video-detail', [VideoController::class, 'videoDetail']);

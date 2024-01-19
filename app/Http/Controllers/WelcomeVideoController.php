@@ -19,6 +19,16 @@ class WelcomeVideoController extends Controller
         }
     }
 
+    public function welcomeVideo()
+    {
+        try {
+            $welcome_video = WelcomeVideo::whereStatus('Active')->latest()->take(1);
+            return response()->json(["welcome_video" => $welcome_video]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
     public function uploadWelcomeVideo(Request $request)
     {
         $request->validate([
