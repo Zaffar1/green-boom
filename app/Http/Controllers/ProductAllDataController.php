@@ -18,7 +18,7 @@ class ProductAllDataController extends Controller
         try {
             $product_data = Product::find($id);
 
-            $fileData = Product::whereId($id)->first()->pluck('file');
+            $fileData = Product::where('id', $id)->value('file');
             if (!$product_data) {
                 return response()->json(["message" => "Invalid product"]);
             }
