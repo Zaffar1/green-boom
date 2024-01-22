@@ -131,6 +131,7 @@ class UserController extends Controller
                 "email" => $request->email,
                 "password" => Hash::make($request->password),
                 "api_token" => $token,
+                "company_name" => $request->company_name,
                 // "type" => $request->type,
                 "status" => $status,
             ]);
