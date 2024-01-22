@@ -18,6 +18,12 @@ class ProductAllDataController extends Controller
         try {
             $product_data = Product::find($id);
 
+            $product = Product::whereId($id)->first();
+
+            if ($product) {
+
+                $fileData = $product->pluck('file');
+            }
             if (!$product_data) {
                 return response()->json(["message" => "Invalid product"]);
             }
@@ -115,7 +121,8 @@ class ProductAllDataController extends Controller
                 "small" => [$product_data_small],
                 "medium" => [$product_data_medium],
                 "large" => [$product_data_large],
-                "sizePicker" => $sizePickerArray
+                "sizePicker" => $sizePickerArray,
+                "image" => $fileData
             ]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);

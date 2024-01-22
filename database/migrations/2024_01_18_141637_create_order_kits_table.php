@@ -18,7 +18,7 @@ class CreateOrderKitsTable extends Migration
             $table->string('title')->nullable();
             $table->string('short_description')->nullable();
             $table->string('description')->nullable();
-            $table->json('kit_includes')->nullable();
+            $table->string('kit_includes')->nullable();
             $table->string('image')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
