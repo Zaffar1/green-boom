@@ -154,7 +154,7 @@ class UserController extends Controller
 
             // $createdUser = $auth->createUser($userProperties);
 
-            return response()->json(["message" => " Your registration successfully done & mail sent", "token" => $token, 'user' => $userDetails]);
+            return response()->json(["message" => " Your registration successfully done & mail sent", "token" => $token, 'detail' => $userDetails]);
             // } else {
             //     return response()->json(["message" => " password & confirm password doesn't match"], 422);
             // }
