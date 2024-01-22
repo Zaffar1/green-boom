@@ -117,7 +117,7 @@ class ProductAllDataController extends Controller
                 "medium" => [$product_data_medium],
                 "large" => [$product_data_large],
                 "sizePicker" => $sizePickerArray,
-                "image" => $fileData
+                "image" => [$fileData]
             ]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
