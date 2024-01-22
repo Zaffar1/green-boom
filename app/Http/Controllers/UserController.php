@@ -138,6 +138,7 @@ class UserController extends Controller
             // Mail::to($request->email)->send(new PaymentProcessLink($payment_link, $code));
             $users->save();
 
+            $userDetails = User::find($users->id);
             // $factory = (new Factory)->withServiceAccount('../docdesh-cdb03-firebase-adminsdk-d1b0v-1582c88d5a.json')->withDatabaseUri('https://docdesh-cdb03-default-rtdb.firebaseio.com/');
             // $factory = (new Factory)->withServiceAccount(config('app.FIREBASE_CREDENTIALS'))->withDatabaseUri(config('app.FIREBASE_DATABASE_URL'));
             // // $database = $factory->createDatabase();
@@ -153,7 +154,7 @@ class UserController extends Controller
 
             // $createdUser = $auth->createUser($userProperties);
 
-            return response()->json(["message" => " Your registration successfully done & mail sent", "token" => $token]);
+            return response()->json(["message" => " Your registration successfully done & mail sent", "token" => $token, 'user' => $userDetails]);
             // } else {
             //     return response()->json(["message" => " password & confirm password doesn't match"], 422);
             // }
@@ -200,7 +201,7 @@ class UserController extends Controller
                 $user->profile_image = "storage/users/$new_name";
             }
             $user->save();
-            return response()->json(["message" => "User successfully updated", "user" => $user]);
+            return response()->json(["message" => "User details successfully updated", "user" => $user]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
