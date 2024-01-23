@@ -18,7 +18,7 @@ class OrderKitFormController extends Controller
                 "last_name" => $request->last_name,
                 "email" => $request->email,
                 "phone" => $request->phone,
-                "company_name" => $request->company_name,
+                "company" => $request->company,
                 "country" => $request->country,
                 "state" => $request->state,
                 "zip_code" => $request->zip_code,
