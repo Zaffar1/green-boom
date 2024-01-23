@@ -37,7 +37,7 @@ class TrainingController extends Controller
                     $data = MsdSheet::whereStatus('Active')->orderBy('id', 'DESC')->get();
                     break;
 
-                case 'Video':
+                case 'video':
                     $data = Video::whereStatus('Active')->orderBy('id', 'DESC')->get();
                     break;
 
