@@ -114,13 +114,13 @@ class ProductController extends Controller
             $validate['description'] = $request->description;
 
             $validate['status'] = 'Active';
-            $path = $request->file('file')->store('newProducts/images', 's3');
-            $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
-            $validate['file'] = $path;
-            // $file = $request->file('file');
-            // $new_name = time() . '.' . $file->extension();
-            // $file->move(public_path('storage/products'), $new_name);
-            // $validate['file'] = "storage/products/$new_name";
+            // $path = $request->file('file')->store('newProducts/images', 's3');
+            // $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
+            // $validate['file'] = $path;
+            $file = $request->file('file');
+            $new_name = time() . '.' . $file->extension();
+            $file->move(public_path('storage/products'), $new_name);
+            $validate['file'] = "storage/products/$new_name";
             Product::create($validate);
 
             return response()->json(['message' => 'Product successfully added']);
