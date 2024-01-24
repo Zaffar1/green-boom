@@ -196,6 +196,7 @@ class UserController extends Controller
             $user = User::find(auth()->user()->id);
             // $validate['image'] = $request->file('image')->store('public/users');
             $user->name = $request->name;
+            $user->last_name = $request->last_name;
             $user->company_name = $request->company_name;
             if ($request->file('profile_image')) {
                 $new_name = time() . '.' . $request->profile_image->extension();
