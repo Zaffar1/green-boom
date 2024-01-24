@@ -128,6 +128,7 @@ class UserController extends Controller
             // if ($request->password == $request->confirm_password) {
             $users = new User([
                 "name" => $request->name,
+                "last_name" => $request->last_name,
                 "email" => $request->email,
                 "password" => Hash::make($request->password),
                 "api_token" => $token,
