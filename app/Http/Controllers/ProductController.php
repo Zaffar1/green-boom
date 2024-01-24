@@ -104,13 +104,15 @@ class ProductController extends Controller
             'product_name' => 'required',
             // 'usage' => 'required',
             'title' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
             'product_type' => 'required',
             'file' => 'required|mimes:jpg,jpeg,png',
         ]);
 
         try {
             $validate['usage'] = $request->usage;
+            $validate['description'] = $request->description;
+
             $validate['status'] = 'Active';
             $path = $request->file('file')->store('newProducts/images', 's3');
             $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
