@@ -35,7 +35,7 @@ class WelcomeVideoController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'file' => 'required|mimes:mp4,mov,avi|max:204800', // Adjust the max size as needed
+            'file' => 'required|mimes:mp4,mov,avi', // Adjust the max size as needed
         ]);
 
         try {
