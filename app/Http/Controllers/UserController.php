@@ -125,6 +125,7 @@ class UserController extends Controller
                 $token = Str::random(60);
             // $type = "Parent";
             $status = "Active";
+            $profile_image = "storage/users/dummy.png";
             // if ($request->password == $request->confirm_password) {
             $users = new User([
                 "name" => $request->name,
@@ -132,6 +133,7 @@ class UserController extends Controller
                 "email" => $request->email,
                 "password" => Hash::make($request->password),
                 "api_token" => $token,
+                "profile_image" => $profile_image,
                 "company_name" => $request->company_name,
                 // "type" => $request->type,
                 "status" => $status,
