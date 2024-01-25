@@ -166,6 +166,10 @@ class UserController extends Controller
             return response()->json(["message" => $th->getMessage()], 422);
         }
     }
+    public function retu()
+    {
+        return "";
+    }
 
     public function verify(Request $request)
     {
