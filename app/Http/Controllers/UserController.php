@@ -125,7 +125,7 @@ class UserController extends Controller
                 $token = Str::random(60);
             // $type = "Parent";
             $status = "Active";
-            $profile_image = "storage/users/dummy.png";
+            $profile_image = "storage/profile/dummy.png";
             // if ($request->password == $request->confirm_password) {
             $users = new User([
                 "name" => $request->name,
@@ -165,10 +165,6 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             return response()->json(["message" => $th->getMessage()], 422);
         }
-    }
-    public function retu()
-    {
-        return "";
     }
 
     public function verify(Request $request)
