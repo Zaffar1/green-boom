@@ -14,6 +14,7 @@ class OrderKitFormController extends Controller
         try {
             $admin_email = "alizafar@mailinator.com";
             $data = new OrderKitForm([
+                "kit_id" => $request->kit_id,
                 "first_name" => $request->first_name,
                 "last_name" => $request->last_name,
                 "email" => $request->email,
@@ -22,6 +23,7 @@ class OrderKitFormController extends Controller
                 "country" => $request->country,
                 "state" => $request->state,
                 "zip_code" => $request->zip_code,
+                "city" => $request->city,
                 "address" => $request->address,
                 // "status" => "Active",
             ]);
