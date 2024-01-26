@@ -44,4 +44,31 @@ class OrderKitFormController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    public function deleteOrderKit($id)
+    {
+        try {
+            $kit = OrderKitForm::find($id);
+            if (!$kit) {
+                return response()->json(["error" => "order kit not found"], 404);
+            }
+            $kit->delete();
+            return response()->json(["message" => "Order kit data successfully deleted"]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
+
+    public function viewOrderKit($id)
+    {
+        try {
+            $kit = OrderKitForm::find($id);
+            if (!$kit) {
+                return response()->json(["error" => "order kit not found"], 404);
+            }
+            return response()->json(["kit_detail" => $kit]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }

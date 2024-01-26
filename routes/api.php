@@ -217,6 +217,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('add-order-kit', [OrderKitController::class, 'addOrderKit']);
 
         Route::get('customer-kit-list', [OrderKitFormController::class, 'orderKitData']);
+        Route::delete('delete-kit/{id}', [OrderKitFormController::class, 'deleteOrderKit']);
+        Route::get('kit-detail/{id}', [OrderKitFormController::class, 'viewOrderKit']);
 
         /////////// Youtube
         Route::get('videos', [VideoController::class, 'youTubeVideos']);
