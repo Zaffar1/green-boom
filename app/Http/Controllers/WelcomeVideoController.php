@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\WelcomeVideo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class WelcomeVideoController extends Controller
@@ -118,17 +117,17 @@ class WelcomeVideoController extends Controller
             if (!$video) {
                 return response()->json(["error" => "Video not found"], 404);
             }
-
             $filePath = $video->file;
-
-            // Use File::delete to delete the file
-            if (File::delete($filePath)) {
-                // If the file is deleted successfully, you can proceed to delete the database record
-                $video->delete();
-                return response()->json(["message" => "Welcome video successfully deleted"], 200);
+            // return response()->json(["file" => $filePath]);
+            $video->delete();
+            // Use unlink for direct file deletion
+            if (file_exists($filePath)) {
+                unlink($filePath);
             } else {
-                return response()->json(["error" => "Error deleting file from storage"], 500);
+                Storage::delete($filePath);
             }
+
+            return response()->json(["message" => "Welcome video successfully deleted"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
