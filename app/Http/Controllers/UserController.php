@@ -123,7 +123,7 @@ class UserController extends Controller
                 return response()->json(["message" => "Already Exist!"], 422);
             else
                 $token = Str::random(60);
-            // $type = "Parent";
+            $type = "Customer";
             $status = "Active";
             $profile_image = "storage/profile/dummy.png";
             // if ($request->password == $request->confirm_password) {
