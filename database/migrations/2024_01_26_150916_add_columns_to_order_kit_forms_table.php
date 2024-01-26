@@ -15,7 +15,7 @@ class AddColumnsToOrderKitFormsTable extends Migration
     {
         Schema::table('order_kit_forms', function (Blueprint $table) {
             $table->string('city')->nullable();
-            $table->string('kit_id')->nullable();
+            $table->string('order_kit_id')->nullable();
         });
     }
 

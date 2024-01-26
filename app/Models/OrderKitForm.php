@@ -18,7 +18,7 @@ class OrderKitForm extends Model
         'state',
         'zip_code',
         'city',
-        'kit_id',
+        'order_kit_id',
         'address',
         'status'
     ];
