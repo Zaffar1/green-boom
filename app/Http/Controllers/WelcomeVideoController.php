@@ -124,9 +124,9 @@ class WelcomeVideoController extends Controller
             if (file_exists($filePath)) {
                 unlink($filePath);
             } else {
-                Storage::delete($filePath);
+                info("File does not exist: " . $filePath);
             }
-
+            // Storage::delete($filePath);
             return response()->json(["message" => "Welcome video successfully deleted"], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
