@@ -118,14 +118,15 @@ class WelcomeVideoController extends Controller
                 return response()->json(["error" => "Video not found"], 404);
             }
             $filePath = $video->file;
-            return response()->json(["file" => $filePath]);
+            // return response()->json(["file" => $filePath]);
             $video->delete();
             // Use unlink for direct file deletion
             if (file_exists($filePath)) {
                 unlink($filePath);
+                $deleted = "Deleted";
             }
             // Storage::delete($filePath);
-            return response()->json(["message" => "Welcome video successfully deleted"], 200);
+            return response()->json(["message" => "Welcome video successfully deleted", "deleted" => $deleted], 200);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
