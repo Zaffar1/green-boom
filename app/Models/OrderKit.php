@@ -17,4 +17,9 @@ class OrderKit extends Model
         'file',
         'status',
     ];
+
+    public function orderKitForms()
+    {
+        return $this->hasMany(OrderKitForm::class, 'order_kit_id');
+    }
 }

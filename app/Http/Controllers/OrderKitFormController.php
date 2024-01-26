@@ -34,4 +34,14 @@ class OrderKitFormController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    public function orderKitData()
+    {
+        try {
+            $orderKitForms = OrderKitForm::with('orderKit')->get();
+            return response()->json(["kit_data" => $orderKitForms]);
+        } catch (\Throwable $th) {
+            return response()->json(["error" => $th->getMessage()], 400);
+        }
+    }
 }

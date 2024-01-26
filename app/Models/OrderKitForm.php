@@ -22,4 +22,9 @@ class OrderKitForm extends Model
         'address',
         'status'
     ];
+
+    public function orderKit()
+    {
+        return $this->belongsTo(OrderKit::class, 'order_kit_id');
+    }
 }
