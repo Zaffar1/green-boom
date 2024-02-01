@@ -62,7 +62,7 @@ class OrderKitFormController extends Controller
     public function viewOrderKit($id)
     {
         try {
-            $kit = OrderKitForm::find($id);
+            $kit = OrderKitForm::whereOrderKitId($id)->get();
             if (!$kit) {
                 return response()->json(["error" => "order kit not found"], 404);
             }
