@@ -30,8 +30,9 @@ class FaqController extends Controller
     public function addFaq(Request $request)
     {
         $validate = $request->validate([
-            'question' => 'required',
-            'answer' => 'required',
+            // 'question' => 'required',
+            // 'answer' => 'required',
+            'faq_text' => 'required',
         ]);
         try {
             $validate['status'] =  "Active";
