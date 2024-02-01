@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendOrderKitDetail;
+use App\Models\OrderKit;
 use App\Models\OrderKitForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -66,7 +67,8 @@ class OrderKitFormController extends Controller
             if (!$kit) {
                 return response()->json(["error" => "order kit not found"], 404);
             }
-            return response()->json(["kit_detail" => $kit]);
+            $kit_detail = OrderKit::find($kit->order_kit_id);
+            return response()->json(["kit_detail" => $kit, "kit" => $kit_detail]);
         } catch (\Throwable $th) {
             return response()->json(["error" => $th->getMessage()], 400);
         }
