@@ -29,37 +29,35 @@ class TrainingMediaController extends Controller
                 $validate['status'] = 'Active';
             }
 
-            if ($request->file) {
-                $file = $request->file('file');
-                $new_name = time() . '.' . $file->extension();
-                $file->move(public_path('storage/trainingMedia'), $new_name);
-                $validate['file'] = "storage/trainingMedia/$new_name";
+            $file = $request->file('file');
+            $new_name = time() . '.' . $file->extension();
+            $file->move(public_path('storage/trainingMedia'), $new_name);
+            $validate['file'] = "storage/trainingMedia/$new_name";
 
-                $file_type = $file->getClientOriginalExtension();
-                $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
-                $pdf_extension = ['pdf'];
-                $word_extension = ['doc', 'docx'];
-                $ppt_extension = ['ppt', 'pptx'];
-                $excel_extension = ['xls', 'xlsx'];
+            $file_type = $file->getClientOriginalExtension();
 
-                if (in_array(strtolower($file_type), $video_extension)) {
-                    $validate['file_type'] = 'video';
-                    $new_name = time() . '.' . $request->thumbnail->extension();
-                    $request->thumbnail->move(public_path('storage/trainingMedia/thumbnail'), $new_name);
-                    $validate['thumbnail'] = "storage/trainingMedia/thumbnail/$new_name";
-                } elseif (in_array(strtolower($file_type), $pdf_extension)) {
-                    $validate['file_type'] = 'pdf';
-                } elseif (in_array(strtolower($file_type), $word_extension)) {
-                    $validate['file_type'] = 'word';
-                } elseif (in_array(strtolower($file_type), $ppt_extension)) {
-                    $validate['file_type'] = 'ppt';
-                } elseif (in_array(strtolower($file_type), $excel_extension)) {
-                    $validate['file_type'] = 'excel';
-                } else {
-                    $validate['file_type'] = 'other';
-                }
+            $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
+            $pdf_extension = ['pdf'];
+            $word_extension = ['doc', 'docx'];
+            $ppt_extension = ['ppt', 'pptx'];
+            $excel_extension = ['xls', 'xlsx'];
+
+            if (in_array(strtolower($file_type), $video_extension)) {
+                $validate['file_type'] = 'video';
+                $new_name = time() . '.' . $request->thumbnail->extension();
+                $request->thumbnail->move(public_path('storage/trainingMedia/thumbnail'), $new_name);
+                $validate['thumbnail'] = "storage/trainingMedia/thumbnail/$new_name";
+            } elseif (in_array(strtolower($file_type), $pdf_extension)) {
+                $validate['file_type'] = 'pdf';
+            } elseif (in_array(strtolower($file_type), $word_extension)) {
+                $validate['file_type'] = 'word';
+            } elseif (in_array(strtolower($file_type), $ppt_extension)) {
+                $validate['file_type'] = 'ppt';
+            } elseif (in_array(strtolower($file_type), $excel_extension)) {
+                $validate['file_type'] = 'excel';
+            } else {
+                $validate['file_type'] = 'other';
             }
-
             $validate['faq_text'] = $request->faq_text;
             TrainingMedia::create($validate);
             return response()->json(["message" => "Training file successfully added"], 200);
