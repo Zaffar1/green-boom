@@ -41,6 +41,9 @@ class PerfectSaleMediaController extends Controller
 
             if (in_array(strtolower($file_type), $video_extension)) {
                 $validate['file_type'] = 'video';
+                $new_name = time() . '.' . $request->thumbnail->extension();
+                $request->thumbnail->move(public_path('storage/perfectSaleMedia/thumbnail'), $new_name);
+                $validate['thumbnail'] = "storage/perfectSaleMedia/thumbnail/$new_name";
             } elseif (in_array(strtolower($file_type), $pdf_extension)) {
                 $validate['file_type'] = 'pdf';
             } elseif (in_array(strtolower($file_type), $word_extension)) {
@@ -75,9 +78,6 @@ class PerfectSaleMediaController extends Controller
             } else {
                 $validate['status'] = 'Active';
             }
-            $new_name = time() . '.' . $request->thumbnail->extension();
-            $request->thumbnail->move(public_path('storage/perfectSaleMedia/thumbnail'), $new_name);
-            $validate['thumbnail'] = "storage/perfectSaleMedia/thumbnail/$new_name";
             PerfectSaleMedia::create($validate);
             return response()->json(["message" => "Perfect sale data successfully added"], 200);
         } catch (\Throwable $th) {
