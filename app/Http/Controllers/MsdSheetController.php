@@ -61,6 +61,12 @@ class MsdSheetController extends Controller
             $ppt_extension = ['ppt', 'pptx'];
             $excel_extension = ['xls', 'xlsx'];
 
+            if ($request->has('image')) {
+                $new_name = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('storage/msdSheets/images'), $new_name);
+                $validate['image'] = "storage/msdSheets/images/$new_name";
+            }
+
             if (in_array($file_type, $pdf_extension)) {
                 $validate['file_type'] = 'pdf';
             } elseif (in_array($file_type, $word_extension)) {
@@ -121,6 +127,11 @@ class MsdSheetController extends Controller
                 } else {
                     $msd->file_type = 'other';
                 }
+            }
+            if ($request->has('image')) {
+                $new_name = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('storage/msdSheets/images'), $new_name);
+                $msd->image = "storage/msdSheets/images/$new_name";
             }
 
             $msd->save();

@@ -96,6 +96,11 @@ class VideoController extends Controller
                 $path = "storage/videos/$new_name";
                 $video->file = $path;
             }
+            if ($request->hasFile('thumbnail')) {
+                $new_name = time() . '.' . $request->thumbnail->extension();
+                $request->thumbnail->move(public_path('storage/videos/thumbnail'), $new_name);
+                $video->thumbnail = "storage/videos/thumbnail/$new_name";
+            }
             $video->save();
             return response()->json(["message" => "Video successfully updated"]);
         } catch (\Throwable $th) {
