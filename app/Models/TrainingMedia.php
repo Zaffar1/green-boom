@@ -14,6 +14,7 @@ class TrainingMedia extends Model
         'file',
         'file_type',
         'thumbnail',
+        'faq_text',
         'status'
     ];
 
