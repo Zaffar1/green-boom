@@ -13,7 +13,8 @@ class Video extends Model
         'description',
         'file',
         'status',
-        'video_cat_id'
+        'video_cat_id',
+        'thumbnail'
     ];
 
 

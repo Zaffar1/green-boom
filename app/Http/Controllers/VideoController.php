@@ -59,6 +59,9 @@ class VideoController extends Controller
             $request->file->move(public_path('storage/videos'), $new_name);
             $path = "storage/videos/$new_name";
             $validate['file'] = $path;
+            $new_name = time() . '.' . $request->thumbnail->extension();
+            $request->thumbnail->move(public_path('storage/videos/thumbnail'), $new_name);
+            $validate['thumbnail'] = "storage/videos/thumbnail/$new_name";
             Video::create($validate);
             return response()->json(["message" => "Video successfully added"]);
         } catch (\Throwable $th) {
