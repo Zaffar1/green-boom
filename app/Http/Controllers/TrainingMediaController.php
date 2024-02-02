@@ -58,7 +58,7 @@ class TrainingMediaController extends Controller
             } else {
                 $validate['file_type'] = 'other';
             }
-
+            $validate['faq_text'] = $request->faq_text;
             TrainingMedia::create($validate);
             return response()->json(["message" => "Training file successfully added"], 200);
         } catch (\Throwable $th) {
