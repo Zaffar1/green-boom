@@ -17,7 +17,7 @@ class TrainingMediaController extends Controller
         $validate = $request->validate([
             'training_id' => 'required',
             'title' => 'required',
-            // 'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
+            'file' => 'required|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,xls,xlsx',
         ]);
 
         try {
