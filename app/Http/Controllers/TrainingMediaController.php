@@ -29,12 +29,14 @@ class TrainingMediaController extends Controller
                 $validate['status'] = 'Active';
             }
 
-            $file = $request->file('file');
-            $new_name = time() . '.' . $file->extension();
-            $file->move(public_path('storage/trainingMedia'), $new_name);
-            $validate['file'] = "storage/trainingMedia/$new_name";
+            if ($request->file) {
+                $file = $request->file('file');
+                $new_name = time() . '.' . $file->extension();
+                $file->move(public_path('storage/trainingMedia'), $new_name);
+                $validate['file'] = "storage/trainingMedia/$new_name";
 
-            $file_type = $file->getClientOriginalExtension();
+                $file_type = $file->getClientOriginalExtension();
+            }
 
             $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
             $pdf_extension = ['pdf'];
