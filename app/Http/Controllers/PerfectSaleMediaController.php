@@ -75,7 +75,9 @@ class PerfectSaleMediaController extends Controller
             } else {
                 $validate['status'] = 'Active';
             }
-
+            $new_name = time() . '.' . $request->thumbnail->extension();
+            $request->thumbnail->move(public_path('storage/perfectSaleMedia/thumbnail'), $new_name);
+            $validate['thumbnail'] = "storage/perfectSaleMedia/thumbnail/$new_name";
             PerfectSaleMedia::create($validate);
             return response()->json(["message" => "Perfect sale data successfully added"], 200);
         } catch (\Throwable $th) {

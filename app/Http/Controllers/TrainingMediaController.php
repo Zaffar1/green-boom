@@ -44,6 +44,9 @@ class TrainingMediaController extends Controller
 
             if (in_array(strtolower($file_type), $video_extension)) {
                 $validate['file_type'] = 'video';
+                $new_name = time() . '.' . $request->thumbnail->extension();
+                $request->thumbnail->move(public_path('storage/trainingMedia/thumbnail'), $new_name);
+                $validate['thumbnail'] = "storage/trainingMedia/thumbnail/$new_name";
             } elseif (in_array(strtolower($file_type), $pdf_extension)) {
                 $validate['file_type'] = 'pdf';
             } elseif (in_array(strtolower($file_type), $word_extension)) {

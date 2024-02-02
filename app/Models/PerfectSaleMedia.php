@@ -13,6 +13,7 @@ class PerfectSaleMedia extends Model
         'file',
         'file_type',
         'perfect_sale_id',
+        'thumbnail',
         'status'
     ];
 
