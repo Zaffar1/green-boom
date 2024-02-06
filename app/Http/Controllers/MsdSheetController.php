@@ -129,9 +129,12 @@ class MsdSheetController extends Controller
                 }
             }
             if ($request->has('image')) {
-                $new_name = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('storage/msdSheets/images'), $new_name);
-                $msd->image = "storage/msdSheets/images/$new_name";
+                // $new_name = time() . '.' . $request->image->extension();
+                // $request->image->move(public_path('storage/msdSheets/images'), $new_name);
+                // $msd->image = "storage/msdSheets/images/$new_name";
+                $path = $request->file('image')->store('msdSheet/images', 's3');
+                $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
+                $msd->image = $path;
             }
 
             $msd->save();
