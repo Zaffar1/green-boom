@@ -217,7 +217,7 @@ class UserController extends Controller
     public function users()
     {
         try {
-            $users = User::where('email', '!=', auth()->user()->email)->get();
+            $users = User::where('email', '!=', auth()->user()->email)->orderBy('id', 'DESC')->get();
             // $users = User::all();
             return response()->json(["users" => $users]);
         } catch (\Throwable $th) {
