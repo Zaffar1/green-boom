@@ -51,9 +51,11 @@ class MsdSheetController extends Controller
 
         try {
             $validate['status'] = 'Active';
-            $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/msdSheets'), $new_name);
-            $validate['file'] = "storage/msdSheets/$new_name";
+            // $new_name = time() . '.' . $request->file->extension();
+            // $request->file->move(public_path('storage/msdSheets'), $new_name);
+            // $validate['file'] = "storage/msdSheets/$new_name";
+            $path = $request->file('file')->store('msdSheets', 's3');
+            $validate['file'] = $path;
 
             $file_type = strtolower($request->file->getClientOriginalExtension());
             $pdf_extension = ['pdf'];
@@ -61,10 +63,16 @@ class MsdSheetController extends Controller
             $ppt_extension = ['ppt', 'pptx'];
             $excel_extension = ['xls', 'xlsx'];
 
+            // if ($request->has('image')) {
+            //     $new_name = time() . '.' . $request->image->extension();
+            //     $request->image->move(public_path('storage/msdSheets/images'), $new_name);
+            //     $validate['image'] = "storage/msdSheets/images/$new_name";
+            // }
             if ($request->has('image')) {
-                $new_name = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('storage/msdSheets/images'), $new_name);
-                $validate['image'] = "storage/msdSheets/images/$new_name";
+                $path = $request->file('image')->store('msdSheets/images', 's3');
+                // $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
+                // $path = "https://greenboom-bucket.s3.us-east-2.amazonaws.com/$path";
+                $validate['image'] = $path;
             }
 
             if (in_array($file_type, $pdf_extension)) {
@@ -100,15 +108,18 @@ class MsdSheetController extends Controller
             $msd->description = $request->description;
 
             if ($request->hasFile('file')) {
-                $new_name = time() . '.' . $request->file->extension();
-                $request->file->move(public_path('storage/msdSheets'), $new_name);
+                // $new_name = time() . '.' . $request->file->extension();
+                // $request->file->move(public_path('storage/msdSheets'), $new_name);
+
+                $path = $request->file('file')->store('msdSheets', 's3');
 
                 // Use unlink for direct file deletion
                 if (file_exists($msd->file)) {
                     unlink($msd->file);
                 }
 
-                $msd->file = "storage/msdSheets/$new_name";
+                // $msd->file = "storage/msdSheets/$new_name";
+                $msd->file = $path;
 
                 $file_type = strtolower($request->file->getClientOriginalExtension());
                 $pdf_extension = ['pdf'];
@@ -132,7 +143,7 @@ class MsdSheetController extends Controller
                 // $new_name = time() . '.' . $request->image->extension();
                 // $request->image->move(public_path('storage/msdSheets/images'), $new_name);
                 // $msd->image = "storage/msdSheets/images/$new_name";
-                $path = $request->file('image')->store('msdSheet/images', 's3');
+                $path = $request->file('image')->store('msdSheets/images', 's3');
                 // $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
                 // $path = "https://greenboom-bucket.s3.us-east-2.amazonaws.com/$path";
                 $msd->image = $path;
