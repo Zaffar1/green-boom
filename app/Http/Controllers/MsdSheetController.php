@@ -134,7 +134,7 @@ class MsdSheetController extends Controller
                 // $msd->image = "storage/msdSheets/images/$new_name";
                 $path = $request->file('image')->store('msdSheet/images', 's3');
                 // $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
-                $path = "https://greenboom-bucket.s3.us-east-2.amazonaws.com/$path";
+                // $path = "https://greenboom-bucket.s3.us-east-2.amazonaws.com/$path";
                 $msd->image = $path;
             }
 
