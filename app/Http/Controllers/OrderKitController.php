@@ -39,8 +39,10 @@ class OrderKitController extends Controller
         try {
             $file = $request->file('image');
             $new_name = time() . '.' . $file->extension();
-            $file->move(public_path('storage/orderKit'), $new_name);
-            $validate['image'] = "storage/orderKit/$new_name";
+            // $file->move(public_path('storage/orderKit'), $new_name);
+            // $validate['image'] = "storage/orderKit/$new_name";
+            $path = $request->file('image')->storeAs('orderKit', $new_name, 's3');
+            $validate['image'] = $path;
             $new_name = time() . '.' . $request->file->extension();
             $request->file->move(public_path('storage/orderKit/videos'), $new_name);
             $path = "storage/orderKit/videos/$new_name";

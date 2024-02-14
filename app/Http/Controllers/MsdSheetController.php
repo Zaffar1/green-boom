@@ -51,10 +51,10 @@ class MsdSheetController extends Controller
 
         try {
             $validate['status'] = 'Active';
-            // $new_name = time() . '.' . $request->file->extension();
+            $new_name = time() . '.' . $request->file->extension();
             // $request->file->move(public_path('storage/msdSheets'), $new_name);
             // $validate['file'] = "storage/msdSheets/$new_name";
-            $path = $request->file('file')->store('msdSheets', 's3');
+            $path = $request->file('file')->storeAs('msdSheets', $new_name, 's3');
             $validate['file'] = $path;
 
             $file_type = strtolower($request->file->getClientOriginalExtension());
