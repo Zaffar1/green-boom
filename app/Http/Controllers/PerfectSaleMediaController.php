@@ -28,8 +28,10 @@ class PerfectSaleMediaController extends Controller
 
             $file = $request->file('file');
             $new_name = time() . '.' . $file->extension();
-            $file->move(public_path('storage/perfectSaleMedia'), $new_name);
-            $validate['file'] = "storage/perfectSaleMedia/$new_name";
+            $path = $request->file('file')->storeAs('perfectSaleMedia', $new_name, 's3');
+            $validate['file'] = $path;
+            // $file->move(public_path('storage/perfectSaleMedia'), $new_name);
+            // $validate['file'] = "storage/perfectSaleMedia/$new_name";
 
             $file_type = $file->getClientOriginalExtension();
 
@@ -42,8 +44,10 @@ class PerfectSaleMediaController extends Controller
             if (in_array(strtolower($file_type), $video_extension)) {
                 $validate['file_type'] = 'video';
                 $new_name = time() . '.' . $request->thumbnail->extension();
-                $request->thumbnail->move(public_path('storage/perfectSaleMedia/thumbnail'), $new_name);
-                $validate['thumbnail'] = "storage/perfectSaleMedia/thumbnail/$new_name";
+                // $request->thumbnail->move(public_path('storage/perfectSaleMedia/thumbnail'), $new_name);
+                // $validate['thumbnail'] = "storage/perfectSaleMedia/thumbnail/$new_name";
+                $thumb = $request->file('thumbnail')->storeAs('perfectSaleMedia/thumbnail', $new_name, 's3');
+                $validate['thumbnail'] = $thumb;
             } elseif (in_array(strtolower($file_type), $pdf_extension)) {
                 $validate['file_type'] = 'pdf';
             } elseif (in_array(strtolower($file_type), $word_extension)) {
@@ -109,8 +113,10 @@ class PerfectSaleMediaController extends Controller
 
                 $file = $request->file('file');
                 $new_name = time() . '.' . $file->extension();
-                $file->move(public_path('storage/perfectSaleMedia'), $new_name);
-                $media->file = "storage/perfectSaleMedia/$new_name";
+                $path = $request->file('file')->storeAs('perfectSaleMedia', $new_name, 's3');
+                $media->file = $path;
+                // $file->move(public_path('storage/perfectSaleMedia'), $new_name);
+                // $media->file = "storage/perfectSaleMedia/$new_name";
 
                 $file_type = $file->getClientOriginalExtension();
 
@@ -134,6 +140,8 @@ class PerfectSaleMediaController extends Controller
                     $media->file_type = 'other';
                 }
             }
+            $thumb_path = $request->file('thumbnail')->storeAs('perfectSaleMedia/thumbnail', $new_name, 's3');
+            $media->thumbnail = $thumb_path;
 
             $media->save();
             return response()->json(["message" => "Perfect sale data successfully updated"], 200);

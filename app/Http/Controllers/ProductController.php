@@ -119,8 +119,10 @@ class ProductController extends Controller
             // $validate['file'] = $path;
             $file = $request->file('file');
             $new_name = time() . '.' . $file->extension();
-            $file->move(public_path('storage/products'), $new_name);
-            $validate['file'] = "storage/products/$new_name";
+            // $file->move(public_path('storage/products'), $new_name);
+            // $validate['file'] = "storage/products/$new_name";
+            $path = $request->file('file')->storeAs('products', $new_name, 's3');
+            $validate['file'] = $path;
             Product::create($validate);
 
             return response()->json(['message' => 'Product successfully added']);
@@ -147,8 +149,11 @@ class ProductController extends Controller
 
             if ($existingProduct) {
                 if ($request->hasFile('file')) {
+                    $new_name = time() . '.' . $request->file->extension();
                     Storage::delete($existingProduct->file);
-                    $validate['file'] = $request->file('file')->store('public/products');
+                    // $validate['file'] = $request->file('file')->store('public/products');
+                    $path = $request->file('file')->storeAs('products', $new_name, 's3');
+                    $validate['file'] = $path;
                 }
 
                 $existingProduct->update($validate);

@@ -35,14 +35,16 @@ class SalesTipController extends Controller
 
         $validate = $request->validate([
             'title' => 'required',
-            'description'=>'required',
+            'description' => 'required',
             'file' => 'required',
         ]);
         try {
             $validate['status'] = 'Active';
             $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/salesTips'), $new_name);
-            $validate['file'] = "storage/salesTips/$new_name";
+            $path = $request->file('file')->storeAs('salesTips', $new_name, 's3');
+            $validate['file'] = $path;
+            // $request->file->move(public_path('storage/salesTips'), $new_name);
+            // $validate['file'] = "storage/salesTips/$new_name";
             SalesTip::create($validate);
             return response()->json(["message" => "SalesTip successfully added"], 200);
         } catch (\Throwable $th) {
@@ -67,8 +69,10 @@ class SalesTipController extends Controller
                     unlink($sales_tip->file);
                 }
                 $new_name = time() . '.' . $request->file->extension();
-                $request->file->move(public_path('storage/salesTips'), $new_name);
-                $sales_tip->file = "storage/salesTips/$new_name";
+                $path = $request->file('file')->storeAs('salesTips', $new_name, 's3');
+                $sales_tip->file = $path;
+                // $request->file->move(public_path('storage/salesTips'), $new_name);
+                // $sales_tip->file = "storage/salesTips/$new_name";
             }
             $sales_tip->save();
             return response()->json(["message" => "SalesTip successfully updated"], 200);

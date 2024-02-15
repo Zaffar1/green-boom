@@ -31,8 +31,10 @@ class TrainingMediaController extends Controller
 
             $file = $request->file('file');
             $new_name = time() . '.' . $file->extension();
-            $file->move(public_path('storage/trainingMedia'), $new_name);
-            $validate['file'] = "storage/trainingMedia/$new_name";
+            $path = $request->file('file')->storeAs('trainingMedia', $new_name, 's3');
+            $validate['file'] = $path;
+            // $file->move(public_path('storage/trainingMedia'), $new_name);
+            // $validate['file'] = "storage/trainingMedia/$new_name";
 
             $file_type = $file->getClientOriginalExtension();
 
@@ -45,8 +47,10 @@ class TrainingMediaController extends Controller
             if (in_array(strtolower($file_type), $video_extension)) {
                 $validate['file_type'] = 'video';
                 $new_name = time() . '.' . $request->thumbnail->extension();
-                $request->thumbnail->move(public_path('storage/trainingMedia/thumbnail'), $new_name);
-                $validate['thumbnail'] = "storage/trainingMedia/thumbnail/$new_name";
+                $thumbail = $request->file('thumbnail')->storeAs('trainingMedia/thumbnail', $new_name, 's3');
+                $validate['thumbnail'] = $thumbail;
+                // $request->thumbnail->move(public_path('storage/trainingMedia/thumbnail'), $new_name);
+                // $validate['thumbnail'] = "storage/trainingMedia/thumbnail/$new_name";
             } elseif (in_array(strtolower($file_type), $pdf_extension)) {
                 $validate['file_type'] = 'pdf';
             } elseif (in_array(strtolower($file_type), $word_extension)) {
@@ -169,9 +173,10 @@ class TrainingMediaController extends Controller
 
                 $file = $request->file('file');
                 $new_name = time() . '.' . $file->extension();
-                $file->move(public_path('storage/trainingMedia'), $new_name);
-                $media->file = "storage/trainingMedia/$new_name";
-
+                $path = $request->file('file')->storeAs('trainingMedia', $new_name, 's3');
+                // $file->move(public_path('storage/trainingMedia'), $new_name);
+                // $media->file = "storage/trainingMedia/$new_name";
+                $media->file = $path;
                 $file_type = $file->getClientOriginalExtension();
 
                 $video_extension = ['mp4', 'avi', 'mov', 'wmv'];
@@ -194,6 +199,8 @@ class TrainingMediaController extends Controller
                     $media->file_type = 'other';
                 }
             }
+            $thumb = $request->file('thumbnail')->storeAs('trainingMedia/thumbnail', $new_name, 's3');
+            $media->thumbnail = $thumb;
 
             $media->save();
             return response()->json(["message" => "Training media successfully updated"], 200);

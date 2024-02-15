@@ -56,12 +56,15 @@ class VideoController extends Controller
             $validate['status'] = 'Active';
             // $validate['file'] = $request->file('file')->store('public/videos');
             $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/videos'), $new_name);
-            $path = "storage/videos/$new_name";
+            $path = $request->file('file')->storeAs('videos', $new_name, 's3');
+            // $request->file->move(public_path('storage/videos'), $new_name);
+            // $path = "storage/videos/$new_name";
             $validate['file'] = $path;
             $new_name = time() . '.' . $request->thumbnail->extension();
-            $request->thumbnail->move(public_path('storage/videos/thumbnail'), $new_name);
-            $validate['thumbnail'] = "storage/videos/thumbnail/$new_name";
+            $thum_path = $request->file('thumbnail')->storeAs('videos/thumbnail', $new_name, 's3');
+            $validate['thumbnail'] = $thum_path;
+            // $request->thumbnail->move(public_path('storage/videos/thumbnail'), $new_name);
+            // $validate['thumbnail'] = "storage/videos/thumbnail/$new_name";
             Video::create($validate);
             return response()->json(["message" => "Video successfully added"]);
         } catch (\Throwable $th) {
@@ -92,14 +95,17 @@ class VideoController extends Controller
                 }
                 // $video->file = $request->file('file')->store('public/videos');
                 $new_name = time() . '.' . $request->file->extension();
-                $request->file->move(public_path('storage/videos'), $new_name);
-                $path = "storage/videos/$new_name";
+                $path = $request->file('file')->storeAs('videos', $new_name, 's3');
+                // $request->file->move(public_path('storage/videos'), $new_name);
+                // $path = "storage/videos/$new_name";
                 $video->file = $path;
             }
             if ($request->hasFile('thumbnail')) {
                 $new_name = time() . '.' . $request->thumbnail->extension();
-                $request->thumbnail->move(public_path('storage/videos/thumbnail'), $new_name);
-                $video->thumbnail = "storage/videos/thumbnail/$new_name";
+                $thum_path = $request->file('thumbnail')->storeAs('videos/thumbnail', $new_name, 's3');
+                $video->thumbnail = $thum_path;
+                // $request->thumbnail->move(public_path('storage/videos/thumbnail'), $new_name);
+                // $video->thumbnail = "storage/videos/thumbnail/$new_name";
             }
             $video->save();
             return response()->json(["message" => "Video successfully updated"]);

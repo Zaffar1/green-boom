@@ -29,8 +29,10 @@ class ScriptController extends Controller
 
             $file = $request->file('file');
             $new_name = time() . '.' . $file->extension();
-            $file->move(public_path('storage/scriptData'), $new_name);
-            $validate['file'] = "storage/scriptData/$new_name";
+            $path = $request->file('file')->storeAs('scriptData', $new_name, 's3');
+            $validate['file'] = $path;
+            // $file->move(public_path('storage/scriptData'), $new_name);
+            // $validate['file'] = "storage/scriptData/$new_name";
 
             $file_type = $file->getClientOriginalExtension();
 
@@ -79,8 +81,10 @@ class ScriptController extends Controller
 
                 $file = $request->file('file');
                 $new_name = time() . '.' . $file->extension();
-                $file->move(public_path('storage/perfectSaleMedia'), $new_name);
-                $script_data->file = "storage/perfectSaleMedia/$new_name";
+                $path = $request->file('file')->storeAs('scriptData', $new_name, 's3');
+                $script_data->file = $path;
+                // $file->move(public_path('storage/perfectSaleMedia'), $new_name);
+                // $script_data->file = "storage/perfectSaleMedia/$new_name";
 
                 $file_type = $file->getClientOriginalExtension();
 

@@ -125,7 +125,7 @@ class UserController extends Controller
                 $token = Str::random(60);
             $type = "Customer";
             $status = "Active";
-            $profile_image = "storage/profile/dummy.png";
+            $profile_image = "profile/dummy.png";
             // if ($request->password == $request->confirm_password) {
             $users = new User([
                 "name" => $request->name,
@@ -202,8 +202,10 @@ class UserController extends Controller
             $user->company_name = $request->company_name;
             if ($request->file('profile_image')) {
                 $new_name = time() . '.' . $request->profile_image->extension();
-                $request->profile_image->move(public_path('storage/users'), $new_name);
-                $user->profile_image = "storage/users/$new_name";
+                $path = $request->file('profile_image')->storeAs('users', $new_name, 's3');
+                $user->profile_image = $path;
+                // $request->profile_image->move(public_path('storage/users'), $new_name);
+                // $user->profile_image = "storage/users/$new_name";
             }
             $user->save();
             return response()->json(["message" => "User details successfully updated", "user" => $user]);

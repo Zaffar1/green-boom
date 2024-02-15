@@ -52,8 +52,10 @@ class CatalogBroucherController extends Controller
         try {
             $validate['status'] = 'Active';
             $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/catalogBrouchers'), $new_name);
-            $validate['file'] = "storage/catalogBrouchers/$new_name";
+            $path = $request->file('file')->storeAs('catalogBrouchers', $new_name, 's3');
+            $validate['file'] = $path;
+            // $request->file->move(public_path('storage/catalogBrouchers'), $new_name);
+            // $validate['file'] = "storage/catalogBrouchers/$new_name";
 
             $file_type = strtolower($request->file->getClientOriginalExtension());
             $pdf_extension = ['pdf'];
@@ -95,14 +97,15 @@ class CatalogBroucherController extends Controller
 
             if ($request->hasFile('file')) {
                 $new_name = time() . '.' . $request->file->extension();
-                $request->file->move(public_path('storage/catalogBrouchers'), $new_name);
-
+                // $request->file->move(public_path('storage/catalogBrouchers'), $new_name);
+                $path = $request->file('file')->storeAs('catalogBrouchers', $new_name, 's3');
+                $catalog->file = $path;
                 // Use unlink for direct file deletion
                 if (file_exists($catalog->file)) {
                     unlink($catalog->file);
                 }
 
-                $catalog->file = "storage/catalogBrouchers/$new_name";
+                // $catalog->file = "storage/catalogBrouchers/$new_name";
 
                 $file_type = strtolower($request->file->getClientOriginalExtension());
                 $pdf_extension = ['pdf'];

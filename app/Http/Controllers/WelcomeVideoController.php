@@ -46,8 +46,9 @@ class WelcomeVideoController extends Controller
 
             // $fullUrl = url($baseUrl . $path);
             $new_name = time() . '.' . $request->file->extension();
-            $request->file->move(public_path('storage/videos'), $new_name);
-            $path = "storage/videos/$new_name";
+            $path = $request->file('file')->storeAs('videos', $new_name, 's3');
+            // $request->file->move(public_path('storage/videos'), $new_name);
+            // $path = "storage/videos/$new_name";
             // $videoPath = $request->file('file')->store('public/videos');
             $video = new WelcomeVideo();
             $video->file = $path;
@@ -96,8 +97,9 @@ class WelcomeVideoController extends Controller
                 // Store the new file
                 // $video->file = $request->file('file')->store('public/videos');
                 $new_name = time() . '.' . $request->file->extension();
-                $request->file->move(public_path('storage/videos'), $new_name);
-                $path = "storage/videos/$new_name";
+                // $request->file->move(public_path('storage/videos'), $new_name);
+                $path = $request->file('file')->storeAs('videos', $new_name, 's3');
+                // $path = "storage/videos/$new_name";
                 $video->file = $path;
             }
 

@@ -69,7 +69,8 @@ class MsdSheetController extends Controller
             //     $validate['image'] = "storage/msdSheets/images/$new_name";
             // }
             if ($request->has('image')) {
-                $path = $request->file('image')->store('msdSheets/images', 's3');
+                $new_name = time() . '.' . $request->image->extension();
+                $path = $request->file('image')->storeAs('msdSheets/images', $new_name, 's3');
                 // $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
                 // $path = "https://greenboom-bucket.s3.us-east-2.amazonaws.com/$path";
                 $validate['image'] = $path;
@@ -108,10 +109,10 @@ class MsdSheetController extends Controller
             $msd->description = $request->description;
 
             if ($request->hasFile('file')) {
-                // $new_name = time() . '.' . $request->file->extension();
+                $new_name = time() . '.' . $request->file->extension();
                 // $request->file->move(public_path('storage/msdSheets'), $new_name);
 
-                $path = $request->file('file')->store('msdSheets', 's3');
+                $path = $request->file('file')->storeAs('msdSheets', $new_name, 's3');
 
                 // Use unlink for direct file deletion
                 if (file_exists($msd->file)) {
@@ -140,10 +141,10 @@ class MsdSheetController extends Controller
                 }
             }
             if ($request->has('image')) {
-                // $new_name = time() . '.' . $request->image->extension();
+                $new_name = time() . '.' . $request->image->extension();
                 // $request->image->move(public_path('storage/msdSheets/images'), $new_name);
                 // $msd->image = "storage/msdSheets/images/$new_name";
-                $path = $request->file('image')->store('msdSheets/images', 's3');
+                $path = $request->file('image')->storeAs('msdSheets/images', $new_name, 's3');
                 // $path = "https://vrc-bucket.s3.us-east-2.amazonaws.com/$path";
                 // $path = "https://greenboom-bucket.s3.us-east-2.amazonaws.com/$path";
                 $msd->image = $path;
