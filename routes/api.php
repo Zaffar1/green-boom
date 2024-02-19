@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BenDuffyQuestionController;
 use App\Http\Controllers\CatalogBroucherController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MsdSheetController;
 use App\Http\Controllers\OrderKitController;
@@ -103,6 +104,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('verify', [UserController::class, 'verify']);
         Route::post('update-user', [UserController::class, 'updateUser']);
 
+        Route::get('dashboard', [DashboardController::class, 'dashboard']);
         Route::get('users', [UserController::class, 'users']);
         Route::post('block-user/{id}', [UserController::class, 'deActive']);
         Route::post('user-status/{id}', [UserController::class, 'status']);
