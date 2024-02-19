@@ -195,7 +195,7 @@ class UserController extends Controller
         //     "company_name" => "required",
         // ]);
         try {
-            $user = User::find(auth()->user()->id);
+            $user = User::find(auth()->user()->$request->id);
             // $validate['image'] = $request->file('image')->store('public/users');
             $user->name = $request->name;
             $user->last_name = $request->last_name;
