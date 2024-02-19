@@ -195,7 +195,7 @@ class UserController extends Controller
         //     "company_name" => "required",
         // ]);
         try {
-            $user = User::find(auth()->user()->$request->id);
+            $user = User::find(auth()->user()->id);
             if (!$user) {
                 return response()->json(["message" => "Unknown id"]);
             }
