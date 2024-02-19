@@ -196,6 +196,9 @@ class UserController extends Controller
         // ]);
         try {
             $user = User::find(auth()->user()->$request->id);
+            if (!$user) {
+                return response()->json(["message" => "Unknown id"]);
+            }
             // $validate['image'] = $request->file('image')->store('public/users');
             $user->name = $request->name;
             $user->last_name = $request->last_name;
