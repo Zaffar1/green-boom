@@ -12,6 +12,23 @@ use Illuminate\Support\Facades\Storage;
 class TrainingMediaController extends Controller
 {
 
+    /**
+     * Add training media to the database.
+     *
+     * This function adds training media to the database based on the provided request data.
+     * The request data must include the training ID, title, file, and faq_text of the training media.
+     * It validates the file type to ensure it is one of the allowed formats (pdf, mp4, mov, avi, doc, docx, ppt, pptx, xls, xlsx).
+     * If the specified training is not found, it returns a JSON response indicating that the training is invalid.
+     * If the training is found, it associates the training media with the training ID and sets the status to "Active".
+     * It uploads the file to the configured S3 storage with a unique filename generated based on the current timestamp.
+     * It determines the type of the file (video, pdf, word, ppt, excel, or other) based on its extension.
+     * If successful, it returns a JSON response indicating that the training media has been successfully added.
+     * If any error occurs during the addition process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the training media data.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the training media addition.
+     */
+
     public function addTrainingMedia(Request $request)
     {
         $validate = $request->validate([
@@ -105,6 +122,20 @@ class TrainingMediaController extends Controller
     //     }
     // }
 
+    /**
+     * Retrieve training media based on the provided type and ID.
+     *
+     * This function retrieves training media based on the provided type and ID.
+     * If the type is 'salespitch', it retrieves perfect sale media associated with the specified perfect sale ID.
+     * If the type is not 'salespitch', it retrieves training media associated with the specified training ID.
+     * If the specified perfect sale or training is not found, it returns a JSON response indicating that the data is invalid.
+     * If successful, it returns a JSON response containing the retrieved training media.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the type and ID parameters.
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the retrieved training media.
+     */
+
     public function trainingMedia(Request $request)
     {
         // $request->validate([
@@ -130,6 +161,18 @@ class TrainingMediaController extends Controller
         }
     }
 
+    /**
+     * Delete training media from the database and storage.
+     *
+     * This function deletes training media from the database and storage based on the provided ID.
+     * If the specified training media is not found, it returns a JSON response indicating that the media is invalid.
+     * If successful, it returns a JSON response indicating that the training media has been successfully deleted.
+     * If any error occurs during the deletion process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the training media to be deleted.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the training media deletion.
+     */
+
     public function deleteTrainingMedia($id)
     {
         try {
@@ -148,6 +191,23 @@ class TrainingMediaController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Update training media in the database and storage.
+     *
+     * This function updates training media in the database and storage based on the provided request data.
+     * The request data must include the ID of the training media to be updated, along with any fields that need to be modified.
+     * It retrieves the existing training media based on the provided ID.
+     * If the specified training media is not found, it returns a JSON response indicating that the media is not found.
+     * If the specified training media is found, it updates its fields with the provided data.
+     * If a new file is uploaded, it deletes the old file from storage and uploads the new file to the configured S3 storage with a unique filename generated based on the current timestamp.
+     * It determines the type of the new file and updates the file_type field accordingly.
+     * If successful, it returns a JSON response indicating that the training media has been successfully updated.
+     * If any error occurs during the update process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the training media data to be updated.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the training media update.
+     */
 
     public function updateMedia(Request $request)
     {
@@ -257,6 +317,21 @@ class TrainingMediaController extends Controller
     //         return response()->json(["error" => $th->getMessage()], 400);
     //     }
     // }
+
+    /**
+     * Change the status of training media.
+     *
+     * This function changes the status of training media based on the provided ID.
+     * It retrieves the training media with the specified ID.
+     * If the specified training media is not found, it returns a JSON response indicating that the media is invalid.
+     * If the status of the training media is "Active", it changes it to "InActive", and vice versa.
+     * It then saves the changes to the database.
+     * If successful, it returns a JSON response indicating that the training media status has been changed.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the training media whose status needs to be changed.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the status change operation.
+     */
 
     public function TrainingMediaStatus($id)
     {

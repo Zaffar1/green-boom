@@ -13,6 +13,20 @@ use Illuminate\Http\Request;
 
 class TrainingController extends Controller
 {
+    /**
+     * Handle requests to hit specific routes based on the provided type.
+     *
+     * This function handles requests to hit specific routes based on the provided type.
+     * The request must include the 'type' parameter specifying the route to hit.
+     * Depending on the provided type, it retrieves and returns data from various models such as Training, MsdSheet, Video, PerfectSale, or Product.
+     * For the 'training' type, it returns both categories and sub-categories of training data.
+     * For the 'salespitch' type, it returns both categories and sub-categories of perfect sale data.
+     * If the provided type is invalid or not recognized, it returns a JSON response with a 400 status indicating the error.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the type parameter.
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the data based on the provided type.
+     */
 
     public function hitRoute(Request $request)
     {

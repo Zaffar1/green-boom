@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class OrderKitController extends Controller
 {
+    /**
+     * The function `allOrderKits` retrieves all order kits in descending order of their IDs and
+     * returns them as a JSON response, handling any errors that may occur.
+     * 
+     * @return The `allOrderKits` function is returning a JSON response. If the retrieval of `OrderKit`
+     * records is successful, it returns a JSON response containing the fetched order kits in the
+     * "order_kit" key. If an error occurs during the retrieval process, it returns a JSON response
+     * with an "error" key containing the error message.
+     */
     public function allOrderKits()
     {
         try {
@@ -17,6 +26,14 @@ class OrderKitController extends Controller
         }
     }
 
+    /**
+     * This PHP function retrieves all active order kits and returns them as a JSON response.
+     * 
+     * @return The function `customerAllOrderKits()` is returning a JSON response. If the query is
+     * successful, it returns a JSON response containing an array with the key "order_kit_list" and the
+     * value of the retrieved order kits. If there is an error during the execution of the query, it
+     * returns a JSON response with an error message under the key "error".
+     */
     public function customerAllOrderKits()
     {
         try {
@@ -27,6 +44,18 @@ class OrderKitController extends Controller
         }
     }
 
+    /**
+     * The function `addOrderKit` in PHP validates and adds an order kit with an image and file to the
+     * database.
+     * 
+     * @param Request request The `addOrderKit` function is used to add a new order kit based on the
+     * data provided in the request. Let's break down the process happening in this function:
+     * 
+     * @return The function `addOrderKit` is returning a JSON response. If the order kit is
+     * successfully added, it returns a JSON response with a success message "Order kit successfully
+     * added". If there is an error during the process, it returns a JSON response with an error
+     * message containing the exception message.
+     */
     public function addOrderKit(Request $request)
     {
         $validate = $request->validate([

@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    /**
+     * Here getting all product list in descending order by id
+     */
+
     public function allProducts()
     {
         try {
@@ -20,6 +24,10 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * Here getting all product that have status Active with product data in descending order by id
+     * and this function is use for customer
+     */
     public function customerAllProducts()
     {
         try {
@@ -30,7 +38,10 @@ class ProductController extends Controller
         }
     }
 
-
+    /**
+     * Here getting all product data list
+     * In param sending product id through that, data will get all product data where that id matches
+     */
     public function productData($id)
     {
         try {
@@ -85,6 +96,10 @@ class ProductController extends Controller
         }
     }
 
+
+    /**
+     * Here getting product detail of given product id
+     */
     public function productDetail(Request $request)
     {
         $request->validate([
@@ -97,6 +112,10 @@ class ProductController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Here adding product
+     */
 
     public function addProduct(Request $request)
     {
@@ -130,6 +149,10 @@ class ProductController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Here updating product
+     */
 
     public function updateProduct(Request $request)
     {
@@ -166,37 +189,72 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * Delete a product and its associated file from the database and storage.
+     *
+     * @param int $id The ID of the product to be deleted.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the deletion process.
+     */
     public function deleteProduct($id)
     {
         try {
+            // Find the product by its ID
             $product = Product::find($id);
+
+            // If the product doesn't exist, return a 404 error response
             if (!$product) {
                 return response()->json(["error" => "Product not found"], 404);
             }
+
+            // Retrieve the file path associated with the product
             $filePath = $product->file;
+
+            // Delete the product from the database
             $product->delete();
+
+            // Delete the associated file from storage
             Storage::delete($filePath);
+
+            // Return a success message in JSON format
             return response()->json(["message" => "Product successfully deleted"]);
         } catch (\Throwable $th) {
+            // If an error occurs during the deletion process, return a 400 error response
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
 
+
+    /**
+     * Toggle the status of a product between Active and Inactive.
+     *
+     * @param int $id The ID of the product whose status is to be toggled.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the status toggle operation.
+     */
     public function productStatus($id)
     {
         try {
+            // Find the product by its ID
             $product = Product::find($id);
+
+            // If the product doesn't exist, return a JSON response indicating an invalid product
             if (!$product)
                 return response()->json(["message" => "Invalid Product"]);
+
+            // Toggle the status of the product between Active and Inactive
             if ($product->status == "Active") {
                 $product->status = "InActive";
             } else {
                 $product->status = "Active";
             }
+
+            // Save the updated status of the product
             $product->save();
+
+            // Return a JSON response indicating that the product status has been successfully changed
             return response()->json(["message" => "Product status changed"], 200);
         } catch (\Throwable $th) {
+            // If an error occurs during the status toggle operation, return a JSON response with a 400 status containing the error message
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }

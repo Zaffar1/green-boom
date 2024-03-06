@@ -13,6 +13,16 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductAllDataController extends Controller
 {
+    /**
+     * The function retrieves product data including sizes (small, medium, large), dimensions, titles,
+     * descriptions, and image file for a given product ID.
+     * 
+     * @param id The code you provided seems to be a function that retrieves and organizes product data
+     * based on different sizes (small, medium, large) for a given product ID. It also includes error
+     * handling in case of any exceptions.
+     * 
+     * @return The `allProductData` function is returning a JSON response with the following data:
+     */
     public function allProductData($id)
     {
         try {
@@ -125,6 +135,18 @@ class ProductAllDataController extends Controller
     }
 
 
+    /**
+     * The function `addProductData` in PHP validates and adds product data to the database, including
+     * product dimensions, descriptions, and remediation details.
+     * 
+     * @param Request request The `addProductData` function you provided seems to handle the addition
+     * of product data based on the parameters received in the request. Here is a breakdown of the
+     * process:
+     * 
+     * @return The function `addProductData` is returning a JSON response. If the product is
+     * successfully added, it returns a success message with status code 200. If there are any errors
+     * during the process, it returns an error message with status code 400.
+     */
     public function addProductData(Request $request)
     {
         $validate = $request->validate([
@@ -225,6 +247,9 @@ class ProductAllDataController extends Controller
         }
     }
 
+    /**
+     * Here Getting products data sizes with its product dimensions
+     */
     public function productAllData($id)
     {
         try {
@@ -239,6 +264,10 @@ class ProductAllDataController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Here deleting the all product size data and that data which is related with following product size id
+     */
 
     public function deleteProductAllData($id)
     {
@@ -260,6 +289,9 @@ class ProductAllDataController extends Controller
         }
     }
 
+    /**
+     * Here getting product data details
+     */
 
     public function productDataDetails($id)
     {

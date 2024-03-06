@@ -9,6 +9,19 @@ use Illuminate\Http\Request;
 
 class PerfectSaleMediaController extends Controller
 {
+    /**
+     * The function `addPerfectSaleMedia` in PHP validates and stores media files related to a Perfect
+     * Sale, categorizing them based on file type.
+     * 
+     * @param Request request The `addPerfectSaleMedia` function in the provided code snippet is
+     * responsible for adding media files related to a perfect sale. Let me explain the code step by
+     * step:
+     * 
+     * @return The function `addPerfectSaleMedia` is returning a JSON response with a success message
+     * "Perfect sale data successfully added" and a status code of 200 if the data is successfully
+     * added to the database. If there is an error during the process, it will return a JSON response
+     * with an error message containing the exception message and a status code of 400.
+     */
     public function addPerfectSaleMedia(Request $request)
     {
         $validate = $request->validate([
@@ -67,6 +80,19 @@ class PerfectSaleMediaController extends Controller
         }
     }
 
+    /**
+     * The function `addPerfectSaleMediaScript` validates and adds media data for a perfect sale,
+     * handling errors appropriately.
+     * 
+     * @param Request request The `addPerfectSaleMediaScript` function is used to add media script data
+     * for a perfect sale. It expects a `Request` object as a parameter, which contains the following
+     * data:
+     * 
+     * @return If the `addPerfectSaleMediaScript` function is successfully executed, it will return a
+     * JSON response with the message "Perfect sale data successfully added" and a status code of 200.
+     * If an error occurs during the execution, it will return a JSON response with the error message
+     * from the exception caught, along with a status code of 400.
+     */
     public function addPerfectSaleMediaScript(Request $request)
     {
         $validate = $request->validate([
@@ -89,6 +115,19 @@ class PerfectSaleMediaController extends Controller
         }
     }
 
+    /**
+     * The function `updatePerfectSaleMedia` updates Perfect Sale media data including file upload and
+     * type detection.
+     * 
+     * @param Request request The `updatePerfectSaleMedia` function is responsible for updating Perfect
+     * Sale media data based on the provided request parameters. Let's break down the key aspects of
+     * this function:
+     * 
+     * @return a JSON response. If the update operation is successful, it will return a JSON response
+     * with a message "Perfect sale data successfully updated" and a status code of 200. If there is an
+     * error during the update operation, it will return a JSON response with the error message and a
+     * status code of 400.
+     */
     public function updatePerfectSaleMedia(Request $request)
     {
         $request->validate([
@@ -151,6 +190,21 @@ class PerfectSaleMediaController extends Controller
     }
 
 
+    /**
+     * This PHP function deletes a PerfectSaleMedia record by its ID and returns a JSON response
+     * indicating success or failure.
+     * 
+     * @param id The `deletePerfectSaleMedia` function is used to delete a PerfectSaleMedia entry from
+     * the database based on the provided `id` parameter. The function first attempts to find the
+     * PerfectSaleMedia entry with the given `id`. If the entry is found, it is deleted from the
+     * database and a
+     * 
+     * @return The `deletePerfectSaleMedia` function returns a JSON response. If the PerfectSaleMedia
+     * with the given `` is found and successfully deleted, it returns a JSON response with the
+     * message "Perfect sale media deleted". If the PerfectSaleMedia with the given `` is not found,
+     * it returns a JSON response with the message "Invalid perfect sale media". If an error occurs
+     * during the deletion
+     */
     public function deletePerfectSaleMedia($id)
     {
         try {
@@ -165,6 +219,19 @@ class PerfectSaleMediaController extends Controller
     }
 
 
+    /**
+     * The function `PerfectSaleMediaStatus` toggles the status of a PerfectSaleMedia entity between
+     * "Active" and "Inactive".
+     * 
+     * @param id The code you provided is a PHP function that toggles the status of a PerfectSaleMedia
+     * object between "Active" and "Inactive" based on the provided ID. If the current status is
+     * "Active", it will be changed to "Inactive", and vice versa.
+     * 
+     * @return The `PerfectSaleMediaStatus` function is returning a JSON response. If the operation is
+     * successful, it returns a JSON response with the message "Perfect sale media status changed". If
+     * an error occurs during the process, it returns a JSON response with the error message captured
+     * from the exception.
+     */
     public function PerfectSaleMediaStatus($id)
     {
         // $request->validate([
@@ -188,6 +255,21 @@ class PerfectSaleMediaController extends Controller
 
 
     /////////////Script Work
+    /**
+     * The function scriptMedia retrieves script data based on a perfect sale media ID and returns it
+     * as JSON response.
+     * 
+     * @param Request request The `scriptMedia` function takes two parameters: `` and ``.
+     * @param id The `id` parameter in the `scriptMedia` function is used to retrieve a specific
+     * PerfectSaleMedia record from the database based on the provided ID. This ID is then used to
+     * fetch related ScriptData records associated with the PerfectSaleMedia.
+     * 
+     * @return The scriptMedia function returns a JSON response containing the data fetched from the
+     * ScriptData model based on the provided PerfectSaleMedia ID. If the PerfectSaleMedia with the
+     * given ID is not found, it returns a JSON response indicating that the perfect sale media is
+     * invalid. If an error occurs during the process, it returns a JSON response with the error
+     * message.
+     */
     public function scriptMedia(Request $request, $id)
     {
         // $request->validate([

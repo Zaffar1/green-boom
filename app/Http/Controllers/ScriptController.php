@@ -8,6 +8,23 @@ use Illuminate\Http\Request;
 
 class ScriptController extends Controller
 {
+    /**
+     * Add script data to the database.
+     *
+     * This function adds script data to the database based on the provided request data.
+     * The request data must include the script ID, title, file, and icon type of the script data.
+     * It validates the file type to ensure it is one of the allowed formats (pdf, mp4, mov, avi, doc, docx, ppt, pptx, xls, xlsx).
+     * If the specified script data is not found, it returns a JSON response indicating that the data is invalid.
+     * If the script data is found, it associates the script data with the script ID and sets the status to "Active".
+     * It uploads the file to the configured S3 storage with a unique filename generated based on the current timestamp.
+     * It determines the type of the file (video, pdf, word, ppt, excel, or other) based on its extension.
+     * If successful, it returns a JSON response indicating that the script data has been successfully added.
+     * If any error occurs during the addition process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the script data.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the script data addition.
+     */
+
     public function addScriptData(Request $request)
     {
         $validate = $request->validate([
@@ -63,6 +80,21 @@ class ScriptController extends Controller
         }
     }
 
+    /**
+     * Update script data in the database.
+     *
+     * This function updates script data in the database based on the provided request data.
+     * The request data must include the ID and title of the script data.
+     * If the specified script data is not found, it returns a JSON response indicating that the data is invalid.
+     * If a new file is provided in the request, it deletes the old file associated with the script data from storage and uploads the new file to the configured S3 storage with a unique filename generated based on the current timestamp.
+     * It determines the type of the file (video, pdf, word, ppt, excel, or other) based on its extension.
+     * If successful, it returns a JSON response indicating that the script data has been successfully updated.
+     * If any error occurs during the update process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the updated script data.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the script data update.
+     */
+
     public function updateScriptData(Request $request)
     {
         $validate = $request->validate([
@@ -115,6 +147,17 @@ class ScriptController extends Controller
         }
     }
 
+    /**
+     * Delete script data from the database.
+     *
+     * This function deletes script data from the database based on the provided ID.
+     * If the specified script data is not found, it returns a JSON response indicating that the data is invalid.
+     * If successful, it returns a JSON response indicating that the script data has been successfully deleted.
+     * If any error occurs during the deletion process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the script data to be deleted.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the script data deletion.
+     */
 
     public function deleteScriptData($id)
     {
@@ -129,6 +172,18 @@ class ScriptController extends Controller
         }
     }
 
+    /**
+     * Toggle the status of script data between Active and Inactive.
+     *
+     * This function toggles the status of script data between "Active" and "Inactive" based on the provided ID.
+     * If the specified script data is not found, it returns a JSON response with a 404 status indicating that the script data is invalid.
+     * If the script data is found, it toggles its status accordingly and saves the changes to the database.
+     * If successful, it returns a JSON response indicating that the script data status has been successfully changed.
+     * If any error occurs during the status toggle operation, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the script data whose status is to be toggled.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the status toggle operation.
+     */
     public function ScriptDataStatus($id)
     {
         // $request->validate([

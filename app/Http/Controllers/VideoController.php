@@ -11,6 +11,16 @@ use Google_Service_YouTube_SearchListResponse;
 
 class VideoController extends Controller
 {
+    /**
+     * Retrieve all videos.
+     *
+     * This function retrieves all videos available in the system.
+     * It fetches videos ordered by their IDs in descending order.
+     * If successful, it returns a JSON response containing the list of all videos.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the list of all videos.
+     */
     public function allVideos()
     {
         try {
@@ -21,6 +31,17 @@ class VideoController extends Controller
         }
     }
 
+    /**
+     * Retrieve all active videos for customers.
+     *
+     * This function retrieves all active videos available for customers in the system.
+     * It fetches videos ordered by their IDs in descending order and filtered by 'Active' status.
+     * If successful, it returns a JSON response containing the list of all active videos for customers.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the list of all active videos for customers.
+     */
+
     public function customerAllVideos()
     {
         try {
@@ -30,6 +51,19 @@ class VideoController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Retrieve details of a specific video.
+     *
+     * This function retrieves the details of a specific video based on the provided video ID.
+     * It validates the request parameters to ensure the 'video_id' is provided.
+     * If the video is found, it returns a JSON response containing the details of the video.
+     * If the video is not found or any error occurs during the process, it catches the exception
+     * and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param  \Illuminate\Http\Request  $request The HTTP request containing the 'video_id' parameter.
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the details of the specified video.
+     */
 
     public function videoDetail(Request $request)
     {
@@ -43,6 +77,22 @@ class VideoController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Add a new video.
+     *
+     * This function adds a new video to the system.
+     * It validates the request parameters to ensure the required fields are provided.
+     * If validation passes, the function sets the status of the video to 'Active', uploads
+     * the video file and its thumbnail to the cloud storage (Amazon S3), and creates a new
+     * record in the 'videos' table with the provided details.
+     * If any error occurs during the process, it catches the exception and returns a JSON
+     * response with a 400 status containing the error message.
+     *
+     * @param  \Illuminate\Http\Request  $request The HTTP request containing the video details.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the success or failure of the operation.
+     */
+
 
     public function addVideo(Request $request)
     {
@@ -71,6 +121,24 @@ class VideoController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Update an existing video.
+     *
+     * This function updates the details of an existing video in the system.
+     * It retrieves the video record by its ID and validates the request parameters.
+     * If validation passes, it updates the title and description of the video.
+     * If the request contains a new video file or thumbnail, it deletes the existing files
+     * from the cloud storage (Amazon S3), uploads the new files, and updates the file paths
+     * in the database accordingly.
+     * Finally, it saves the changes to the database and returns a JSON response indicating
+     * the success of the operation.
+     * If any error occurs during the process, it catches the exception and returns a JSON
+     * response with a 400 status containing the error message.
+     *
+     * @param  \Illuminate\Http\Request  $request The HTTP request containing the updated video details.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the success or failure of the operation.
+     */
 
     public function updateVideo(Request $request)
     {
@@ -113,6 +181,23 @@ class VideoController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Delete a video.
+     *
+     * This function deletes a video from the system.
+     * It first attempts to find the video record by its ID.
+     * If the video is not found, it returns a JSON response with a 404 status indicating
+     * that the video was not found.
+     * If the video is found, it deletes the video record from the database and attempts
+     * to delete the associated video file from the cloud storage (Amazon S3).
+     * Finally, it returns a JSON response indicating the success of the operation.
+     * If any error occurs during the process, it catches the exception and returns a JSON
+     * response with a 400 status containing the error message.
+     *
+     * @param  int  $id The ID of the video to be deleted.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the success or failure of the operation.
+     */
 
     public function deleteVideo($id)
     {
@@ -173,6 +258,22 @@ class VideoController extends Controller
         return response()->json(['all_videos' => $videosArray]);
     }
 
+    /**
+     * Change the status of a video.
+     *
+     * This function changes the status of a video by toggling between "Active" and "Inactive".
+     * It first attempts to find the video record by its ID.
+     * If the video is not found, it returns a JSON response with a 404 status indicating
+     * that the video was not found.
+     * If the video is found, it toggles the status between "Active" and "Inactive" and saves
+     * the changes to the database.
+     * Finally, it returns a JSON response indicating the success of the operation.
+     * If any error occurs during the process, it catches the exception and returns a JSON
+     * response with a 400 status containing the error message.
+     *
+     * @param  int  $id The ID of the video for which the status needs to be changed.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the success or failure of the operation.
+     */
 
     public function videoStatus($id)
     {

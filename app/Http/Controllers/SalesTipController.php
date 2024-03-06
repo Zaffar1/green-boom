@@ -7,17 +7,37 @@ use Illuminate\Http\Request;
 
 class SalesTipController extends Controller
 {
+    /**
+     * Retrieve all sales tips from the database.
+     *
+     * @return \Illuminate\Http\JsonResponse A JSON response containing all sales tips.
+     */
     public function allSalesTips()
     {
         try {
+            // Retrieve all sales tips from the database, ordered by ID in descending order
             $sales_tips = SalesTip::orderBy('id', 'DESC')->get();
+
+            // Return a JSON response containing all sales tips
             return response()->json(["sales_tips_list" => $sales_tips]);
         } catch (\Throwable $th) {
+            // If an error occurs during the retrieval process, return a JSON response with a 400 status containing the error message
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
 
+
     ////////////// For Customer
+
+    /**
+
+     *Retrieve active sales tips for customers from the database.
+     *This function fetches sales tips that are marked as "Active" from the database.
+     *The retrieved sales tips are sorted in descending order based on their IDs.
+     *If successful, it returns a JSON response containing the list of active sales tips.
+     *If any error occurs during the retrieval process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *@return \Illuminate\Http\JsonResponse A JSON response containing active sales tips for customers.
+     */
     public function customerSalesTips()
     {
         try {
@@ -29,7 +49,19 @@ class SalesTipController extends Controller
     }
 
     ///////////////// End 
-
+    /**
+     * Add a new sales tip to the database.
+     *
+     * This function adds a new sales tip to the database based on the provided request data.
+     * The request data must include the title, description, and file of the sales tip.
+     * The status of the sales tip is set to "Active" by default.
+     * The file is stored in the configured S3 storage with a unique filename generated based on the current timestamp.
+     * If successful, it returns a JSON response indicating that the sales tip has been successfully added.
+     * If any error occurs during the addition process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the sales tip data.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the sales tip addition.
+     */
     public function addSalesTip(Request $request)
     {
 
@@ -52,6 +84,20 @@ class SalesTipController extends Controller
         }
     }
 
+    /**
+     * Update an existing sales tip in the database.
+     *
+     * This function updates an existing sales tip in the database based on the provided request data.
+     * The request data must include the ID of the sales tip to be updated, along with the updated title, description, and optionally, the file of the sales tip.
+     * If the specified sales tip is not found, it returns a JSON response with a 404 status indicating that the sales tip data was not found.
+     * If the sales tip is found, it updates the title and description fields with the provided values.
+     * If a new file is provided in the request, it deletes the previous file associated with the sales tip and uploads the new file to the configured S3 storage with a unique filename generated based on the current timestamp.
+     * If successful, it returns a JSON response indicating that the sales tip has been successfully updated.
+     * If any error occurs during the update process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the updated sales tip data.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the sales tip update.
+     */
 
     public function updateSalesTip(Request $request)
     {
@@ -81,6 +127,18 @@ class SalesTipController extends Controller
         }
     }
 
+    /**
+     * Delete a sales tip from the database and associated file.
+     *
+     * This function deletes a sales tip from the database based on the provided ID.
+     * If the specified sales tip is not found, it returns a JSON response with a 404 status indicating that the sales tip is invalid.
+     * If the sales tip is found, it deletes the sales tip from the database and deletes the associated file from the storage.
+     * If successful, it returns a JSON response indicating that the sales tip has been successfully deleted.
+     * If any error occurs during the deletion process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the sales tip to be deleted.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the sales tip deletion.
+     */
     public function deleteSalesTip($id)
     {
         try {
@@ -100,6 +158,18 @@ class SalesTipController extends Controller
         }
     }
 
+    /**
+     * Toggle the status of a sales tip between Active and Inactive.
+     *
+     * This function toggles the status of a sales tip between "Active" and "Inactive" based on the provided ID.
+     * If the specified sales tip is not found, it returns a JSON response with a 404 status indicating that the sales tip is invalid.
+     * If the sales tip is found, it toggles its status accordingly and saves the changes to the database.
+     * If successful, it returns a JSON response indicating that the sales tip status has been successfully changed.
+     * If any error occurs during the status toggle operation, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the sales tip whose status is to be toggled.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the status toggle operation.
+     */
 
     public function salesTipStatus($id)
     {

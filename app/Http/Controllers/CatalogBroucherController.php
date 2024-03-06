@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 class CatalogBroucherController extends Controller
 {
 
+    /**
+     * This PHP function retrieves all catalogs from the database in descending order of their IDs and
+     * returns them as a JSON response, handling any errors that may occur.
+     * 
+     * @return The `allCatalogs` function returns a JSON response containing all the catalogs fetched
+     * from the database in descending order of their IDs. If an error occurs during the retrieval
+     * process, it will return a JSON response with the error message and a status code of 400.
+     */
     public function allCatalogs()
     {
         try {
@@ -18,6 +26,16 @@ class CatalogBroucherController extends Controller
         }
     }
 
+    /**
+     * This PHP function retrieves all active catalogs from the database and returns them as a JSON
+     * response.
+     * 
+     * @return The `customerAllCatalogs` function is returning a JSON response. If the operation is
+     * successful, it returns a JSON object containing all the catalogs that have a status of 'Active',
+     * ordered by ID in descending order. The key for the catalogs array is 'all_catalogs'. If an error
+     * occurs during the execution of the function, it returns a JSON object with an 'error' key
+     * containing the
+     */
     public function customerAllCatalogs()
     {
         try {
@@ -28,6 +46,19 @@ class CatalogBroucherController extends Controller
         }
     }
 
+    /**
+     * This PHP function retrieves and returns details of a catalog brochure based on the provided ID.
+     * 
+     * @param Request request The `CatalogDetail` function is a PHP function that takes a `Request`
+     * object as a parameter. The function then validates the request to ensure that it contains a
+     * parameter with the key 'id'. If the validation passes, it tries to find a catalog brochure with
+     * the provided 'id' using the
+     * 
+     * @return The CatalogDetail function returns a JSON response containing the details of a catalog
+     * brochure with the specified ID. If the catalog is found successfully, it returns the catalog
+     * details in the response. If an error occurs during the process, it returns a JSON response with
+     * an error message and a status code of 400.
+     */
     public function CatalogDetail(Request $request)
     {
         $request->validate([
@@ -41,6 +72,18 @@ class CatalogBroucherController extends Controller
         }
     }
 
+    /**
+     * The function `addCatalogBroucher` validates and stores a catalog broucher file, categorizes its
+     * type, and creates a new entry in the database.
+     * 
+     * @param Request request The `addCatalogBroucher` function is used to handle the addition of a new
+     * catalog brochure. Let me explain the code step by step:
+     * 
+     * @return The function `addCatalogBroucher` is returning a JSON response. If the operation is
+     * successful, it returns a JSON response with a message indicating that the CatalogBroucher was
+     * successfully added. If there is an error during the process, it returns a JSON response with an
+     * error message extracted from the exception thrown.
+     */
     public function addCatalogBroucher(Request $request)
     {
         $validate = $request->validate([
@@ -83,6 +126,19 @@ class CatalogBroucherController extends Controller
     }
 
 
+    /**
+     * The function `updateCatalogBroucher` updates a catalog brochure's title, description, and file,
+     * handling file uploads and determining file type.
+     * 
+     * @param Request request The `updateCatalogBroucher` function is responsible for updating a
+     * catalog brochure in the database based on the provided request data. Let's break down the code
+     * and explain each part:
+     * 
+     * @return The function `updateCatalogBroucher` is returning a JSON response with a success message
+     * if the catalogBroucher is successfully updated, along with an HTTP status code of 200. If there
+     * is an error during the update process, it returns a JSON response with the error message from
+     * the exception caught in the try-catch block, along with an HTTP status code of 400.
+     */
     public function updateCatalogBroucher(Request $request)
     {
         try {
@@ -133,6 +189,19 @@ class CatalogBroucherController extends Controller
         }
     }
 
+    /**
+     * This PHP function deletes a catalog brochure by finding it, deleting its associated file, and
+     * then deleting the catalog entry itself.
+     * 
+     * @param id The `deletecatalogBroucher` function is used to delete a catalog brochure by its ID.
+     * The function first attempts to find the catalog brochure with the provided ID. If the catalog
+     * brochure is not found, it returns a JSON response with an error message and a status code of
+     * 404.
+     * 
+     * @return The function `deletecatalogBroucher` is returning a JSON response. If the operation is
+     * successful, it returns a JSON response with a message indicating that the CatalogBroucher was
+     * successfully deleted. If there is an error, it returns a JSON response with an error message.
+     */
     public function deletecatalogBroucher($id)
     {
         try {
@@ -153,6 +222,20 @@ class CatalogBroucherController extends Controller
     }
 
 
+    /**
+     * The function `catalogStatus` toggles the status of a catalog brochure between "Active" and
+     * "Inactive".
+     * 
+     * @param id The `catalogStatus` function you provided is responsible for toggling the status of a
+     * catalog brochure between "Active" and "Inactive" based on the provided ID. If the current status
+     * is "Active", it will be changed to "Inactive", and vice versa.
+     * 
+     * @return The `catalogStatus` function returns a JSON response with a message indicating whether
+     * the status of the CatalogBroucher has been successfully changed or if there was an error. If the
+     * CatalogBroucher with the provided ID is found, its status is toggled between "Active" and
+     * "InActive" and then saved. The function returns a success message if the status is changed
+     * successfully, or an
+     */
     public function catalogStatus($id)
     {
         try {

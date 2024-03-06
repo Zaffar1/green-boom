@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class VideoCategoryController extends Controller
 {
+    /**
+     * Retrieve all video categories.
+     *
+     * This function retrieves all video categories from the database.
+     * If successful, it returns a JSON response containing the retrieved video categories.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the retrieved video categories.
+     */
+
     public function allVideoCategories()
     {
         try {
@@ -17,6 +27,19 @@ class VideoCategoryController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Add a new video category.
+     *
+     * This function adds a new video category to the database based on the provided request data.
+     * The request data must include the title and description of the video category.
+     * It validates the request data to ensure that the title and description fields are required.
+     * If successful, it returns a JSON response indicating that the video category has been successfully added.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the data for the new video category.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the video category addition.
+     */
 
 
     public function addVideoCat(Request $request)
@@ -39,6 +62,19 @@ class VideoCategoryController extends Controller
         }
     }
 
+    /**
+     * Update a video category.
+     *
+     * This function updates an existing video category in the database based on the provided request data.
+     * The request data must include the ID of the video category to be updated, as well as the updated title and description.
+     * It validates the request data to ensure that the ID, title, and description fields are required.
+     * If an image file is included in the request, it updates the image file of the video category.
+     * If successful, it returns a JSON response indicating that the video category has been successfully updated.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request containing the data for updating the video category.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the video category update operation.
+     */
 
     public function updateVideoCat(Request $request)
     {
@@ -70,6 +106,18 @@ class VideoCategoryController extends Controller
         }
     }
 
+    /**
+     * Delete a video category.
+     *
+     * This function deletes a video category from the database based on the provided ID.
+     * It attempts to find the video category with the given ID and deletes it.
+     * If successful, it returns a JSON response indicating that the video category has been successfully deleted.
+     * If the video category does not exist, it returns a JSON response with a message indicating the invalid ID.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the video category to be deleted.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the video category deletion operation.
+     */
 
     public function deleteVideoCategory($id)
     {
@@ -90,6 +138,19 @@ class VideoCategoryController extends Controller
         }
     }
 
+    /**
+     * Change the status of a video category.
+     *
+     * This function changes the status of a video category (Active/Inactive) based on the provided ID.
+     * It attempts to find the video category with the given ID and updates its status accordingly.
+     * If successful, it returns a JSON response indicating that the video category status has been changed.
+     * If the video category does not exist, it returns a JSON response with a message indicating the invalid ID.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param int $id The ID of the video category for which the status needs to be changed.
+     * @return \Illuminate\Http\JsonResponse A JSON response indicating the result of the video category status change operation.
+     */
+
     public function videoCatStatus($id)
     {
         try {
@@ -107,6 +168,20 @@ class VideoCategoryController extends Controller
             return response()->json(["error" => $th->getMessage()], 400);
         }
     }
+
+    /**
+     * Retrieve videos belonging to a video category.
+     *
+     * This function retrieves videos associated with a specific video category based on the provided ID.
+     * It attempts to find the video category with the given ID and fetches the videos belonging to it.
+     * If successful, it returns a JSON response containing the list of videos associated with the video category.
+     * If the video category does not exist, it returns a JSON response with a message indicating the invalid ID.
+     * If any error occurs during the process, it catches the exception and returns a JSON response with a 400 status containing the error message.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request instance.
+     * @param int $id The ID of the video category for which to retrieve videos.
+     * @return \Illuminate\Http\JsonResponse A JSON response containing the list of videos associated with the video category.
+     */
 
     public function videoCatVideos(Request $request, $id)
     {
