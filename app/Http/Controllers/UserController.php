@@ -268,6 +268,11 @@ class UserController extends Controller
         }
     }
 
+    public function aise()
+    {
+        return 'abc';
+    }
+
     /**
      * The function updateUser in PHP updates user details including name, last name, company name,
      * password, and profile image, handling file uploads and error handling.
