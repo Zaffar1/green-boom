@@ -187,7 +187,7 @@ class UserController extends Controller
                 "api_token" => $token,
                 "profile_image" => $profile_image,
                 "company_name" => $request->company_name,
-                // "type" => $request->type,
+                "type" => $request->type,
                 "status" => $status,
             ]);
 
@@ -295,6 +295,7 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->last_name = $request->last_name;
             $user->company_name = $request->company_name;
+            $user->password = Hash::make($request->new_password);
             if ($request->file('profile_image')) {
                 $new_name = time() . '.' . $request->profile_image->extension();
                 $path = $request->file('profile_image')->storeAs('users', $new_name, 's3');
