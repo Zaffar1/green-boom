@@ -175,7 +175,7 @@ class UserController extends Controller
                 return response()->json(["message" => "Already Exist!"], 422);
             else
                 $token = Str::random(60);
-            $type = "Customer";
+            $type = "User";
             $status = "Active";
             $profile_image = "profile/dummy.png";
             // if ($request->password == $request->confirm_password) {
@@ -187,7 +187,7 @@ class UserController extends Controller
                 "api_token" => $token,
                 "profile_image" => $profile_image,
                 "company_name" => $request->company_name,
-                "type" => $request->type,
+                "type" => $type,
                 "status" => $status,
             ]);
 
